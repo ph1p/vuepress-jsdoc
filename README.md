@@ -94,6 +94,6 @@ The `./example` folder includes a full working vuepress example generated from `
 
 ## ToDo
 
-- [] Update description README.md
-- [] Custom README.md
-- [] Custom meta data
+- [ ] Update description README.md
+- [ ] Custom README.md
+- [ ] Custom meta data
