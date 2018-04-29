@@ -169,7 +169,6 @@ const readFiles = async (folder, depth = 0, tree) => {
 
     return Promise.resolve(files);
   } catch (err) {
-    console.log(err);
     if (err.code === 'ENOENT') {
       console.log('cannot found source folder');
     } else {
