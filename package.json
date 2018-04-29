@@ -1,0 +1,30 @@
+{
+  "name": "static-site-jsdoc",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "keywords": [
+    "jsdoc",
+    "static",
+    "documentation",
+    "vue",
+    "vuepress"
+  ],
+  "license": "MIT",
+  "author": "Philip Stapelfeldt <phil@capshake.com>",
+  "repository": {
+    "url": "https://github.com/ph1p/static-site-jsdoc.git",
+    "type": "git"
+  },
+  "bin": {
+    "static-site-jsdoc": "./index.js"
+  },
+  "engines": {
+    "node": ">= 10.0.0"
+  },
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.6.2",
+    "jsdoc-to-markdown": "^4.0.1"
+  }
+}
