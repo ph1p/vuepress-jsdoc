@@ -1,0 +1,20 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docs": "../index.js --source=./src --dist=./documentation",
+    "dev": "vuepress dev documentation",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "static-site-jsdoc": "0.0.2"
+  },
+  "dependencies": {
+    "vuepress": "^0.8.4"
+  }
+}

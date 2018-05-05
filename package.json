@@ -23,8 +23,11 @@
     "node": ">= 10.0.0"
   },
   "dependencies": {
+    "jsdoc-to-markdown": "^4.0.1",
     "mkdirp": "^0.5.1",
-    "rimraf": "^2.6.2",
-    "jsdoc-to-markdown": "^4.0.1"
+    "rimraf": "^2.6.2"
+  },
+  "devDependencies": {
+    "jsdoc-vuejs": "^1.0.13"
   }
 }

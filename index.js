@@ -5,6 +5,8 @@ const mkdirp = require('mkdirp');
 const jsdoc2md = require('jsdoc-to-markdown');
 const rimraf = require('rimraf');
 
+const vueSidebar = require('./helpers/vue');
+
 const fileTree = [];
 
 const extensions = ['.ts', '.js'];
@@ -29,16 +31,6 @@ const codeFolder =
 const docsFolder = `${foundArguments.dist || './documentation'}/${codeFolder}`;
 const title = foundArguments.title || 'API';
 
-// prepare sidebar
-const sidebarTree = {
-  [`/${codeFolder}/`]: [
-    {
-      title,
-      collapsable: false,
-      children: [['', 'Mainpage']]
-    }
-  ]
-};
 
 // remove docs folder
 rimraf(docsFolder, () =>
@@ -50,7 +42,11 @@ rimraf(docsFolder, () =>
     await fs.writeFile(
       `${docsFolder}/config.js`,
       `exports.fileTree=${JSON.stringify(fileTree, null, 4)};
-exports.sidebarTree=${JSON.stringify(sidebarTree, null, 4)};`
+exports.sidebarTree=${JSON.stringify(
+        vueSidebar({ fileTree, codeFolder, title }),
+        null,
+        4
+      )};`
     );
 
     // create README.md
@@ -111,15 +107,15 @@ const readFiles = async (folder, depth = 0, tree) => {
 
         // Add to tree
         tree.push({
-          text: file,
-          items: []
+          name: file,
+          children: []
         });
 
         // read files from subfolder
         await readFiles(
           `${folder}/${file}`,
           depth + 1,
-          tree.filter(treeItem => file === treeItem.text)[0].items
+          tree.filter(treeItem => file === treeItem.name)[0].children
         );
       }
       // Else branch accessed when file is not a folder
@@ -131,38 +127,30 @@ const readFiles = async (folder, depth = 0, tree) => {
           const fileData = await fs.readFile(`${folder}/${file}`);
 
           // render file
-          let mdFileData = `---\ntitle: ${fileName}\n---\n`;
-          mdFileData += await jsdoc2md.render({
+          let mdFileData = await jsdoc2md.render({
             source: fileData,
             // partial: [path.resolve(__dirname, './template/partials/all-docs/docs/header.hbs')]
             partial: [
               path.resolve(__dirname, './template/header.hbs'),
               path.resolve(__dirname, './template/main.hbs')
-            ]
+            ],
+            plugins: ['node_modules/jsdoc-vuejs']
           });
 
-          console.log('write file', `${folderPath}/${fileName}.md`);
+          if (mdFileData !== '') {
+            console.log('write file', `${folderPath}/${fileName}.md`);
 
-          await fs.writeFile(`${folderPath}/${fileName}.md`, mdFileData);
+            await fs.writeFile(
+              `${folderPath}/${fileName}.md`,
+              `---\ntitle: ${fileName}\n---\n${mdFileData}`
+            );
 
-          tree.push({
-            text: fileName,
-            path: '/' + fileName
-          });
-        }
+            tree.push({
+              name: fileName,
+              path: '/' + fileName
+            });
 
-        if (fileName) {
-          const navigationPath = completeFolderPath
-            ? `${completeFolderPath.substr(
-                1,
-                completeFolderPath.length
-              )}/${fileName}`
-            : fileName;
-
-          sidebarTree[`/${codeFolder}/`][0].children.push([
-            navigationPath,
-            navigationPath
-          ]);
+          }
         }
       }
     });
