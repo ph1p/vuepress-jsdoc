@@ -147,7 +147,8 @@ const readFiles = async (folder, depth = 0, tree) => {
 
             tree.push({
               name: fileName,
-              path: '/' + fileName
+              path: '/' + fileName,
+              fullPath: `${folderPath.replace(`${docsFolder}/`, '')}/${fileName}`,
             });
 
           }

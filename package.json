@@ -3,6 +3,11 @@
   "version": "0.0.2",
   "description": "",
   "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test-coverage": "cross-env NODE_ENV=test jest --coverage",
+    "test-watch": "cross-env NODE_ENV=test jest --watchAll"
+  },
   "keywords": [
     "jsdoc",
     "static",
@@ -16,6 +21,25 @@
     "url": "https://github.com/ph1p/static-site-jsdoc.git",
     "type": "git"
   },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 95,
+        "functions": 60,
+        "lines": 75,
+        "statements": -10
+      }
+    },
+    "bail": true,
+    "verbose": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/coverage/**",
+      "!**/vendor/**"
+    ],
+    "coverageDirectory": "./coverage"
+  },
   "bin": {
     "static-site-jsdoc": "./index.js"
   },
@@ -25,9 +49,19 @@
   "dependencies": {
     "jsdoc-to-markdown": "^4.0.1",
     "mkdirp": "^0.5.1",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "cross-env": "^5.1.4",
+    "husky": "^0.15.0-rc.13"
   },
   "devDependencies": {
-    "jsdoc-vuejs": "^1.0.13"
+    "jsdoc-vuejs": "^1.0.13",
+    "jest": "^22.4.3",
+    "lint-staged": "^7.0.0"
+  },
+  "lint-staged": {
+    "./src/**/*.{js,jsx,css,scss,json,ts,vue}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

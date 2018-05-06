@@ -18,7 +18,7 @@ module.exports = ({ fileTree, codeFolder, title }) => {
           buildChildren(child.children, child.name, depth + 1)
         );
       } else {
-        newChildren.push((depth === 0 ? name + '/' : '') + child.name);
+        newChildren.push(child.fullPath);
       }
     });
 
