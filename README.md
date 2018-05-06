@@ -90,7 +90,7 @@ module.exports = {
 ```
 ## Example
 
-The `./example` folder includes a full working vuepress example generated from `./src`.
+The `./example` folder includes a full working vuepress example.
 
 ## ToDo
 

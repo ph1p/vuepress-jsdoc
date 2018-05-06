@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "docs": "../index.js --source=./src --dist=./documentation",
-    "dev": "vuepress dev documentation",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vuepress dev documentation"
   },
   "keywords": [],
   "author": "",
