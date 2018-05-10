@@ -1,11 +1,12 @@
 #!/usr/bin/env node
-const fs = require('fs/promises');
+// const fs = require('fs/promises');
+const fs = require("fs.promised/promisify")(require("bluebird"));
 const path = require('path');
 const mkdirp = require('mkdirp');
 const jsdoc2md = require('jsdoc-to-markdown');
 const rimraf = require('rimraf');
 
-const vueSidebar = require('./helpers/vue');
+const vueSidebar = require('./helpers/vueSidebar');
 
 const fileTree = [];
 
@@ -30,7 +31,6 @@ const codeFolder =
   typeof foundArguments.folder === 'string' ? foundArguments.folder : 'code';
 const docsFolder = `${foundArguments.dist || './documentation'}/${codeFolder}`;
 const title = foundArguments.title || 'API';
-
 
 // remove docs folder
 rimraf(docsFolder, () =>
@@ -65,6 +65,18 @@ const checkExtension = (path, extensions) =>
   extensions.indexOf(path.substring(path.length, path.lastIndexOf('.'))) >= 0;
 
 /**
+ * Get filename without extension
+ *
+ * @param {string} path
+ * @returns filename
+ */
+const getFilename = path =>
+  path
+    .split('/')
+    .pop()
+    .substring(0, path.lastIndexOf('.')) || '';
+
+/**
  * Read all files in directory
  *
  * @param {any} parameter
@@ -79,7 +91,7 @@ const readFiles = async (folder, depth = 0, tree) => {
     // if this is not a subdir
     let folderPath = docsFolder;
 
-    // generate correct docs fodler path
+    // generate correct docs folder path
     if (depth > 0) {
       folderPath += completeFolderPath;
     }
@@ -88,11 +100,7 @@ const readFiles = async (folder, depth = 0, tree) => {
     await asyncForEach(files, async file => {
       const stat = await fs.lstat(`${folder}/${file}`);
 
-      const fileName =
-        file
-          .split('/')
-          .pop()
-          .substring(0, file.lastIndexOf('.')) || '';
+      const fileName = getFilename(file);
 
       if (stat.isDirectory(folder)) {
         // check file length and skip empty folders
@@ -133,8 +141,7 @@ const readFiles = async (folder, depth = 0, tree) => {
             partial: [
               path.resolve(__dirname, './template/header.hbs'),
               path.resolve(__dirname, './template/main.hbs')
-            ],
-            plugins: ['node_modules/jsdoc-vuejs']
+            ]
           });
 
           if (mdFileData !== '') {
@@ -148,9 +155,11 @@ const readFiles = async (folder, depth = 0, tree) => {
             tree.push({
               name: fileName,
               path: '/' + fileName,
-              fullPath: `${folderPath.replace(`${docsFolder}/`, '')}/${fileName}`,
+              fullPath: `${folderPath.replace(
+                `${docsFolder}/`,
+                ''
+              )}/${fileName}`
             });
-
           }
         }
       }

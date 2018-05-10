@@ -1,6 +1,6 @@
 {
-  "name": "static-site-jsdoc",
-  "version": "0.0.3",
+  "name": "vuepress-jsdoc",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "license": "MIT",
   "author": "Philip Stapelfeldt <phil@capshake.com>",
   "repository": {
-    "url": "https://github.com/ph1p/static-site-jsdoc.git",
+    "url": "https://github.com/ph1p/vuepress-jsdoc.git",
     "type": "git"
   },
   "jest": {
@@ -41,17 +41,16 @@
     "coverageDirectory": "./coverage"
   },
   "bin": {
-    "static-site-jsdoc": "./index.js"
-  },
-  "engines": {
-    "node": ">= 10.0.0"
+    "vuepress-jsdoc": "./index.js"
   },
   "dependencies": {
     "jsdoc-to-markdown": "^4.0.1",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.6.2",
     "cross-env": "^5.1.4",
-    "husky": "^0.15.0-rc.13"
+    "husky": "^0.15.0-rc.13",
+    "bluebird": "^3.5.1",
+    "fs.promised": "^3.0.0"
   },
   "devDependencies": {
     "jsdoc-vuejs": "^1.0.13",

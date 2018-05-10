@@ -1,12 +1,10 @@
-// auto generated sidebar
 const { sidebarTree } = require('../code/config');
 
 module.exports = {
-  home: true,
-  dest: 'documentation',
+  dest: 'dist',
   locales: {
     '/': {
-      title: 'static-site-jsdoc',
+      title: 'vuepress-jsdoc',
       description: 'A JSDoc cli to build md files for static site generators'
     }
   },
@@ -22,7 +20,7 @@ module.exports = {
             link: '/'
           }
         ],
-        // Add sidebar
+        // Add the generated sidebar
         sidebar: Object.assign({}, sidebarTree)
       }
     }

@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "docs": "../index.js --source=./src --dist=./documentation",
-    "dev": "vuepress dev documentation"
+    "dev": "vuepress dev documentation",
+    "build": "vuepress build documentation"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "static-site-jsdoc": "0.0.2"
+    "vuepress-jsdoc": "0.0.1"
   },
   "dependencies": {
     "vuepress": "^0.8.4"
