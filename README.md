@@ -65,7 +65,7 @@ module.exports = {
   locales: {
     '/': {
       title: 'vuepress-jsdoc',
-      description: 'A JSDoc cli to build md files for static site generators'
+      description: 'Generate jsdoc markdown files for vuepress'
     }
   },
   themeConfig: {
