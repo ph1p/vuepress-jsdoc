@@ -53,7 +53,7 @@
   "dependencies": {
     "@vuedoc/md": "^1.4.1",
     "bluebird": "^3.5.1",
-    "cross-env": "^5.1.4",
+    "cross-env": "^5.2.0",
     "fs.promised": "^3.0.0",
     "husky": "^0.14.3",
     "jsdoc-to-markdown": "^4.0.1",
@@ -62,7 +62,6 @@
   },
   "devDependencies": {
     "jest": "^22.4.4",
-    "jsdoc-vuejs": "^1.0.13",
     "lint-staged": "^7.2.2"
   },
   "lint-staged": {
