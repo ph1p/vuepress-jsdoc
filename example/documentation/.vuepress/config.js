@@ -1,7 +1,6 @@
 const { sidebarTree } = require('../code/config');
 
-module.exports = {
-  dest: 'dist',
+const config = {
   locales: {
     '/': {
       title: 'vuepress-jsdoc',
@@ -21,8 +20,12 @@ module.exports = {
           }
         ],
         // Add the generated sidebar
-        sidebar: Object.assign({}, sidebarTree)
+        sidebar: {
+          ...sidebarTree
+        }
       }
     }
   }
 };
+
+module.exports = config;

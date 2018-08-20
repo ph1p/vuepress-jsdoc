@@ -11,9 +11,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "vuepress-jsdoc": "0.0.1"
-  },
   "dependencies": {
     "vuepress": "^0.8.4"
   }

@@ -48,6 +48,11 @@ exports.fileTree=[
                 "fullPath": "subfolder/variables"
             }
         ]
+    },
+    {
+        "name": "test",
+        "path": "/test",
+        "fullPath": "./documentation/code/test"
     }
 ];
 exports.sidebarTree={
@@ -62,7 +67,8 @@ exports.sidebarTree={
                 ],
                 "class",
                 "methods",
-                "objects"
+                "objects",
+                "test"
             ]
         },
         {
