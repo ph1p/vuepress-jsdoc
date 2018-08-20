@@ -123,12 +123,10 @@ const readFiles = async (folder, depth = 0, tree) => {
             mdFileData = await vuedoc.md({
               filename: `${folder}/${file}`
             });
-            console.log(mdFileData);
           } else if (/\.(js|ts)$/.test(file)) {
             // render file
             mdFileData = await jsdoc2md.render({
               source: fileData,
-              // partial: [path.resolve(__dirname, './template/partials/all-docs/docs/header.hbs')]
               partial: [
                 path.resolve(__dirname, './template/header.hbs'),
                 path.resolve(__dirname, './template/main.hbs')

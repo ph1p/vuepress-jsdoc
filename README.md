@@ -13,7 +13,8 @@ npm i vuepress-jsdoc -g
 **Example:**
 
 ```bash
-vuepress-jsdoc --source=./src --dist=./documentation --folder=./code --title=API
+# search code in src and move it to code (./documentation/code) in your vuepress folder (./documentation)
+vuepress-jsdoc --source=./src --dist=./documentation --folder=code --title=API
 ```
 
 ### Options
