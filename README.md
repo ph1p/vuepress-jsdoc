@@ -53,8 +53,8 @@ vuepress build ./documentation
 **Access it via:** http://localhost:8080/code/
 
 Now you need the sidebar.
-Create a `.vuepress` folder in the `documentation` folder and add the following `config.js`.
-]
+Create a `.vuepress` folder inside the `documentation` folder and add the following `config.js`.
+
 **config.js:**
 
 ```javascript
