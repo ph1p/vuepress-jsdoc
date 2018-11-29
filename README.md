@@ -19,12 +19,12 @@ vuepress-jsdoc --source=./src --dist=./documentation --folder=code --title=API
 
 ### Options
 
-|name|default|description|
-|-|-|-|
-|--source=|./src|Source folder with .js or .ts files|
-|--dist=|./documentation|Destination folder|
-|--folder=|./code|Folder inside destination folder. Gets overwritten everytime|
-|--title=|API|Title of your documentation|
+| name      | default         | description                                                  |
+| --------- | --------------- | ------------------------------------------------------------ |
+| --source= | ./src           | Source folder with .js or .ts files                          |
+| --dist=   | ./documentation | Destination folder                                           |
+| --folder= | ./code          | Folder inside destination folder. Gets overwritten everytime |
+| --title=  | API             | Title of your documentation                                  |
 
 ### config.js
 
