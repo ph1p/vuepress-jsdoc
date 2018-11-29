@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "docs": "../index.js --source=./src --dist=./documentation",
+    "docs": "../index.js --source=./src --dist=./documentation --title=API",
     "dev": "vuepress dev documentation",
     "build": "vuepress build documentation"
   },
@@ -12,6 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "vuepress": "^0.14.2"
+    "vuepress": "^0.14.8"
   }
 }

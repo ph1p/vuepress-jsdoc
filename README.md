@@ -7,7 +7,7 @@ This npm package is a command line script, which scans your JavaScript, Vue or T
 ## How to use?
 
 ```bash
-npm i vuepress-jsdoc -g
+yarn i vuepress-jsdoc -g
 ```
 
 **Example:**
@@ -95,19 +95,19 @@ The `./example` folder includes a full working vuepress-jsdoc example.
 
 ```bash
 # Install dependencies
-npm install
+yarn
 
 # Run the CLI
 vuepress-jsdoc
 
 # Generate docs
-npm run docs
+yarn run docs
 
 # Run dev server
-npm run dev
+yarn run dev
 
 # Generate dist folder
-npm run build
+yarn run build
 ```
 
 ## ToDo

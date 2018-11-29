@@ -55,14 +55,14 @@
     "bluebird": "^3.5.3",
     "cross-env": "^5.2.0",
     "fs.promised": "^3.0.0",
-    "husky": "^1.1.4",
+    "husky": "^1.2.0",
     "jsdoc-to-markdown": "^4.0.1",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.6.2"
   },
   "devDependencies": {
     "jest": "^23.6.0",
-    "lint-staged": "^8.0.5"
+    "lint-staged": "^8.1.0"
   },
   "lint-staged": {
     "./src/**/*.{js,jsx,css,scss,json,ts,vue}": [

@@ -1,16 +1,17 @@
 const { sidebarTree } = require('../code/config');
 
-const config = {
+module.exports = {
+  contentLoading: true,
+  title: 'Hello vuepress-jsdoc',
+  description: 'Just playing around with vuepress-jsdoc',
   locales: {
     '/': {
       title: 'vuepress-jsdoc',
-      description: 'A JSDoc cli to build md files for static site generators'
+      description: 'A CLI to create jsdoc md files for vuepress'
     }
   },
   themeConfig: {
-    editLinks: true,
     sidebarDepth: 4,
-    docsDir: 'code',
     locales: {
       '/': {
         nav: [
@@ -27,5 +28,3 @@ const config = {
     }
   }
 };
-
-module.exports = config;
