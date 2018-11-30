@@ -6,8 +6,8 @@ const jsdoc2md = require('jsdoc-to-markdown');
 const vuedoc = require('@vuedoc/md');
 const rimraf = require('rimraf');
 
-const vueSidebar = require('./helpers/vueSidebar');
-const parseVuepressComment = require('./helpers/commentParser');
+const vueSidebar = require('../helpers/vueSidebar');
+const parseVuepressComment = require('../helpers/commentParser');
 
 const fileTree = [];
 
