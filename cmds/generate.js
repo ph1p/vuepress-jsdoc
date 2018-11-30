@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 // const fs = require('fs/promises');
 const fs = require('fs.promised/promisify')(require('bluebird'));
 const path = require('path');
@@ -14,158 +13,153 @@ const fileTree = [];
 
 const extensions = ['.ts', '.js', '.vue'];
 
-const foundArguments = {};
-
-// get all Argument
-process.argv.forEach(argument => {
-  const filteredArgument = argument.match(/--(.*)=/);
-
-  if (filteredArgument) {
-    foundArguments[filteredArgument[1]] = filteredArgument.input.replace(filteredArgument[0], '');
-  }
-});
-
-const srcFolder = foundArguments.source || './src';
-const codeFolder = typeof foundArguments.folder === 'string' ? foundArguments.folder : 'code';
-const docsFolder = `${foundArguments.dist || './documentation'}/${codeFolder}`;
-const title = foundArguments.title || 'API';
-
-// remove docs folder
-rimraf(docsFolder, () =>
-  // create docs folder
-  mkdirp(docsFolder, async () => {
-    // read folder files
-    await readFiles(srcFolder, 0, fileTree);
-
-    await fs.writeFile(
-      `${docsFolder}/config.js`,
-      `exports.fileTree=${JSON.stringify(fileTree, null, 4)};
-exports.sidebarTree=${JSON.stringify(vueSidebar({ fileTree, codeFolder, title }), null, 4)};`
-    );
-
-    // create README.md
-    await fs.writeFile(`${docsFolder}/README.md`, `Welcome`);
-  })
-);
-
 /**
- * Check if extension ist correct
- *
- * @param {string} path
- * @param {array} extensions
- * @returns extension of file
+ * Default command that generate md files
+ * @param {Object} argv Arguments passed by yargs
  */
-const checkExtension = (path, extensions) =>
-  extensions.indexOf(path.substring(path.length, path.lastIndexOf('.'))) >= 0;
+function generate (argv) {
+  const srcFolder = argv.source;
+  const codeFolder = argv.folder;
+  const docsFolder = `${argv.dist}/${codeFolder}`;
+  const title = argv.title;
 
-/**
- * Get filename without extension
- *
- * @param {string} path
- * @returns filename
- */
-const getFilename = path =>
-  path
-    .split('/')
-    .pop()
-    .substring(0, path.lastIndexOf('.')) || '';
+  // remove docs folder
+  rimraf(docsFolder, () =>
+    // create docs folder
+    mkdirp(docsFolder, async () => {
+      // read folder files
+      await readFiles(srcFolder, 0, fileTree);
 
-/**
- * Read all files in directory
- *
- * @param {any} parameter
- */
-const readFiles = async (folder, depth = 0, tree) => {
-  try {
-    // get all files
-    const files = await fs.readdir(folder);
-    const currentFolderName = folder.split('/').pop();
-    const completeFolderPath = folder.replace(srcFolder, '');
+      await fs.writeFile(
+        `${docsFolder}/config.js`,
+        `exports.fileTree=${JSON.stringify(fileTree, null, 4)};
+  exports.sidebarTree=${JSON.stringify(vueSidebar({ fileTree, codeFolder, title }), null, 4)};`
+      );
 
-    // if this is not a subdir
-    let folderPath = docsFolder;
+      // create README.md
+      await fs.writeFile(`${docsFolder}/README.md`, `Welcome`);
+    })
+  );
 
-    // generate correct docs folder path
-    if (depth > 0) {
-      folderPath += completeFolderPath;
-    }
+  /**
+   * Check if extension ist correct
+   *
+   * @param {string} path
+   * @param {array} extensions
+   * @returns extension of file
+   */
+  const checkExtension = (path, extensions) =>
+    extensions.indexOf(path.substring(path.length, path.lastIndexOf('.'))) >= 0;
 
-    // iterate through all files in folder
-    await asyncForEach(files, async file => {
-      const stat = await fs.lstat(`${folder}/${file}`);
+  /**
+   * Get filename without extension
+   *
+   * @param {string} path
+   * @returns filename
+   */
+  const getFilename = path =>
+    path
+      .split('/')
+      .pop()
+      .substring(0, path.lastIndexOf('.')) || '';
 
-      let fileName = getFilename(file);
+  /**
+   * Read all files in directory
+   *
+   * @param {any} parameter
+   */
+  const readFiles = async (folder, depth = 0, tree) => {
+    try {
+      // get all files
+      const files = await fs.readdir(folder);
+      const currentFolderName = folder.split('/').pop();
+      const completeFolderPath = folder.replace(srcFolder, '');
 
-      // prefix index with unserscore, the generated index.html comes from vuepress
-      if (fileName === 'index') {
-        fileName = '_index';
+      // if this is not a subdir
+      let folderPath = docsFolder;
+
+      // generate correct docs folder path
+      if (depth > 0) {
+        folderPath += completeFolderPath;
       }
 
-      if (stat.isDirectory(folder)) {
-        // check file length and skip empty folders
-        try {
-          await fs.mkdir(`${folderPath}/${file}`);
-        } catch (err) {
-          console.log(`can't create folder, because it already exists`, `${folderPath}/${file}`);
+      // iterate through all files in folder
+      await asyncForEach(files, async file => {
+        const stat = await fs.lstat(`${folder}/${file}`);
+
+        let fileName = getFilename(file);
+
+        // prefix index with unserscore, the generated index.html comes from vuepress
+        if (fileName === 'index') {
+          fileName = '_index';
         }
 
-        // Add to tree
-        tree.push({
-          name: file,
-          children: []
-        });
-
-        // read files from subfolder
-        await readFiles(`${folder}/${file}`, depth + 1, tree.filter(treeItem => file === treeItem.name)[0].children);
-      }
-      // Else branch accessed when file is not a folder
-      else {
-        // check if extension is correct
-        if (checkExtension(file, extensions)) {
-          const fileData = await fs.readFile(`${folder}/${file}`, 'utf8');
-          let mdFileData = '';
-
-          if (/\.vue$/.test(file)) {
-            mdFileData = await vuedoc.md({
-              filename: `${folder}/${file}`
-            });
-          } else if (/\.(js|ts)$/.test(file)) {
-            // render file
-            mdFileData = await jsdoc2md.render({
-              source: fileData,
-              partial: [
-                path.resolve(__dirname, './template/header.hbs'),
-                path.resolve(__dirname, './template/main.hbs')
-              ]
-            });
+        if (stat.isDirectory(folder)) {
+          // check file length and skip empty folders
+          try {
+            await fs.mkdir(`${folderPath}/${file}`);
+          } catch (err) {
+            console.log(`can't create folder, because it already exists`, `${folderPath}/${file}`);
           }
 
-          if (mdFileData !== '') {
-            const { frontmatter } = parseVuepressComment(fileData);
+          // Add to tree
+          tree.push({
+            name: file,
+            children: []
+          });
 
-            console.log('write file', `${folderPath}/${fileName}.md`);
+          // read files from subfolder
+          await readFiles(`${folder}/${file}`, depth + 1, tree.filter(treeItem => file === treeItem.name)[0].children);
+        }
+        // Else branch accessed when file is not a folder
+        else {
+          // check if extension is correct
+          if (checkExtension(file, extensions)) {
+            const fileData = await fs.readFile(`${folder}/${file}`, 'utf8');
+            let mdFileData = '';
 
-            await fs.writeFile(`${folderPath}/${fileName}.md`, `---\n${frontmatter || `title: ${fileName}`}\n---\n${mdFileData}`);
+            if (/\.vue$/.test(file)) {
+              mdFileData = await vuedoc.md({
+                filename: `${folder}/${file}`
+              });
+            } else if (/\.(js|ts)$/.test(file)) {
+              // render file
+              mdFileData = await jsdoc2md.render({
+                source: fileData,
+                partial: [
+                  path.resolve(__dirname, './template/header.hbs'),
+                  path.resolve(__dirname, './template/main.hbs')
+                ]
+              });
+            }
 
-            tree.push({
-              name: fileName,
-              path: '/' + fileName,
-              fullPath: `${folderPath.replace(`${docsFolder}/`, '')}/${fileName}`
-            });
+            if (mdFileData !== '') {
+              const { frontmatter } = parseVuepressComment(fileData);
+
+              console.log('write file', `${folderPath}/${fileName}.md`);
+
+              await fs.writeFile(`${folderPath}/${fileName}.md`, `---\n${frontmatter || `title: ${fileName}`}\n---\n${mdFileData}`);
+
+              tree.push({
+                name: fileName,
+                path: '/' + fileName,
+                fullPath: `${folderPath.replace(`${docsFolder}/`, '')}/${fileName}`
+              });
+            }
           }
         }
-      }
-    });
+      });
 
-    return Promise.resolve(files);
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      console.log('cannot find source folder');
-    } else {
-      console.log(err);
+      return Promise.resolve(files);
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        console.log('cannot find source folder');
+      } else {
+        console.log(err);
+      }
     }
-  }
-};
+  };
+}
 
 /**
  * Async foreach loop
@@ -177,3 +171,5 @@ async function asyncForEach(array, callback) {
     await callback(array[index], index, array);
   }
 }
+
+module.exports = generate
