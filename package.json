@@ -48,7 +48,7 @@
     "coverageDirectory": "./coverage"
   },
   "bin": {
-    "vuepress-jsdoc": "./index.js"
+    "vuepress-jsdoc": "./bin/vuepress-jsdoc.js"
   },
   "dependencies": {
     "@vuedoc/md": "^1.5.0",

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "docs": "../index.js --source=./src --dist=./documentation --title=API",
+    "docs": "../bin/vuepress-jsdoc.js --source=./src --dist=./documentation --title=API",
     "dev": "vuepress dev documentation",
     "build": "vuepress build documentation"
   },
