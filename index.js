@@ -8,6 +8,7 @@ const vuedoc = require('@vuedoc/md');
 const rimraf = require('rimraf');
 
 const vueSidebar = require('./helpers/vueSidebar');
+const parseVuepressComment = require('./helpers/commentParser');
 
 const fileTree = [];
 
@@ -93,7 +94,12 @@ const readFiles = async (folder, depth = 0, tree) => {
     await asyncForEach(files, async file => {
       const stat = await fs.lstat(`${folder}/${file}`);
 
-      const fileName = getFilename(file);
+      let fileName = getFilename(file);
+
+      // prefix index with unserscore, the generated index.html comes from vuepress
+      if (fileName === 'index') {
+        fileName = '_index';
+      }
 
       if (stat.isDirectory(folder)) {
         // check file length and skip empty folders
@@ -116,7 +122,7 @@ const readFiles = async (folder, depth = 0, tree) => {
       else {
         // check if extension is correct
         if (checkExtension(file, extensions)) {
-          const fileData = await fs.readFile(`${folder}/${file}`);
+          const fileData = await fs.readFile(`${folder}/${file}`, 'utf8');
           let mdFileData = '';
 
           if (/\.vue$/.test(file)) {
@@ -135,9 +141,11 @@ const readFiles = async (folder, depth = 0, tree) => {
           }
 
           if (mdFileData !== '') {
+            const { frontmatter } = parseVuepressComment(fileData);
+
             console.log('write file', `${folderPath}/${fileName}.md`);
 
-            await fs.writeFile(`${folderPath}/${fileName}.md`, `---\ntitle: ${fileName}\n---\n${mdFileData}`);
+            await fs.writeFile(`${folderPath}/${fileName}.md`, `---\n${frontmatter || `title: ${fileName}`}\n---\n${mdFileData}`);
 
             tree.push({
               name: fileName,

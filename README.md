@@ -89,6 +89,23 @@ module.exports = {
 };
 ```
 
+## @vuepress comment block
+
+You can add custom meta data to your pages
+Simply add:
+
+```javascript
+/*
+ * @vuepress
+ * ---
+ * title: You Custom Title
+ * ---
+ */
+```
+
+More inromation: https://vuepress.vuejs.org/guide/markdown.html#front-matter
+
+
 ## Example
 
 The `./example` folder includes a full working vuepress-jsdoc example.
@@ -114,4 +131,4 @@ yarn run build
 
 - [ ] Update description README.md
 - [ ] Custom README.md
-- [ ] Custom meta data
+- [x] Custom meta data

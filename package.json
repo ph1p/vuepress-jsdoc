@@ -54,6 +54,7 @@
     "@vuedoc/md": "^1.5.0",
     "bluebird": "^3.5.3",
     "cross-env": "^5.2.0",
+    "front-matter": "^3.0.1",
     "fs.promised": "^3.0.0",
     "husky": "^1.2.0",
     "jsdoc-to-markdown": "^4.0.1",
@@ -65,7 +66,7 @@
     "lint-staged": "^8.1.0"
   },
   "lint-staged": {
-    "./src/**/*.{js,jsx,css,scss,json,ts,vue}": [
+    "**/*.{js,jsx,css,scss,json,ts,vue}": [
       "prettier --write",
       "git add"
     ]
