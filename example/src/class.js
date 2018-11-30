@@ -1,3 +1,9 @@
+/*
+ * @vuepress
+ * ---
+ * title: test class
+ * ---
+ */
 /**
  * This is a test class
  *

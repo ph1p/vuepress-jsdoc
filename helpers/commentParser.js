@@ -17,6 +17,8 @@ module.exports = fileContent => {
         .trim()
     );
   } catch (e) {
-      return '';
+    return {
+      fontmatter: null
+    };
   }
 };

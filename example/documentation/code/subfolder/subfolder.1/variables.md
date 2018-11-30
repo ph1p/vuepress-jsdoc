@@ -24,6 +24,6 @@ title: variables
 **Kind**: global variable  
 <a name="MY_CONST_VAR"></a>
 
-## MY_CONST_VARSymbol constant
+## MY\_CONST\_VARSymbol constant
 
 **Kind**: global constant  

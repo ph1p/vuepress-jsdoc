@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /* generation options */
 let jsdocDefinitions = [
@@ -8,13 +8,15 @@ let jsdocDefinitions = [
     type: String,
     multiple: true,
     defaultOption: true,
-    description: 'A list of jsdoc explain files (or glob expressions) to parse for documentation. Either this or [bold]{--source} must be supplied.',
+    description:
+      'A list of jsdoc explain files (or glob expressions) to parse for documentation. Either this or [bold]{--source} must be supplied.',
     typeLabel: '[underline]{file} ...'
   },
   {
     name: 'source',
     type: String,
-    description: 'A string containing source code to parse for documentation. Either this or [bold]{--files} must be supplied.'
+    description:
+      'A string containing source code to parse for documentation. Either this or [bold]{--files} must be supplied.'
   },
   {
     name: 'configure',
@@ -28,7 +30,7 @@ let jsdocDefinitions = [
     type: Boolean,
     description: 'Print namepaths.'
   }
-]
+];
 
 let jsdoc2mdDefinitions = [
   {
@@ -39,7 +41,8 @@ let jsdoc2mdDefinitions = [
   },
   {
     name: 'config',
-    description: 'Print all options supplied (from command line, `.jsdoc2md.json` or `package.json` under the `jsdoc2md` property) and exit. Useful for checking the tool is receiving the correct config.',
+    description:
+      'Print all options supplied (from command line, `.jsdoc2md.json` or `package.json` under the `jsdoc2md` property) and exit. Useful for checking the tool is receiving the correct config.',
     type: Boolean
   },
   {
@@ -58,14 +61,15 @@ let jsdoc2mdDefinitions = [
   {
     name: 'no-cache',
     type: Boolean,
-    description: 'By default, repeat invocations against the same input with the same options returns from cache. This option disables that. '
+    description:
+      'By default, repeat invocations against the same input with the same options returns from cache. This option disables that. '
   },
   {
     name: 'clear',
     type: Boolean,
     description: 'Clears the cache.'
   }
-]
+];
 
 const dmdDefinitions = [
   {
@@ -111,13 +115,15 @@ const dmdDefinitions = [
     name: 'example-lang',
     type: String,
     alias: 'l',
-    description: 'Specifies the default language used in [bold]{@example} blocks (for syntax-highlighting purposes). In the default gfm mode, each [bold]{@example} is wrapped in a fenced-code block. Example usage: [bold]{--example-lang js}. Use the special value [bold]{none} for no specific language. While using this option, you can override the supplied language for any [bold]{@example} by specifying the [bold]{@lang} subtag, e.g [bold]{@example @lang hbs}. Specifying [bold]{@example @lang off} will disable code blocks for that example.'
+    description:
+      'Specifies the default language used in [bold]{@example} blocks (for syntax-highlighting purposes). In the default gfm mode, each [bold]{@example} is wrapped in a fenced-code block. Example usage: [bold]{--example-lang js}. Use the special value [bold]{none} for no specific language. While using this option, you can override the supplied language for any [bold]{@example} by specifying the [bold]{@lang} subtag, e.g [bold]{@example @lang hbs}. Specifying [bold]{@example @lang off} will disable code blocks for that example.'
   },
   { name: 'name-format', type: Boolean, description: 'Format identifier names as code' },
   {
     name: 'no-gfm',
     type: Boolean,
-    description: 'By default, dmd generates github-flavoured markdown. Not all markdown parsers render gfm correctly. If your generated docs look incorrect on sites other than Github (e.g. npmjs.org) try enabling this option to disable Github-specific syntax. '
+    description:
+      'By default, dmd generates github-flavoured markdown. Not all markdown parsers render gfm correctly. If your generated docs look incorrect on sites other than Github (e.g. npmjs.org) try enabling this option to disable Github-specific syntax. '
   },
   {
     name: 'separators',
@@ -128,19 +134,22 @@ const dmdDefinitions = [
     name: 'module-index-format',
     type: String,
     alias: 'm',
-    description: 'When muliple modules are found in the input source code, an index is generated. It can be styled by one of the following options: [bold]{none}, [bold]{grouped}, [bold]{table} or [bold]{dl}.'
+    description:
+      'When muliple modules are found in the input source code, an index is generated. It can be styled by one of the following options: [bold]{none}, [bold]{grouped}, [bold]{table} or [bold]{dl}.'
   },
   {
     name: 'global-index-format',
     type: String,
     alias: 'g',
-    description: 'When muliple global-scope identifiers are found in the input source code, an index is generated. It can be styled by one of the following options: [bold]{none}, [bold]{grouped}, [bold]{table} or [bold]{dl}.'
+    description:
+      'When muliple global-scope identifiers are found in the input source code, an index is generated. It can be styled by one of the following options: [bold]{none}, [bold]{grouped}, [bold]{table} or [bold]{dl}.'
   },
   {
     name: 'param-list-format',
     type: String,
     alias: 'p',
-    description: 'Two options to render [bold]{@param} lists: [bold]{list} or [bold]{table} (default). Table format works well in most cases but switch to [bold]{list} if things begin to look crowded. '
+    description:
+      'Two options to render [bold]{@param} lists: [bold]{list} or [bold]{table} (default). Table format works well in most cases but switch to [bold]{list} if things begin to look crowded. '
   },
   {
     name: 'property-list-format',
@@ -151,24 +160,29 @@ const dmdDefinitions = [
   {
     name: 'member-index-format',
     type: String,
-    description: 'Two options to render member lists: [bold]{list} or [bold]{grouped} (default). The [bold]{list} view is loosely-based on the nodejs docs.'
+    description:
+      'Two options to render member lists: [bold]{list} or [bold]{grouped} (default). The [bold]{list} view is loosely-based on the nodejs docs.'
   }
-]
+];
 
 /* mix in the jsdoc-parse and dmd options */
 let definitions = jsdocDefinitions
   .map(def => {
-    def.group = 'jsdoc'
-    return def
+    def.group = 'jsdoc';
+    return def;
   })
-  .concat(jsdoc2mdDefinitions.map(def => {
-    def.group = 'jsdoc2md'
-    return def
-  }))
-  .concat(dmdDefinitions.map(function (def) {
-    def.group = 'dmd'
-    return def
-  }))
+  .concat(
+    jsdoc2mdDefinitions.map(def => {
+      def.group = 'jsdoc2md';
+      return def;
+    })
+  )
+  .concat(
+    dmdDefinitions.map(function(def) {
+      def.group = 'dmd';
+      return def;
+    })
+  );
 
 module.exports = {
   definitions: definitions,
@@ -202,11 +216,12 @@ module.exports = {
     },
     {
       header: 'General options',
-      content: 'Main options affecting mode. If none of the following are supplied, the tool will generate markdown docs.'
+      content:
+        'Main options affecting mode. If none of the following are supplied, the tool will generate markdown docs.'
     },
     {
       optionList: jsdoc2mdDefinitions,
-      hide: [ 'no-usage-stats', 'send' ]
+      hide: ['no-usage-stats', 'send']
     },
     {
       header: 'jsdoc options',
@@ -232,4 +247,4 @@ module.exports = {
       ]
     }
   ]
-}
+};

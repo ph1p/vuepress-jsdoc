@@ -1,5 +1,5 @@
 ---
-title: class
+title: My Test Class
 ---
 <a name="Test"></a>
 
