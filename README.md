@@ -14,17 +14,27 @@ yarn i vuepress-jsdoc -g
 
 ```bash
 # search code in src and move it to code (./documentation/code) in your vuepress folder (./documentation)
-vuepress-jsdoc --source=./src --dist=./documentation --folder=code --title=API
+vuepress-jsdoc --source ./src --dist ./documentation --folder code --title API
 ```
+
+### Commands
+
+If no command passed it will run `generate` as default
+
+| Name     | Alias  | Description                                                                                             |
+| -------- | ------ | ------------------------------------------------------------------------------------------------------- |
+| generate | gen, g | search code in src and move it to code (./documentation/code) in your vuepress folder (./documentation) |
 
 ### Options
 
-| name      | default         | description                                                  |
-| --------- | --------------- | ------------------------------------------------------------ |
-| --source= | ./src           | Source folder with .js or .ts files                          |
-| --dist=   | ./documentation | Destination folder                                           |
-| --folder= | ./code          | Folder inside destination folder. Gets overwritten everytime |
-| --title=  | API             | Title of your documentation                                  |
+| Name      | Alias | Default         | Description                                                  |
+| --------  | ----- | --------------- | ------------------------------------------------------------ |
+| --source  | -s    | ./src           | Source folder with .js or .ts files                          |
+| --dist    | -d    | ./documentation | Destination folder                                           |
+| --folder  | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime |
+| --title   | -t    | API             | Title of your documentation                                  |
+| --help    | -h    |                 | Show help                                                    |
+| --version | -v    |                 | Show current version                                         |
 
 ### config.js
 
