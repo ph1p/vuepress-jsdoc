@@ -8,6 +8,11 @@
     "test-coverage": "cross-env NODE_ENV=test jest --coverage",
     "test-watch": "cross-env NODE_ENV=test jest --watchAll"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "keywords": [
     "jsdoc",
     "static",
