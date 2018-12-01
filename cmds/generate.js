@@ -17,7 +17,7 @@ const extensions = ['.ts', '.js', '.vue'];
  * Default command that generate md files
  * @param {Object} argv Arguments passed by yargs
  */
-function generate (argv) {
+function generate(argv) {
   const srcFolder = argv.source;
   const codeFolder = argv.folder;
   const docsFolder = `${argv.dist}/${codeFolder}`;
@@ -138,7 +138,10 @@ function generate (argv) {
 
               console.log('write file', `${folderPath}/${fileName}.md`);
 
-              await fs.writeFile(`${folderPath}/${fileName}.md`, `---\n${frontmatter || `title: ${fileName}`}\n---\n${mdFileData}`);
+              await fs.writeFile(
+                `${folderPath}/${fileName}.md`,
+                `---\n${frontmatter || `title: ${fileName}`}\n---\n${mdFileData}`
+              );
 
               tree.push({
                 name: fileName,
@@ -172,4 +175,4 @@ async function asyncForEach(array, callback) {
   }
 }
 
-module.exports = generate
+module.exports = generate;
