@@ -1,179 +1,49 @@
-#!/usr/bin/env node
-// const fs = require('fs/promises');
-const fs = require('fs.promised/promisify')(require('bluebird'));
-const path = require('path');
-const mkdirp = require('mkdirp');
-const jsdoc2md = require('jsdoc-to-markdown');
-const vuedoc = require('@vuedoc/md');
-const rimraf = require('rimraf');
+'use strict';
 
-const vueSidebar = require('./helpers/vueSidebar');
-const parseVuepressComment = require('./helpers/commentParser');
+const yargs = require('yargs');
+const generate = require('./cmds/generate');
 
-const fileTree = [];
-
-const extensions = ['.ts', '.js', '.vue'];
-
-const foundArguments = {};
-
-// get all Argument
-process.argv.forEach(argument => {
-  const filteredArgument = argument.match(/--(.*)=/);
-
-  if (filteredArgument) {
-    foundArguments[filteredArgument[1]] = filteredArgument.input.replace(filteredArgument[0], '');
-  }
-});
-
-const srcFolder = foundArguments.source || './src';
-const codeFolder = typeof foundArguments.folder === 'string' ? foundArguments.folder : 'code';
-const docsFolder = `${foundArguments.dist || './documentation'}/${codeFolder}`;
-const title = foundArguments.title || 'API';
-
-// remove docs folder
-rimraf(docsFolder, () =>
-  // create docs folder
-  mkdirp(docsFolder, async () => {
-    // read folder files
-    await readFiles(srcFolder, 0, fileTree);
-
-    await fs.writeFile(
-      `${docsFolder}/config.js`,
-      `exports.fileTree=${JSON.stringify(fileTree, null, 4)};
-exports.sidebarTree=${JSON.stringify(vueSidebar({ fileTree, codeFolder, title }), null, 4)};`
-    );
-
-    // create README.md
-    await fs.writeFile(`${docsFolder}/README.md`, `Welcome`);
-  })
-);
-
-/**
- * Check if extension ist correct
- *
- * @param {string} path
- * @param {array} extensions
- * @returns extension of file
- */
-const checkExtension = (path, extensions) =>
-  extensions.indexOf(path.substring(path.length, path.lastIndexOf('.'))) >= 0;
-
-/**
- * Get filename without extension
- *
- * @param {string} path
- * @returns filename
- */
-const getFilename = path =>
-  path
-    .split('/')
-    .pop()
-    .substring(0, path.lastIndexOf('.')) || '';
-
-/**
- * Read all files in directory
- *
- * @param {any} parameter
- */
-const readFiles = async (folder, depth = 0, tree) => {
-  try {
-    // get all files
-    const files = await fs.readdir(folder);
-    const currentFolderName = folder.split('/').pop();
-    const completeFolderPath = folder.replace(srcFolder, '');
-
-    // if this is not a subdir
-    let folderPath = docsFolder;
-
-    // generate correct docs folder path
-    if (depth > 0) {
-      folderPath += completeFolderPath;
-    }
-
-    // iterate through all files in folder
-    await asyncForEach(files, async file => {
-      const stat = await fs.lstat(`${folder}/${file}`);
-
-      let fileName = getFilename(file);
-
-      // prefix index with unserscore, the generated index.html comes from vuepress
-      if (fileName === 'index') {
-        fileName = '_index';
-      }
-
-      if (stat.isDirectory(folder)) {
-        // check file length and skip empty folders
-        try {
-          await fs.mkdir(`${folderPath}/${file}`);
-        } catch (err) {
-          console.log(`can't create folder, because it already exists`, `${folderPath}/${file}`);
-        }
-
-        // Add to tree
-        tree.push({
-          name: file,
-          children: []
+function main() {
+  yargs
+    .usage('$0 <cmd> [args]')
+    // Default command 'generate'
+    .command({
+      command: 'generate [options]',
+      aliases: ['gen', 'g', '$0'], // $0 is to set this command as default. This commmand runs when no commans are passed
+      desc: 'Generate the md files',
+      handler: generate,
+      builder: yargs => {
+        yargs.options({
+          source: {
+            alias: 's',
+            default: './src',
+            desc: 'Source folder with .js or .ts files',
+            type: 'string'
+          },
+          dist: {
+            alias: 'd',
+            default: './documentation',
+            desc: 'Destination folder',
+            type: 'string'
+          },
+          folder: {
+            alias: 'f',
+            default: 'code',
+            desc: 'Folder inside destination folder. Gets overwritten everytime',
+            type: 'string'
+          },
+          title: {
+            alias: 't',
+            default: 'API',
+            desc: 'Title of your documentation',
+            type: 'string'
+          }
         });
-
-        // read files from subfolder
-        await readFiles(`${folder}/${file}`, depth + 1, tree.filter(treeItem => file === treeItem.name)[0].children);
       }
-      // Else branch accessed when file is not a folder
-      else {
-        // check if extension is correct
-        if (checkExtension(file, extensions)) {
-          const fileData = await fs.readFile(`${folder}/${file}`, 'utf8');
-          let mdFileData = '';
-
-          if (/\.vue$/.test(file)) {
-            mdFileData = await vuedoc.md({
-              filename: `${folder}/${file}`
-            });
-          } else if (/\.(js|ts)$/.test(file)) {
-            // render file
-            mdFileData = await jsdoc2md.render({
-              source: fileData,
-              partial: [
-                path.resolve(__dirname, './template/header.hbs'),
-                path.resolve(__dirname, './template/main.hbs')
-              ]
-            });
-          }
-
-          if (mdFileData !== '') {
-            const { frontmatter } = parseVuepressComment(fileData);
-
-            console.log('write file', `${folderPath}/${fileName}.md`);
-
-            await fs.writeFile(`${folderPath}/${fileName}.md`, `---\n${frontmatter || `title: ${fileName}`}\n---\n${mdFileData}`);
-
-            tree.push({
-              name: fileName,
-              path: '/' + fileName,
-              fullPath: `${folderPath.replace(`${docsFolder}/`, '')}/${fileName}`
-            });
-          }
-        }
-      }
-    });
-
-    return Promise.resolve(files);
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      console.log('cannot find source folder');
-    } else {
-      console.log(err);
-    }
-  }
-};
-
-/**
- * Async foreach loop
- * @param {*} array
- * @param {*} callback
- */
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
+    })
+    // adding aliases to help and version args
+    .alias('help', 'h')
+    .alias('version', 'v').argv;
 }
+
+module.exports = main;
