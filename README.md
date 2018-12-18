@@ -102,7 +102,7 @@ module.exports = {
 
 ## Custom readme
 
-You can easily add a custom readme by passing the `--readme` parameter or place a `README.md` inside your source folder.
+You can easily add a custom path to your readme by using the `--readme ./path/to/file.md` parameter. If you move a `README.md` inside your source folder, it should resolve it automatically.
 You can set the title by passing it to the `sidebarTree('Mainpage title')` function.
 
 ## @vuepress comment block
