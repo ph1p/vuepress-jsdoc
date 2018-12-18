@@ -22,7 +22,7 @@ module.exports = {
         ],
         // Add the generated sidebar
         sidebar: {
-          ...sidebarTree
+          ...sidebarTree('Test')
         }
       }
     }

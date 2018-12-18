@@ -37,6 +37,12 @@ function main() {
             default: 'API',
             desc: 'Title of your documentation',
             type: 'string'
+          },
+          readme: {
+            alias: 'r',
+            default: '',
+            desc: 'Path to your custom readme',
+            type: 'string'
           }
         });
       }

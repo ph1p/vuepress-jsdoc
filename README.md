@@ -28,13 +28,14 @@ If no command passed it will run `generate` as default
 ### Options
 
 | Name      | Alias | Default         | Description                                                  |
-| --------  | ----- | --------------- | ------------------------------------------------------------ |
+| --------- | ----- | --------------- | ------------------------------------------------------------ |
 | --source  | -s    | ./src           | Source folder with .js or .ts files                          |
 | --dist    | -d    | ./documentation | Destination folder                                           |
 | --folder  | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime |
 | --title   | -t    | API             | Title of your documentation                                  |
 | --help    | -h    |                 | Show help                                                    |
 | --version | -v    |                 | Show current version                                         |
+| --readme  | -r    |                 | Path to custom readme file                                   |
 
 ### config.js
 
@@ -92,12 +93,17 @@ module.exports = {
           }
         ],
         // Add the generated sidebar
-        sidebar: Object.assign({}, sidebarTree)
+        sidebar: Object.assign({}, sidebarTree('Mainpage title'))
       }
     }
   }
 };
 ```
+
+## Custom readme
+
+You can easily add a custom readme by passing the `--readme` parameter or place a `README.md` inside your source folder.
+You can set the title by passing it to the `sidebarTree('Mainpage title')` function.
 
 ## @vuepress comment block
 
@@ -108,13 +114,12 @@ Simply add:
 /*
  * @vuepress
  * ---
- * title: You Custom Title
+ * title: Your custom title
  * ---
  */
 ```
 
-More inromation: https://vuepress.vuejs.org/guide/markdown.html#front-matter
-
+More information: https://vuepress.vuejs.org/guide/markdown.html#front-matter
 
 ## Example
 
@@ -128,17 +133,11 @@ yarn
 vuepress-jsdoc
 
 # Generate docs
-yarn run docs
+yarn docs
 
 # Run dev server
-yarn run dev
+yarn dev
 
 # Generate dist folder
-yarn run build
+yarn build
 ```
-
-## ToDo
-
-- [ ] Update description README.md
-- [ ] Custom README.md
-- [x] Custom meta data

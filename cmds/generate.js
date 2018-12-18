@@ -22,6 +22,7 @@ function generate(argv) {
   const codeFolder = argv.folder;
   const docsFolder = `${argv.dist}/${codeFolder}`;
   const title = argv.title;
+  const readme = argv.readme;
 
   // remove docs folder
   rimraf(docsFolder, () =>
@@ -32,12 +33,26 @@ function generate(argv) {
 
       await fs.writeFile(
         `${docsFolder}/config.js`,
-        `exports.fileTree=${JSON.stringify(fileTree, null, 4)};
-  exports.sidebarTree=${JSON.stringify(vueSidebar({ fileTree, codeFolder, title }), null, 4)};`
+        `exports.fileTree=${JSON.stringify(fileTree)};exports.sidebarTree = (title = 'Mainpage') => (${JSON.stringify(
+          vueSidebar({
+            fileTree,
+            codeFolder,
+            title
+          })
+        ).replace('::vuepress-jsdoc-title::', '"+title+"')});`
       );
 
       // create README.md
-      await fs.writeFile(`${docsFolder}/README.md`, `Welcome`);
+      let readMeContent = 'Welcome';
+      let readmePath = readme || `${srcFolder}/README.md`;
+
+      try {
+        readMeContent = await fs.readFile(readmePath, 'utf-8');
+      } catch (e) {
+        console.log('INFO: There is no custom readme file.');
+      }
+
+      await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
     })
   );
 

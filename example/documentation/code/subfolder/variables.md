@@ -19,11 +19,13 @@ title: variables
 
 <a name="normalLetVariable"></a>
 
-## normalLetVariableA normal let variable
+## normalLetVariable
+A normal let variable
 
 **Kind**: global variable  
 <a name="SUBFOLDER"></a>
 
-## SUBFOLDERA constant
+## SUBFOLDER
+A constant
 
 **Kind**: global constant  
