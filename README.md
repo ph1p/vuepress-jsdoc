@@ -7,7 +7,8 @@ This npm package is a command line script, which scans your JavaScript, Vue or T
 ## How to use?
 
 ```bash
-yarn i vuepress-jsdoc -g
+yarn global add vuepress-jsdoc
+npm i vuepress-jsdoc -g
 ```
 
 **Example:**
