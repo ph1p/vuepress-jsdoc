@@ -11,7 +11,7 @@ module.exports = ({ fileTree, codeFolder, title }) => {
     children.forEach(child => {
       if (child.children && child.children.length > 0) {
         newChildren = newChildren.concat(buildChildren(child.children, child.name, depth + 1));
-      } else {
+      } else if (child.fullPath) {
         newChildren.push(child.fullPath);
       }
     });
