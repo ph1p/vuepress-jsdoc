@@ -1,3 +1,5 @@
+'use strict';
+
 // create vuepress sidebar
 module.exports = ({ fileTree, codeFolder, title }) => {
   let rootFiles = [['', '::vuepress-jsdoc-title::']];

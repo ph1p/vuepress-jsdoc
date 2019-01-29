@@ -5,6 +5,7 @@ const mkdirp = require('mkdirp');
 const jsdoc2md = require('jsdoc-to-markdown');
 const vuedoc = require('@vuedoc/md');
 const rimraf = require('rimraf');
+const mm = require('micromatch');
 
 const vueSidebar = require('../helpers/vueSidebar');
 const parseVuepressComment = require('../helpers/commentParser');
@@ -18,6 +19,7 @@ const extensions = ['.ts', '.js', '.vue'];
  * @param {Object} argv Arguments passed by yargs
  */
 function generate(argv) {
+  const exclude = argv.exclude && (argv.exclude.split(',') || [argv.exclude]);
   const srcFolder = argv.source;
   const codeFolder = argv.folder;
   const docsFolder = `${argv.dist}/${codeFolder}`;
@@ -100,6 +102,11 @@ function generate(argv) {
 
       // iterate through all files in folder
       await asyncForEach(files, async file => {
+        if (mm.contains(`${folder}/${file}`, exclude)) {
+          console.log('exclude', `${folder}/${file}`);
+          return;
+        }
+
         const stat = await fs.lstat(`${folder}/${file}`);
 
         let fileName = getFilename(file);
@@ -112,8 +119,15 @@ function generate(argv) {
         if (stat.isDirectory(folder)) {
           // check file length and skip empty folders
           try {
-            await fs.mkdir(`${folderPath}/${file}`);
+            let files = await fs.readdir(`${folder}/${file}`);
+
+            files = files.filter(f => !mm.contains(f, exclude));
+
+            if (files.length > 0) {
+              await fs.mkdir(`${folderPath}/${file}`);
+            }
           } catch (err) {
+            console.log(err);
             console.log(`can't create folder, because it already exists`, `${folderPath}/${file}`);
           }
 
@@ -137,7 +151,7 @@ function generate(argv) {
               mdFileData = await vuedoc.md({
                 filename: `${folder}/${file}`
               });
-            } else if (/\.(js|ts)$/.test(file)) {
+            } else if (/\.(js|ts)$/.test(file) && fileData) {
               // render file
               mdFileData = await jsdoc2md.render({
                 source: fileData,
@@ -148,7 +162,7 @@ function generate(argv) {
               });
             }
 
-            if (mdFileData !== '') {
+            if (mdFileData) {
               const { frontmatter } = parseVuepressComment(fileData);
 
               console.log('write file', `${folderPath}/${fileName}.md`);

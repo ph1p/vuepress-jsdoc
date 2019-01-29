@@ -19,7 +19,8 @@ exports.fileTree = [
       { name: 'variables', path: '/variables', fullPath: 'subfolder/variables' }
     ]
   },
-  { name: 'test', path: '/test', fullPath: './documentation/code/test' }
+  { name: 'test', path: '/test', fullPath: './documentation/code/test' },
+  { name: 'tests', children: [] }
 ];
 exports.sidebarTree = (title = 'Mainpage') => ({
   '/code/': [

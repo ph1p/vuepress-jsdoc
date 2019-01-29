@@ -1,3 +1,5 @@
+'use strict';
+
 const commentParser = require('../helpers/commentParser');
 
 const template = `/*

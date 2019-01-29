@@ -1,3 +1,5 @@
+'use strict';
+
 const fm = require('front-matter');
 
 module.exports = fileContent => {

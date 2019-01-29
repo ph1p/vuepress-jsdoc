@@ -15,7 +15,7 @@ npm i vuepress-jsdoc -g
 
 ```bash
 # search code in src and move it to code (./documentation/code) in your vuepress folder (./documentation)
-vuepress-jsdoc --source ./src --dist ./documentation --folder code --title API
+vuepress-jsdoc --source ./src --dist ./documentation --folder code --title API --exclude=*.test.js,exclude.js
 ```
 
 ### Commands
@@ -28,15 +28,16 @@ If no command passed it will run `generate` as default
 
 ### Options
 
-| Name      | Alias | Default         | Description                                                  |
-| --------- | ----- | --------------- | ------------------------------------------------------------ |
-| --source  | -s    | ./src           | Source folder with .js or .ts files                          |
-| --dist    | -d    | ./documentation | Destination folder                                           |
-| --folder  | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime |
-| --title   | -t    | API             | Title of your documentation                                  |
-| --help    | -h    |                 | Show help                                                    |
-| --version | -v    |                 | Show current version                                         |
-| --readme  | -r    |                 | Path to custom readme file                                   |
+| Name      | Alias | Default         | Description                                                                |
+| --------- | ----- | --------------- | -------------------------------------------------------------------------- |
+| --source  | -s    | ./src           | Source folder with .js or .ts files                                        |
+| --dist    | -d    | ./documentation | Destination folder                                                         |
+| --folder  | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime               |
+| --title   | -t    | API             | Title of your documentation                                                |
+| --help    | -h    |                 | Show help                                                                  |
+| --version | -v    |                 | Show current version                                                       |
+| --readme  | -r    |                 | Path to custom readme file                                                 |
+| --exclude | -e    |                 | Pattern to exclude files/folders (Comma seperated) - \*.test.js,exclude.js |
 
 ### config.js
 
@@ -50,7 +51,7 @@ You can add all generated documentation files to your existing vuepress project 
 
 ```bash
 # First install vuepress
-npm i vuepress -g
+yarn  global add vuepress
 
 # Run the CLI
 vuepress-jsdoc

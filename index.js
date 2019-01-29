@@ -43,6 +43,12 @@ function main() {
             default: '',
             desc: 'Path to your custom readme',
             type: 'string'
+          },
+          exclude: {
+            alias: 'e',
+            default: '',
+            desc: 'Pattern to exclude files/folders (Comma seperated) - *.test.js,exclude.js',
+            type: 'string'
           }
         });
       }
