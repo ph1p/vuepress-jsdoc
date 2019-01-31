@@ -49,6 +49,12 @@ function main() {
             default: '',
             desc: 'Pattern to exclude files/folders (Comma seperated) - *.test.js,exclude.js',
             type: 'string'
+          },
+          rmPattern: {
+            alias: 'rm',
+            default: '',
+            desc: 'Pattern when removing files. You can ex- and include files. (glob pattern)',
+            type: 'string'
           }
         });
       }

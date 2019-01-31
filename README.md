@@ -4,6 +4,8 @@
 
 This npm package is a command line script, which scans your JavaScript, Vue or Typescript source code and generates markdown files for vuepress with the help of [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown).
 
+![CLI ./example](/example/img/cli.gif)
+
 ## How to use?
 
 ```bash
@@ -28,16 +30,17 @@ If no command passed it will run `generate` as default
 
 ### Options
 
-| Name      | Alias | Default         | Description                                                                |
-| --------- | ----- | --------------- | -------------------------------------------------------------------------- |
-| --source  | -s    | ./src           | Source folder with .js or .ts files                                        |
-| --dist    | -d    | ./documentation | Destination folder                                                         |
-| --folder  | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime               |
-| --title   | -t    | API             | Title of your documentation                                                |
-| --help    | -h    |                 | Show help                                                                  |
-| --version | -v    |                 | Show current version                                                       |
-| --readme  | -r    |                 | Path to custom readme file                                                 |
-| --exclude | -e    |                 | Pattern to exclude files/folders (Comma seperated) - \*.test.js,exclude.js |
+| Name        | Alias | Default         | Description                                                                |
+| ----------- | ----- | --------------- | -------------------------------------------------------------------------- |
+| --source    | -s    | ./src           | Source folder with .js or .ts files                                        |
+| --dist      | -d    | ./documentation | Destination folder                                                         |
+| --folder    | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime               |
+| --title     | -t    | API             | Title of your documentation                                                |
+| --help      | -h    |                 | Show help                                                                  |
+| --version   | -v    |                 | Show current version                                                       |
+| --readme    | -r    |                 | Path to custom readme file                                                 |
+| --exclude   | -e    |                 | Pattern to exclude files/folders (Comma seperated) - \*.test.js,exclude.js |
+| --rmPattern | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern) |
 
 ### config.js
 
@@ -105,7 +108,10 @@ module.exports = {
 ## Custom readme
 
 You can easily add a custom path to your readme by using the `--readme ./path/to/file.md` parameter. If you move a `README.md` inside your source folder, it should resolve it automatically.
-You can set the title by passing it to the `sidebarTree('Mainpage title')` function.
+You can set the title by passing it to the `sidebarTree('Mainpage title')` function inside your `./.vuepress/config.js`.
+
+Once the README.md has been added, it is no longer overwritten!
+If you want it overwritten, set `--rmPattern=./documentation/code/README.md`
 
 ## @vuepress comment block
 

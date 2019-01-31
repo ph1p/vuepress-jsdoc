@@ -4,8 +4,9 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const jsdoc2md = require('jsdoc-to-markdown');
 const vuedoc = require('@vuedoc/md');
-const rimraf = require('rimraf');
+const del = require('del');
 const mm = require('micromatch');
+const chalk = require('chalk');
 
 const vueSidebar = require('../helpers/vueSidebar');
 const parseVuepressComment = require('../helpers/commentParser');
@@ -18,45 +19,55 @@ const extensions = ['.ts', '.js', '.vue'];
  * Default command that generate md files
  * @param {Object} argv Arguments passed by yargs
  */
-function generate(argv) {
+async function generate(argv) {
   const exclude = argv.exclude && (argv.exclude.split(',') || [argv.exclude]);
   const srcFolder = argv.source;
   const codeFolder = argv.folder;
   const docsFolder = `${argv.dist}/${codeFolder}`;
   const title = argv.title;
   const readme = argv.readme;
+  const rmPattern = argv.rmPattern || '';
 
-  // remove docs folder
-  rimraf(docsFolder, () =>
-    // create docs folder
-    mkdirp(docsFolder, async () => {
-      // read folder files
-      await readFiles(srcFolder, 0, fileTree);
+  // remove docs folder, except README.md
+  const deletedPaths = await del([docsFolder + '/**/*', `!${docsFolder}/README.md`, rmPattern]);
 
-      await fs.writeFile(
-        `${docsFolder}/config.js`,
-        `exports.fileTree=${JSON.stringify(fileTree)};exports.sidebarTree = (title = 'Mainpage') => (${JSON.stringify(
-          vueSidebar({
-            fileTree,
-            codeFolder,
-            title
-          })
-        ).replace('::vuepress-jsdoc-title::', '"+title+"')});`
-      );
+  // create docs folder
+  mkdirp(docsFolder, async () => {
+    // read folder files
+    await readFiles(srcFolder, 0, fileTree);
 
-      // create README.md
-      let readMeContent = 'Welcome';
-      let readmePath = readme || `${srcFolder}/README.md`;
+    await fs.writeFile(
+      `${docsFolder}/config.js`,
+      `exports.fileTree=${JSON.stringify(fileTree)};exports.sidebarTree = (title = 'Mainpage') => (${JSON.stringify(
+        vueSidebar({
+          fileTree,
+          codeFolder,
+          title
+        })
+      ).replace('::vuepress-jsdoc-title::', '"+title+"')});`
+    );
 
-      try {
-        readMeContent = await fs.readFile(readmePath, 'utf-8');
-      } catch (e) {
-        console.log('INFO: There is no custom readme file.');
+    // create README.md
+    let readMeContent = '### Welcome to ' + title;
+    let readmePath = readme || `${srcFolder}/README.md`;
+
+    try {
+      readMeContent = await fs.readFile(readmePath, 'utf-8');
+      if (deletedPaths.some(p => ~p.indexOf(`${codeFolder}/README.md`))) {
+        console.log(`\n${chalk.black.bgYellow('found')} ${readmePath} and copies content to ${docsFolder}/README.md`);
       }
+    } catch (e) {}
 
+    // Do nothing if README.md already exists
+    try {
+      readMeContent = await fs.readFile(`${docsFolder}/README.md`, 'utf-8');
+      console.log(`\n${chalk.yellow(`${docsFolder}/README.md already exists`)}`);
+    } catch (e) {
       await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
-    })
-  );
+    }
+
+    console.log(`\n${chalk.green.bold(`Finished! 👍 `)}`);
+  });
 
   /**
    * Check if extension ist correct
@@ -103,7 +114,7 @@ function generate(argv) {
       // iterate through all files in folder
       await asyncForEach(files, async file => {
         if (mm.contains(`${folder}/${file}`, exclude)) {
-          console.log('exclude', `${folder}/${file}`);
+          console.log(chalk.black.bgBlue('exclude'), `${folder}/${file}`);
           return;
         }
 
@@ -128,7 +139,7 @@ function generate(argv) {
             }
           } catch (err) {
             console.log(err);
-            console.log(`can't create folder, because it already exists`, `${folderPath}/${file}`);
+            console.log(chalk.yellow(`can't create folder, because it already exists`), `${folderPath}/${file}`);
           }
 
           // Add to tree
@@ -165,7 +176,7 @@ function generate(argv) {
             if (mdFileData) {
               const { frontmatter } = parseVuepressComment(fileData);
 
-              console.log('write file', `${folderPath}/${fileName}.md`);
+              console.log(chalk.black.bgGreen('write file'), `${folderPath}/${fileName}.md`);
 
               await fs.writeFile(
                 `${folderPath}/${fileName}.md`,
