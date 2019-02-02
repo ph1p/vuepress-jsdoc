@@ -1,6 +1,6 @@
 'use strict';
 
-const commentParser = require('../helpers/commentParser');
+const commentParser = require('../helpers/comment-parser');
 
 const template = `/*
 * @vuepress

@@ -1,7 +1,7 @@
 'use strict';
 
 const yargs = require('yargs');
-const generate = require('./cmds/generate');
+const { generate } = require('./cmds');
 
 function main() {
   yargs

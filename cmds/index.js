@@ -1,4 +1,5 @@
-// const fs = require('fs/promises');
+'use strict';
+
 const fs = require('fs.promised/promisify')(require('bluebird'));
 const path = require('path');
 const mkdirp = require('mkdirp');
@@ -8,8 +9,9 @@ const del = require('del');
 const mm = require('micromatch');
 const chalk = require('chalk');
 
-const vueSidebar = require('../helpers/vueSidebar');
-const parseVuepressComment = require('../helpers/commentParser');
+const vueSidebar = require('../helpers/vue-sidebar');
+const parseVuepressComment = require('../helpers/comment-parser');
+const { checkExtension, getFilename } = require('../helpers/utils');
 
 const fileTree = [];
 
@@ -19,8 +21,8 @@ const extensions = ['.ts', '.js', '.vue'];
  * Default command that generate md files
  * @param {Object} argv Arguments passed by yargs
  */
-async function generate(argv) {
-  const exclude = argv.exclude && (argv.exclude.split(',') || [argv.exclude]);
+async function generate(argv, ctx) {
+  const exclude = (argv.exclude && argv.exclude.split(',')) || [argv.exclude || ''];
   const srcFolder = argv.source;
   const codeFolder = argv.folder;
   const docsFolder = `${argv.dist}/${codeFolder}`;
@@ -70,28 +72,6 @@ async function generate(argv) {
   });
 
   /**
-   * Check if extension ist correct
-   *
-   * @param {string} path
-   * @param {array} extensions
-   * @returns extension of file
-   */
-  const checkExtension = (path, extensions) =>
-    extensions.indexOf(path.substring(path.length, path.lastIndexOf('.'))) >= 0;
-
-  /**
-   * Get filename without extension
-   *
-   * @param {string} path
-   * @returns filename
-   */
-  const getFilename = path =>
-    path
-      .split('/')
-      .pop()
-      .substring(0, path.lastIndexOf('.')) || '';
-
-  /**
    * Read all files in directory
    *
    * @param {any} parameter
@@ -113,7 +93,7 @@ async function generate(argv) {
 
       // iterate through all files in folder
       await asyncForEach(files, async file => {
-        if (mm.contains(`${folder}/${file}`, exclude)) {
+        if (exclude && mm.contains(`${folder}/${file}`, exclude)) {
           console.log(chalk.black.bgBlue('exclude'), `${folder}/${file}`);
           return;
         }
@@ -215,4 +195,10 @@ async function asyncForEach(array, callback) {
   }
 }
 
-module.exports = generate;
+module.exports = {
+  generate,
+  plugin: (options, ctx) => ({
+    name: 'vuepress-plugin-jsdoc',
+    generate: generate(options, ctx)
+  })
+};
