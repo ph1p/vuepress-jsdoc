@@ -55,6 +55,12 @@ function main() {
             default: '',
             desc: 'Pattern when removing files. You can ex- and include files. (glob pattern)',
             type: 'string'
+          },
+          jsDocConfigPath: {
+            alias: 'c',
+            default: '',
+            desc: 'Path to jsdoc config',
+            type: 'string'
           }
         });
       }

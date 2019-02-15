@@ -17,7 +17,7 @@ npm i vuepress-jsdoc -g
 
 ```bash
 # search code in src and move it to code (./documentation/code) in your vuepress folder (./documentation)
-vuepress-jsdoc --source ./src --dist ./documentation --folder code --title API --exclude=*.test.js,exclude.js
+vuepress-jsdoc --source ./src --dist ./documentation --folder code --title API --exclude *.test.js,exclude.js
 ```
 
 ### Commands
@@ -30,17 +30,18 @@ If no command passed it will run `generate` as default
 
 ### Options
 
-| Name        | Alias | Default         | Description                                                                |
-| ----------- | ----- | --------------- | -------------------------------------------------------------------------- |
-| --source    | -s    | ./src           | Source folder with .js or .ts files                                        |
-| --dist      | -d    | ./documentation | Destination folder                                                         |
-| --folder    | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime               |
-| --title     | -t    | API             | Title of your documentation                                                |
-| --help      | -h    |                 | Show help                                                                  |
-| --version   | -v    |                 | Show current version                                                       |
-| --readme    | -r    |                 | Path to custom readme file                                                 |
-| --exclude   | -e    |                 | Pattern to exclude files/folders (Comma seperated) - \*.test.js,exclude.js |
-| --rmPattern | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern) |
+| Name              | Alias | Default         | Description                                                                             |
+| ----------------- | ----- | --------------- | --------------------------------------------------------------------------------------- |
+| --source          | -s    | ./src           | Source folder with .js or .ts files                                                     |
+| --dist            | -d    | ./documentation | Destination folder                                                                      |
+| --folder          | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime                            |
+| --title           | -t    | API             | Title of your documentation                                                             |
+| --help            | -h    |                 | Show help                                                                               |
+| --version         | -v    |                 | Show current version                                                                    |
+| --readme          | -r    |                 | Path to custom readme file                                                              |
+| --exclude         | -e    |                 | Pattern to exclude files/folders (Comma seperated) - \*.test.js,exclude.js              |
+| --rmPattern       | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern)              |
+| --jsDocConfigPath | -c    |                 | Path to [JsDoc Config](http://usejsdoc.org/about-configuring-jsdoc.html) (experimental) |
 
 ### config.js
 

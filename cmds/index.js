@@ -143,14 +143,21 @@ async function generate(argv, ctx) {
                 filename: `${folder}/${file}`
               });
             } else if (/\.(js|ts)$/.test(file) && fileData) {
-              // render file
-              mdFileData = await jsdoc2md.render({
-                source: fileData,
-                partial: [
-                  path.resolve(__dirname, './template/header.hbs'),
-                  path.resolve(__dirname, './template/main.hbs')
-                ]
-              });
+              const configPath = argv.jsDocConfigPath;
+
+              try {
+                // render file
+                mdFileData = await jsdoc2md.render({
+                  source: fileData,
+                  configure: configPath,
+                  partial: [
+                    path.resolve(__dirname, './template/header.hbs'),
+                    path.resolve(__dirname, './template/main.hbs')
+                  ]
+                });
+              } catch (e) {
+                console.log(chalk.black.bgBlue('exlude by config'), `${folderPath}/${fileName}.md`);
+              }
             }
 
             if (mdFileData) {
