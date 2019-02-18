@@ -19,7 +19,7 @@ const extensions = ['.ts', '.js', '.tsx', '.jsx', '.vue'];
 
 /**
  * Default command that generate md files
- * @param {Object} argv Arguments passed by yargs
+ * @param {object} argv Arguments passed by yargs
  */
 async function generate(argv) {
   const exclude = (argv.exclude && argv.exclude.split(',')) || [argv.exclude || ''];
@@ -33,50 +33,11 @@ async function generate(argv) {
   // remove docs folder, except README.md
   const deletedPaths = await del([docsFolder + '/**/*', `!${docsFolder}/README.md`, rmPattern]);
 
-  // create docs folder
-  mkdirp(docsFolder, async () => {
-    // read folder files
-    await readFiles(srcFolder, 0, fileTree);
-
-    await fs.writeFile(
-      `${docsFolder}/config.js`,
-      `exports.fileTree=${JSON.stringify(fileTree)};exports.sidebarTree = (title = 'Mainpage') => (${JSON.stringify(
-        vueSidebar({
-          fileTree,
-          codeFolder,
-          title
-        })
-      ).replace('::vuepress-jsdoc-title::', '"+title+"')});`
-    );
-
-    // create README.md
-    let readMeContent = '### Welcome to ' + title;
-    let readmePath = readme || `${srcFolder}/README.md`;
-
-    try {
-      readMeContent = await fs.readFile(readmePath, 'utf-8');
-      if (deletedPaths.some(p => ~p.indexOf(`${codeFolder}/README.md`))) {
-        console.log(`\n${chalk.black.bgYellow('found')} ${readmePath} and copies content to ${docsFolder}/README.md`);
-      }
-    } catch (e) {
-      console.log(`${chalk.white.bgBlack('skipped')} copy README.md`);
-    }
-
-    // Do nothing if README.md already exists
-    try {
-      readMeContent = await fs.readFile(`${docsFolder}/README.md`, 'utf-8');
-      console.log(`\n${chalk.yellow(`${docsFolder}/README.md already exists`)}`);
-    } catch (e) {
-      await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
-    }
-
-    console.log(`\n${chalk.green.bold(`Finished! 👍 `)}`);
-  });
-
   /**
    * Read all files in directory
-   *
-   * @param {any} parameter
+   * @param {string} folder
+   * @param {number} depth
+   * @param {array} tree
    */
   const readFiles = async (folder, depth = 0, tree) => {
     try {
@@ -190,12 +151,52 @@ async function generate(argv) {
       }
     }
   };
+
+  // create docs folder
+  mkdirp(docsFolder, async () => {
+    // read folder files
+    await readFiles(srcFolder, 0, fileTree);
+
+    await fs.writeFile(
+      `${docsFolder}/config.js`,
+      `exports.fileTree=${JSON.stringify(fileTree)};exports.sidebarTree = (title = 'Mainpage') => (${JSON.stringify(
+        vueSidebar({
+          fileTree,
+          codeFolder,
+          title
+        })
+      ).replace('::vuepress-jsdoc-title::', '"+title+"')});`
+    );
+
+    // create README.md
+    let readMeContent = '### Welcome to ' + title;
+    let readmePath = readme || `${srcFolder}/README.md`;
+
+    try {
+      readMeContent = await fs.readFile(readmePath, 'utf-8');
+      if (deletedPaths.some(p => ~p.indexOf(`${codeFolder}/README.md`))) {
+        console.log(`\n${chalk.black.bgYellow('found')} ${readmePath} and copies content to ${docsFolder}/README.md`);
+      }
+    } catch (e) {
+      console.log(`${chalk.white.bgBlack('skipped')} copy README.md`);
+    }
+
+    // Do nothing if README.md already exists
+    try {
+      readMeContent = await fs.readFile(`${docsFolder}/README.md`, 'utf-8');
+      console.log(`\n${chalk.yellow(`${docsFolder}/README.md already exists`)}`);
+    } catch (e) {
+      await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
+    }
+
+    console.log(`\n${chalk.green.bold(`Finished! 👍 `)}`);
+  });
 }
 
 /**
  * Async foreach loop
- * @param {*} array
- * @param {*} callback
+ * @param {array} array
+ * @param {function} callback
  */
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
