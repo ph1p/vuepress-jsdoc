@@ -15,7 +15,7 @@ const { checkExtension, getFilename } = require('../helpers/utils');
 
 const fileTree = [];
 
-const extensions = ['.ts', '.js', '.vue'];
+const extensions = ['.ts', '.js', '.tsx', '.jsx', '.vue'];
 
 /**
  * Default command that generate md files
@@ -142,7 +142,7 @@ async function generate(argv, ctx) {
               mdFileData = await vuedoc.md({
                 filename: `${folder}/${file}`
               });
-            } else if (/\.(js|ts)$/.test(file) && fileData) {
+            } else if (/\.(js|ts|jsx|tsx)$/.test(file) && fileData) {
               const configPath = argv.jsDocConfigPath;
 
               try {
