@@ -24,3 +24,11 @@ describe('commentParser', () => {
     expect(attributes.page).toBe(25);
   });
 });
+
+describe('commentParser fail', () => {
+  const { fontmatter } = commentParser();
+
+  test('fontmatter should be null', () => {
+    expect(fontmatter).toBe(null);
+  });
+});

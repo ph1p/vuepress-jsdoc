@@ -50,9 +50,10 @@
     "bail": true,
     "verbose": true,
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
+      "**/*.{js,jsx}",
       "!**/node_modules/**",
       "!**/coverage/**",
+      "!**/example/**",
       "!**/vendor/**"
     ],
     "coverageDirectory": "./coverage"
