@@ -11,7 +11,7 @@ const chalk = require('chalk');
 
 const vueSidebar = require('../helpers/vue-sidebar');
 const parseVuepressComment = require('../helpers/comment-parser');
-const { checkExtension, getFilename } = require('../helpers/utils');
+const { checkExtension, getFilename, asyncForEach } = require('../helpers/utils');
 
 const fileTree = [];
 
@@ -191,17 +191,6 @@ async function generate(argv) {
 
     console.log(`\n${chalk.green.bold('Finished! 👍 ')}`);
   });
-}
-
-/**
- * Async foreach loop
- * @param {array} array
- * @param {function} callback
- */
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
 }
 
 module.exports = {

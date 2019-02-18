@@ -23,3 +23,14 @@ exports.getFilename = path =>
       .pop()
       .substring(0, path.lastIndexOf('.'))) ||
   '';
+
+/**
+ * Async foreach loop
+ * @param {array} array
+ * @param {function} callback
+ */
+exports.asyncForEach = async function(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+};
