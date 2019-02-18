@@ -81,7 +81,7 @@ async function generate(argv) {
             }
           } catch (err) {
             console.log(err);
-            console.log(chalk.yellow(`can't create folder, because it already exists`), `${folderPath}/${file}`);
+            console.log(chalk.yellow('cannot create folder, because it already exists'), `${folderPath}/${file}`);
           }
 
           // Add to tree
@@ -189,7 +189,7 @@ async function generate(argv) {
       await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
     }
 
-    console.log(`\n${chalk.green.bold(`Finished! 👍 `)}`);
+    console.log(`\n${chalk.green.bold('Finished! 👍 ')}`);
   });
 }
 
