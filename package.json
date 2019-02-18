@@ -7,32 +7,11 @@
     "test": "jest",
     "test-coverage": "cross-env NODE_ENV=test jest --coverage",
     "test-watch": "cross-env NODE_ENV=test jest --watchAll",
-    "lint": "eslint ./*.js"
+    "lint": "eslint ./*/*.js"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
-    }
-  },
-  "eslintConfig": {
-    "env": {
-      "commonjs": true,
-      "es6": true,
-      "node": true
-    },
-    "extends": "eslint:recommended",
-    "globals": {
-      "Atomics": "readonly",
-      "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-      "ecmaVersion": 2018
-    },
-    "rules": {
-      "quotes": [
-        "error",
-        "single"
-      ]
     }
   },
   "keywords": [

@@ -21,7 +21,7 @@ const extensions = ['.ts', '.js', '.tsx', '.jsx', '.vue'];
  * Default command that generate md files
  * @param {Object} argv Arguments passed by yargs
  */
-async function generate(argv, ctx) {
+async function generate(argv) {
   const exclude = (argv.exclude && argv.exclude.split(',')) || [argv.exclude || ''];
   const srcFolder = argv.source;
   const codeFolder = argv.folder;
@@ -58,7 +58,9 @@ async function generate(argv, ctx) {
       if (deletedPaths.some(p => ~p.indexOf(`${codeFolder}/README.md`))) {
         console.log(`\n${chalk.black.bgYellow('found')} ${readmePath} and copies content to ${docsFolder}/README.md`);
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log();
+    }
 
     // Do nothing if README.md already exists
     try {
@@ -80,7 +82,6 @@ async function generate(argv, ctx) {
     try {
       // get all files
       const files = await fs.readdir(folder);
-      const currentFolderName = folder.split('/').pop();
       const completeFolderPath = folder.replace(srcFolder, '');
 
       // if this is not a subdir
