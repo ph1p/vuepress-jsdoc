@@ -7,7 +7,7 @@ This npm package is a command line script, which scans your JavaScript, Vue or T
 
 ![CLI ./example](/example/img/cli.gif)
 
-## How to use?
+## How to
 
 ```bash
 yarn global add vuepress-jsdoc
@@ -68,7 +68,7 @@ vuepress dev ./documentation
 vuepress build ./documentation
 ```
 
-**Access it via:** http://localhost:8080/code/
+**Access it via:** [http://localhost:8080/code/](http://localhost:8080/code/)
 
 Now you need the sidebar.
 Create a `.vuepress` folder inside the `documentation` folder and add the following `config.js`.
@@ -129,7 +129,7 @@ Simply add:
  */
 ```
 
-More information: https://vuepress.vuejs.org/guide/markdown.html#front-matter
+[More information](https://vuepress.vuejs.org/guide/markdown.html#front-matter)
 
 ## Example
 

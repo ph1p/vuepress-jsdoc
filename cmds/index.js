@@ -59,7 +59,7 @@ async function generate(argv) {
         console.log(`\n${chalk.black.bgYellow('found')} ${readmePath} and copies content to ${docsFolder}/README.md`);
       }
     } catch (e) {
-      console.log();
+      console.log(`${chalk.white.bgBlack('skipped')} copy README.md`);
     }
 
     // Do nothing if README.md already exists
