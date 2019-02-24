@@ -1,6 +1,9 @@
 ---
-title: objects
+title: objects.js
 ---
+
+# objects.js
+
 <a name="obj"></a>
 
 ## obj

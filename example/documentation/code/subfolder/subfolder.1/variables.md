@@ -1,6 +1,9 @@
 ---
-title: variables
+title: variables.js
 ---
+
+# variables.js
+
 ## Members
 
 <dl>

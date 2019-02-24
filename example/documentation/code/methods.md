@@ -1,6 +1,9 @@
 ---
 title: A normal ES6 Method
 ---
+
+# A normal ES6 Method
+
 ## Functions
 
 <dl>

@@ -20,12 +20,13 @@ exports.fileTree = [
     ]
   },
   { name: 'test', path: '/test', fullPath: './documentation/code/test' },
-  { name: 'tests', children: [] }
+  { name: 'tests', children: [{ name: 'first.test', path: '/first.test', fullPath: 'tests/first.test' }] }
 ];
 exports.sidebarTree = (title = 'Mainpage') => ({
   '/code/': [
     { title: 'API', collapsable: false, children: [['', '' + title + ''], 'class', 'methods', 'objects', 'test'] },
     { title: 'lib', collapsable: false, children: ['lib/dmd-options', 'lib/jsdoc-to-markdown'] },
-    { title: 'subfolder', collapsable: false, children: ['subfolder/subfolder.1/variables', 'subfolder/variables'] }
+    { title: 'subfolder', collapsable: false, children: ['subfolder/subfolder.1/variables', 'subfolder/variables'] },
+    { title: 'tests', collapsable: false, children: ['tests/first.test'] }
   ]
 });

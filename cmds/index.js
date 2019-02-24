@@ -123,14 +123,24 @@ async function generate(argv) {
             }
 
             if (mdFileData) {
-              const { frontmatter } = parseVuepressComment(fileData);
+              const { frontmatter, attributes } = parseVuepressComment(fileData);
 
               console.log(chalk.black.bgGreen('write file'), `${folderPath}/${fileName}.md`);
 
-              await fs.writeFile(
-                `${folderPath}/${fileName}.md`,
-                `---\n${frontmatter || `title: ${fileName}`}\n---\n${mdFileData}`
-              );
+              let fileContent = '---\n';
+
+              fileContent += !attributes || !attributes.title ? `title: ${file}` : '';
+
+              if (frontmatter) {
+                fileContent += !attributes || !attributes.title ? '\n' : '';
+                fileContent += `${frontmatter}`;
+              }
+
+              fileContent += '\n---\n';
+              fileContent += `\n# ${attributes && attributes.title ? attributes.title : file}\n\n`;
+              fileContent += mdFileData;
+
+              await fs.writeFile(`${folderPath}/${fileName}.md`, fileContent);
 
               tree.push({
                 name: fileName,

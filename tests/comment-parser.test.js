@@ -26,9 +26,9 @@ describe('commentParser', () => {
 });
 
 describe('commentParser fail', () => {
-  const { fontmatter } = commentParser();
+  const { frontmatter } = commentParser();
 
   test('fontmatter should be null', () => {
-    expect(fontmatter).toBe(null);
+    expect(frontmatter).toBe(null);
   });
 });

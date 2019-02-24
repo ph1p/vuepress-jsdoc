@@ -1,7 +1,7 @@
 /*
  * @vuepress
  * ---
- * title: test class
+ * test: test class
  * ---
  */
 /**

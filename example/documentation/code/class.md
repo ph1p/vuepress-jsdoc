@@ -1,6 +1,10 @@
 ---
-title: test class
+title: class.js
+test: test class
 ---
+
+# class.js
+
 <a name="Test"></a>
 
 ## Test

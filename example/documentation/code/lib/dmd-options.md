@@ -1,6 +1,9 @@
 ---
-title: dmd-options
+title: dmd-options.js
 ---
+
+# dmd-options.js
+
 <a name="DmdOptions"></a>
 
 ## DmdOptions

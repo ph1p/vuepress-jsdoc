@@ -20,7 +20,7 @@ module.exports = fileContent => {
     );
   } catch (e) {
     return {
-      fontmatter: null
+      frontmatter: null
     };
   }
 };
