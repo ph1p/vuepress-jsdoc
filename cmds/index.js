@@ -129,7 +129,7 @@ async function generate(argv) {
 
               let fileContent = '---\n';
 
-              fileContent += !attributes || !attributes.title ? `title: ${file}` : '';
+              fileContent += !attributes || !attributes.title ? `title: ${fileName}` : '';
 
               if (frontmatter) {
                 fileContent += !attributes || !attributes.title ? '\n' : '';
@@ -137,7 +137,9 @@ async function generate(argv) {
               }
 
               fileContent += '\n---\n';
-              fileContent += `\n# ${attributes && attributes.title ? attributes.title : file}\n\n`;
+              if ((attributes && attributes.title) || !/\.vue$/.test(file)) {
+                fileContent += `\n# ${attributes && attributes.title ? attributes.title : fileName}\n\n`;
+              }
               fileContent += mdFileData;
 
               await fs.writeFile(`${folderPath}/${fileName}.md`, fileContent);
