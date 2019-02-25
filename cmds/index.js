@@ -28,10 +28,10 @@ async function generate(argv) {
   const docsFolder = `${argv.dist}/${codeFolder}`;
   const title = argv.title;
   const readme = argv.readme;
-  const rmPattern = argv.rmPattern || '';
+  const rmPattern = argv.rmPattern || [];
 
   // remove docs folder, except README.md
-  const deletedPaths = await del([docsFolder + '/**/*', `!${docsFolder}/README.md`, rmPattern]);
+  const deletedPaths = await del([docsFolder + '/**/*', `!${docsFolder}/README.md`, ...rmPattern]);
 
   /**
    * Read all files in directory

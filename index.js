@@ -54,7 +54,7 @@ function main() {
             alias: 'rm',
             default: '',
             desc: 'Pattern when removing files. You can ex- and include files. (glob pattern)',
-            type: 'string'
+            type: 'array'
           },
           jsDocConfigPath: {
             alias: 'c',
