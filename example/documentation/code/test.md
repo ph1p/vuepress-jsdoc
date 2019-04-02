@@ -1,9 +1,6 @@
 ---
-title: test.vue
+title: test
 ---
-
-# test.vue
-
 # test 
 
 - **vue** 

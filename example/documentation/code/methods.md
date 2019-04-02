@@ -1,8 +1,9 @@
 ---
 title: A normal ES6 Method
+headline: Custom Title!
 ---
 
-# A normal ES6 Method
+# Custom Title!
 
 ## Functions
 

@@ -124,9 +124,12 @@ You can add custom meta data your pages by using the `@vuepress` block:
  * @vuepress
  * ---
  * title: Your custom title
+ * headline: You custom headline
  * ---
  */
 ```
+
+Use `headline` to add a custom `h1` title.
 
 [More information](https://vuepress.vuejs.org/guide/markdown.html#front-matter)
 

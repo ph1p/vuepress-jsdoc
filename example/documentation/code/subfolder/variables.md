@@ -1,8 +1,8 @@
 ---
-title: variables.js
+title: variables
 ---
 
-# variables.js
+# variables
 
 ## Members
 

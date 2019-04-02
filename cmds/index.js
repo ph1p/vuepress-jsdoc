@@ -118,7 +118,7 @@ async function generate(argv) {
                   ]
                 });
               } catch (e) {
-                console.log(chalk.black.bgBlue('exlude by config'), `${folderPath}/${fileName}.md`);
+                console.log(chalk.black.bgBlue('exclude by config'), `${folderPath}/${fileName}.md`);
               }
             }
 
@@ -138,7 +138,15 @@ async function generate(argv) {
 
               fileContent += '\n---\n';
               if ((attributes && attributes.title) || !/\.vue$/.test(file)) {
-                fileContent += `\n# ${attributes && attributes.title ? attributes.title : fileName}\n\n`;
+                let headline = fileName;
+
+                if (attributes && attributes.headline) {
+                  headline = attributes.headline;
+                } else if (attributes && attributes.title) {
+                  headline = attributes.title;
+                }
+
+                fileContent += `\n# ${headline}\n\n`;
               }
               fileContent += mdFileData;
 

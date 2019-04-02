@@ -1,8 +1,8 @@
 ---
-title: jsdoc-to-markdown.js
+title: jsdoc-to-markdown
 ---
 
-# jsdoc-to-markdown.js
+# jsdoc-to-markdown
 
 <a name="module_jsdoc-to-markdown"></a>
 
