@@ -1,3 +1,12 @@
+# [1.7.0](https://github.com/ph1p/vuepress-jsdoc/compare/v1.6.0...v1.7.0) (2019-04-02)
+
+
+### Features
+
+* **headline:** add ability to use custom headline ([8aa34d1](https://github.com/ph1p/vuepress-jsdoc/commit/8aa34d1)), closes [#14](https://github.com/ph1p/vuepress-jsdoc/issues/14)
+
+
+
 # [1.6.0](https://github.com/ph1p/vuepress-jsdoc/compare/v1.5.0...v1.6.0) (2019-02-25)
 
 
