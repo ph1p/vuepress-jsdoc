@@ -118,7 +118,16 @@ async function generate(argv) {
                   ]
                 });
               } catch (e) {
-                console.log(chalk.black.bgBlue('exclude by config'), `${folderPath}/${fileName}.md`);
+                const isConfigExclude = e.message.includes('no input files');
+
+                if (!isConfigExclude) {
+                  console.log(e.message);
+                }
+
+                console.log(
+                  chalk.black.bgRed(isConfigExclude ? 'exclude by config' : 'error'),
+                  `${folderPath}/${fileName}.md`
+                );
               }
             }
 
