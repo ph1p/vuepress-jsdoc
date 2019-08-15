@@ -1,4 +1,4 @@
-## [1.7.4](https://github.com/ph1p/vuepress-jsdoc/compare/v1.7.3...v1.7.4) (2019-07-26)
+# [1.8.0](https://github.com/ph1p/vuepress-jsdoc/compare/v1.7.3...v1.8.0) (2019-08-15)
 
 
 
