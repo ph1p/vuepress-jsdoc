@@ -126,7 +126,7 @@ async function generate(argv) {
 
                 console.log(
                   chalk.black.bgRed(isConfigExclude ? 'exclude by config' : 'error'),
-                  `${folderPath}/${fileName}.md`
+                  `${folder}/${file} -> ${folderPath}/${fileName}.md`
                 );
               }
             }
@@ -134,7 +134,7 @@ async function generate(argv) {
             if (mdFileData) {
               const { frontmatter, attributes } = parseVuepressComment(fileData);
 
-              console.log(chalk.black.bgGreen('write file'), `${folderPath}/${fileName}.md`);
+              console.log(chalk.black.bgGreen('write file'), `${folder}/${file} -> ${folderPath}/${fileName}.md`);
 
               let fileContent = '---\n';
 
