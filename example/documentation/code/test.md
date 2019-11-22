@@ -78,6 +78,9 @@ This is an example of creating a reusable grid component and using it with exter
 | name | type | description
 |:-|:-|:-|
 |key|`string`|Key to order
+
+#### returns (string)
+ Test
 ## Slots
 | name | description
 |:-|:-|:-|

@@ -14,21 +14,35 @@ function generateTags(tags) {
   return tagsContent + '\n:::\n';
 }
 
+function fileContent() {
+  let contentArray = [];
+  let line = 0;
+
+  return {
+    get content() {
+      return contentArray.join('\n');
+    },
+    addline(content) {
+      contentArray[line] = content;
+      line++;
+    }
+  };
+}
+
 module.exports = async path => {
+  const file = fileContent();
+
   try {
     const data = await vueDocs.parse(path);
 
-    let markdown = [`# ${data.displayName}\n`, `${data.description}\n`];
-    let line = markdown.length;
+    file.addline(`# ${data.displayName}\n${data.description}\n`);
 
     // Tags
     if (data.tags) {
-      markdown[line] = generateTags(data.tags) + '\n';
-      line++;
+      file.addline(generateTags(data.tags) + '\n');
     }
 
-    markdown[line] = '## Table of contents\n[[toc]]\n';
-    line++;
+    file.addline('## Table of contents\n[[toc]]\n');
 
     // Props
     if (data.props) {
@@ -51,48 +65,47 @@ module.exports = async path => {
         propsContent += '|\n';
       });
 
-      markdown[line] = propsContent + '\n';
-      line++;
+      file.addline(propsContent + '\n');
     }
 
     //Methods
     if (data.methods) {
       const methods = data.methods;
-      markdown[line] = '## Methods\n';
-      line++;
+      file.addline('## Methods\n');
 
       methods.forEach(method => {
-        markdown[line] = `### ${method.name} (${paramsString(method.params)}) -> \`${method.returns.type.name}\`\n ${
-          method.description
-        }\n`;
-        line++;
+        file.addline(
+          `### ${method.name} (${paramsString(method.params)}) -> \`${method.returns.type.name}\`\n ${
+            method.description
+          }\n`
+        );
 
         // Tags
         if (Object.keys(method.tags).length) {
-          markdown[line] = generateTags(method.tags);
-          line++;
+          file.addline(generateTags(method.tags));
         }
 
         // params
         if (method.params) {
-          markdown[line] =
+          file.addline(
             `#### Params\n| name | type | description\n|:-|:-|:-|\n` +
-            method.params.map(param => `|${param.name}|\`${param.type.name}\`|${param.description}`).join('\n');
-          line++;
+              method.params.map(param => `|${param.name}|\`${param.type.name}\`|${param.description}`).join('\n')
+          );
         }
 
         // returns
-        markdown[line] = `\n#### returns (${method.returns.type.name})\n ${method.returns.description}`;
+        file.addline(`\n#### returns (${method.returns.type.name})\n ${method.returns.description}`);
       });
     }
 
     // Slots
     if (data.slots) {
       const slots = data.slots;
-      markdown[line] = `## Slots\n| name | description\n|:-|:-|:-|\n ${slots
-        .map(slot => `|**${slot.name}**|${slot.description}|`)
-        .join('\n')}\n\n`;
-      line++;
+      file.addline(
+        `## Slots\n| name | description\n|:-|:-|:-|\n ${slots
+          .map(slot => `|**${slot.name}**|${slot.description}|`)
+          .join('\n')}\n\n`
+      );
     }
 
     // Events
@@ -111,11 +124,10 @@ module.exports = async path => {
         }
       });
 
-      markdown[line] = eventsContent + '\n\n';
-      line++;
+      file.addline(eventsContent + '\n\n');
     }
 
-    return Promise.resolve(markdown.join('\n'));
+    return Promise.resolve(file.content);
   } catch (err) {
     return Promise.reject(err);
   }
