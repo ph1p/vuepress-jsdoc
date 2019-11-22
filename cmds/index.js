@@ -4,7 +4,6 @@ const fs = require('fs.promised/promisify')(require('bluebird'));
 const path = require('path');
 const mkdirp = require('mkdirp');
 const jsdoc2md = require('jsdoc-to-markdown');
-const vuedoc = require('@vuedoc/md');
 const del = require('del');
 const mm = require('micromatch');
 const chalk = require('chalk');
@@ -12,6 +11,7 @@ const chalk = require('chalk');
 const vueSidebar = require('../helpers/vue-sidebar');
 const parseVuepressComment = require('../helpers/comment-parser');
 const { checkExtension, getFilename, asyncForEach } = require('../helpers/utils');
+const vueDocToMarkdown = require('../helpers/vue-docgen-to-markdown');
 
 const fileTree = [];
 
@@ -101,9 +101,7 @@ async function generate(argv) {
             let mdFileData = '';
 
             if (/\.vue$/.test(file)) {
-              mdFileData = await vuedoc.md({
-                filename: `${folder}/${file}`
-              });
+              mdFileData = await vueDocToMarkdown(`${folder}/${file}`);
             } else if (/\.(js|ts|jsx|tsx)$/.test(file) && fileData) {
               const configPath = argv.jsDocConfigPath;
 

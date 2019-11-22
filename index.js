@@ -52,7 +52,7 @@ function main() {
           },
           rmPattern: {
             alias: 'rm',
-            default: '',
+            default: [],
             desc: 'Pattern when removing files. You can ex- and include files. (glob pattern)',
             type: 'array'
           },
