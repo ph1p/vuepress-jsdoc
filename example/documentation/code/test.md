@@ -2,7 +2,6 @@
 title: test
 ---
 # grid
-
 This is an example of creating a reusable grid component and using it with external data.
 
 ::: tip Tags
