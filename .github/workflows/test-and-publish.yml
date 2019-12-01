@@ -1,0 +1,36 @@
+name: Test and publish to npm
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: npm install and test
+        run: |
+          npm install
+          npm test
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Make stable release to npm
+        uses: epeli/npm-release@v1
+        with:
+          type: stable
+          token: ${{ secrets.NPM_TOKEN }}

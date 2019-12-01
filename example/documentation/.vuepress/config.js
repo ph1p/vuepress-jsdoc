@@ -2,6 +2,7 @@ const { sidebarTree } = require('../code/config');
 
 module.exports = {
   contentLoading: true,
+  dest: 'public',
   title: 'Hello vuepress-jsdoc',
   description: 'Just playing around with vuepress-jsdoc',
   locales: {
