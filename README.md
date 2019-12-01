@@ -2,6 +2,7 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9ec565a85a134df2a0f6bdf905e438d4)](https://app.codacy.com/app/ph1p/vuepress-jsdoc?utm_source=github.com&utm_medium=referral&utm_content=ph1p/vuepress-jsdoc&utm_campaign=Badge_Grade_Settings)
 [![npm](https://img.shields.io/npm/v/vuepress-jsdoc.svg)](https://www.npmjs.com/package/vuepress-jsdoc)
+[![now](https://img.shields.io/badge/now-demo-black)](https://vuepress-jsdoc-example.now.sh)
 
 This npm package is a command line script, which scans your JavaScript, Vue or Typescript source code and generates markdown files for vuepress with the help of [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown) and [vue-docgen-api](https://github.com/vue-styleguidist/vue-styleguidist/tree/dev/packages/vue-docgen-api).
 
