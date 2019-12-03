@@ -17,4 +17,5 @@ jobs:
       - name: Deploy example to now
         run: |
           cd example
+          npm run docs
           npx now --token=${{ secrets.ZEIT_TOKEN }} --name=vuepress-jsdoc-example --prod

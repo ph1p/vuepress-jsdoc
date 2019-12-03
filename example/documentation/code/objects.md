@@ -6,8 +6,7 @@ title: objects
 
 <a name="obj"></a>
 
-## obj
-Object description
+## objObject description
 
 **Kind**: global constant  
 
@@ -18,14 +17,12 @@ Object description
 
 <a name="obj.name"></a>
 
-### obj.name
-name
+### obj.namename
 
 **Kind**: static property of [<code>obj</code>](#obj)  
 <a name="obj.objMethod"></a>
 
-### obj.objMethod(parameter) ⇒
-A function with a parameter and returns the name
+### obj.objMethod(parameter) ⇒A function with a parameter and returns the name
 
 **Kind**: static method of [<code>obj</code>](#obj)  
 **Returns**: this.name  
@@ -36,7 +33,6 @@ A function with a parameter and returns the name
 
 <a name="obj.objMethodTwo"></a>
 
-### obj.objMethodTwo()
-Old way to write methods in objects
+### obj.objMethodTwo()Old way to write methods in objects
 
 **Kind**: static method of [<code>obj</code>](#obj)  

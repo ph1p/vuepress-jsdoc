@@ -111,8 +111,8 @@ async function generate(argv) {
                   source: fileData,
                   configure: configPath,
                   partial: [
-                    path.resolve(__dirname, './template/header.hbs'),
-                    path.resolve(__dirname, './template/main.hbs')
+                    path.resolve(__filename, '../../template/header.hbs'),
+                    path.resolve(__filename, '../../template/main.hbs')
                   ]
                 });
               } catch (e) {

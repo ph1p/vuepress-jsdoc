@@ -22,13 +22,11 @@ title: variables
 
 <a name="normalLetVariable"></a>
 
-## normalLetVariable
-A normal let variable
+## normalLetVariableA normal let variable
 
 **Kind**: global variable  
 <a name="MY_CONST_VAR"></a>
 
-## MY\_CONST\_VAR
-Symbol constant
+## MY\_CONST\_VARSymbol constant
 
 **Kind**: global constant  
