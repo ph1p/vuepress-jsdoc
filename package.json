@@ -63,7 +63,7 @@
     "vuepress-jsdoc": "./bin/vuepress-jsdoc.js"
   },
   "dependencies": {
-    "bluebird": "^3.7.1",
+    "bluebird": "^3.7.2",
     "chalk": "^3.0.0",
     "cross-env": "^6.0.3",
     "del": "^5.1.0",
@@ -72,15 +72,15 @@
     "jsdoc-to-markdown": "^5.0.3",
     "micromatch": "^4.0.2",
     "mkdirp": "^0.5.1",
-    "vue-docgen-api": "^4.0.5",
+    "vue-docgen-api": "^4.1.0",
     "yargs": "^15.0.2"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^1.1.0",
-    "eslint": "^6.7.1",
+    "eslint": "^6.7.2",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
-    "lint-staged": "^9.4.3",
+    "lint-staged": "^9.5.0",
     "release-it": "^12.4.3"
   },
   "lint-staged": {
