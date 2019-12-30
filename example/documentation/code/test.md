@@ -8,7 +8,6 @@ This is an example of creating a reusable grid component and using it with exter
 **version**: 1.0.5<br />**author**: [Rafael](https://github.com/rafaesc92)<br />**since**: Version 1.0.1<br />
 :::
 
-
 ## Table of contents
 [[toc]]
 
@@ -81,10 +80,11 @@ This is an example of creating a reusable grid component and using it with exter
 #### returns (string)
  Test
 ## Slots
-| name | description
-|:-|:-|:-|
- |**header**|Use this slot header|
-|**footer**|Use this slot footer|
+
+### header
+Use this slot header
+### footer
+Use this slot footer
 
 
 ## Events

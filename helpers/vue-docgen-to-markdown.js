@@ -4,14 +4,18 @@ function paramsString(params) {
   return params.map(param => `${param.name}: \`${param.type.name}\``).join(',');
 }
 
-function generateTags(tags) {
-  let tagsContent = '::: tip Tags\n';
+function generateTags({ tags }) {
+  if (tags) {
+    let tagsContent = '::: tip Tags\n';
 
-  tagsContent += Object.keys(tags)
-    .map(key => tags[key].map(tag => `**${tag.title}**: ${tag.description}<br />`).join(''))
-    .join('');
+    tagsContent += Object.keys(tags)
+      .map(key => tags[key].map(tag => `**${tag.title}**: ${tag.description}<br />`).join(''))
+      .join('');
 
-  return tagsContent + '\n:::\n';
+    return tagsContent + '\n:::\n';
+  }
+
+  return '';
 }
 
 function fileContent() {
@@ -38,9 +42,7 @@ module.exports = async path => {
     file.addline(`# ${data.displayName}\n${data.description}\n`);
 
     // Tags
-    if (data.tags) {
-      file.addline(generateTags(data.tags) + '\n');
-    }
+    file.addline(generateTags(data));
 
     file.addline('## Table of contents\n[[toc]]\n');
 
@@ -53,9 +55,7 @@ module.exports = async path => {
         propsContent += `### ${prop.name} (\`${prop.type.name}\`)\n`;
 
         // Tags
-        if (Object.keys(prop.tags).length) {
-          propsContent += generateTags(prop.tags);
-        }
+        propsContent += generateTags(prop);
 
         propsContent += '\n\n|type|default|description|\n|:-|:-|:-|:-|\n';
         propsContent += `|\`${prop.type.name}\`|${prop.defaultValue ? prop.defaultValue.value : '-'}|${
@@ -81,9 +81,7 @@ module.exports = async path => {
         );
 
         // Tags
-        if (Object.keys(method.tags).length) {
-          file.addline(generateTags(method.tags));
-        }
+        file.addline(generateTags(method));
 
         // params
         if (method.params) {
@@ -101,11 +99,9 @@ module.exports = async path => {
     // Slots
     if (data.slots) {
       const slots = data.slots;
-      file.addline(
-        `## Slots\n| name | description\n|:-|:-|:-|\n ${slots
-          .map(slot => `|**${slot.name}**|${slot.description}|`)
-          .join('\n')}\n\n`
-      );
+      file.addline('## Slots\n');
+
+      file.addline(`${slots.map(slot => `### ${slot.name}\n${slot.description}`).join('\n')}\n\n`);
     }
 
     // Events
