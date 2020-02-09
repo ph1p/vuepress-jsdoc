@@ -180,7 +180,7 @@ async function generate(argv) {
   };
 
   // create docs folder
-  mkdirp(docsFolder, async () => {
+  mkdirp(docsFolder).then(async () => {
     // read folder files
     await readFiles(srcFolder, 0, fileTree);
 
