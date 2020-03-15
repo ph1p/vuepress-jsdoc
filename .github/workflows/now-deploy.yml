@@ -15,7 +15,10 @@ jobs:
           cmd: test
 
       - name: Deploy example to now
+        env:
+          NOW_ORG_ID: ${{ secrets.NOW_ORG_ID }}
+          NOW_PROJECT_ID: ${{ secrets.NOW_PROJECT_ID }}
         run: |
           cd example
           npm run docs
-          npx now --token=${{ secrets.ZEIT_TOKEN }} --name=vuepress-jsdoc-example --prod
+          npx now -c --prod -t ${{ secrets.ZEIT_TOKEN }}
