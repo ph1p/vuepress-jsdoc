@@ -29,6 +29,7 @@ async function generate(argv) {
   const title = argv.title;
   const readme = argv.readme;
   const rmPattern = argv.rmPattern || [];
+  const partials = argv.partials || [];
 
   // remove docs folder, except README.md
   const deletedPaths = await del([docsFolder + '/**/*', `!${docsFolder}/README.md`, ...rmPattern]);
@@ -112,7 +113,8 @@ async function generate(argv) {
                   configure: configPath,
                   partial: [
                     path.resolve(__filename, '../../template/header.hbs'),
-                    path.resolve(__filename, '../../template/main.hbs')
+                    path.resolve(__filename, '../../template/main.hbs'),
+                    ...partials
                   ]
                 });
               } catch (e) {

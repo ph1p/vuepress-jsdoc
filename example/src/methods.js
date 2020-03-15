@@ -1,23 +1,24 @@
 /*
  * @vuepress
  * ---
- * title: A normal ES6 Method
+ * title: A normal ES6 Methodf jdhsfkj dsfhdskjf dksjfhdks j
  * headline: Custom Title!
  * ---
  */
 /**
  * A normal ES6 Method
+ * @param {string} param
  *
- * @returns a String
+ * @returns {string}
  */
-const ES6Method = () => {
+const ES6Method = (param = '') => {
   return 'ES6Method';
 };
 
 /**
  * A normal standard Method
  *
- * @returns a String
+ * @returns {string}
  */
 function standardMethod() {
   return 'standardMethod';

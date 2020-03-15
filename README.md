@@ -43,6 +43,7 @@ If no command passed it will run `generate` as default
 | --readme          | -r    |                 | Path to custom readme file                                                              |
 | --exclude         | -e    |                 | Pattern to exclude files/folders (Comma seperated) - \*.test.js,exclude.js              |
 | --rmPattern       | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern)              |
+| --partials | -p    |                 | jsdoc2markdown partial templates (overwrites default ones) |
 | --jsDocConfigPath | -c    |                 | Path to [JsDoc Config](http://usejsdoc.org/about-configuring-jsdoc.html) (experimental) |
 
 ### config.js

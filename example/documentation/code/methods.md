@@ -1,5 +1,5 @@
 ---
-title: A normal ES6 Method
+title: A normal ES6 Methodf jdhsfkj dsfhdskjf dksjfhdks j
 headline: Custom Title!
 ---
 
@@ -8,23 +8,28 @@ headline: Custom Title!
 ## Functions
 
 <dl>
-<dt><a href="#ES6Method">ES6Method()</a> ⇒</dt>
+<dt><a href="#ES6Method">ES6Method(param)</a> ->  <code>string</code></dt>
 <dd><p>A normal ES6 Method</p>
 </dd>
-<dt><a href="#standardMethod">standardMethod()</a> ⇒</dt>
+<dt><a href="#standardMethod">standardMethod()</a> ->  <code>string</code></dt>
 <dd><p>A normal standard Method</p>
 </dd>
 </dl>
 
 <a name="ES6Method"></a>
 
-## ES6Method() ⇒A normal ES6 Method
+## ES6Method(param) ->  <code>string</code>
+A normal ES6 Method
 
 **Kind**: global function  
-**Returns**: a String  
+
+| Param | Type |
+| --- | --- |
+| param | <code>string</code> | 
+
 <a name="standardMethod"></a>
 
-## standardMethod() ⇒A normal standard Method
+## standardMethod() ->  <code>string</code>
+A normal standard Method
 
 **Kind**: global function  
-**Returns**: a String  

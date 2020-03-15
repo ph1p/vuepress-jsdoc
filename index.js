@@ -56,6 +56,12 @@ function main() {
             desc: 'Pattern when removing files. You can ex- and include files. (glob pattern)',
             type: 'array'
           },
+          partials: {
+            alias: 'p',
+            default: [],
+            desc: 'jsdoc2markdown partial templates (overwrites default ones)',
+            type: 'array'
+          },
           jsDocConfigPath: {
             alias: 'c',
             default: '',
