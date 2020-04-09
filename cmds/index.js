@@ -109,7 +109,7 @@ async function generate(argv) {
               try {
                 // render file
                 mdFileData = await jsdoc2md.render({
-                  source: fileData,
+                  files: [`${folder}/${file}`],
                   configure: configPath,
                   partial: [
                     path.resolve(__filename, '../../template/header.hbs'),

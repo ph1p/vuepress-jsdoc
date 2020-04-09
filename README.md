@@ -135,6 +135,18 @@ Use `headline` to add a custom `h1` title.
 
 [More information](https://vuepress.vuejs.org/guide/markdown.html#front-matter)
 
+## Typescript
+
+To use typescript, you have to install these dev-dependencies:
+
+```bash
+yarn add -D typescript jsdoc-babel @babel/cli @babel/core @babel/preset-env @babel/preset-typescript jsdoc-to-markdown
+```
+
+Next, you have to add a `jsdoc.json` to your project with some settings and add it with the `-c` parameter.
+You can find a full working example with all settings inside the `./example` folder.
+The example shows also how to use babel-`plugins`.
+
 ## Example
 
 The `./example` folder includes a full working vuepress-jsdoc example.

@@ -1,5 +1,5 @@
 ---
-title: A normal ES6 Methodf jdhsfkj dsfhdskjf dksjfhdks j
+title: A normal ES6 Method
 headline: Custom Title!
 ---
 

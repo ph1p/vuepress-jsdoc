@@ -1,4 +1,5 @@
 exports.fileTree = [
+  { name: 'Icon', path: '/Icon', fullPath: './documentation/code/Icon' },
   { name: 'class-constructor', path: '/class-constructor', fullPath: './documentation/code/class-constructor' },
   { name: 'class', path: '/class', fullPath: './documentation/code/class' },
   {
@@ -28,7 +29,7 @@ exports.sidebarTree = (title = 'Mainpage') => ({
     {
       title: 'API',
       collapsable: false,
-      children: [['', '' + title + ''], 'class-constructor', 'class', 'methods', 'objects', 'test']
+      children: [['', '' + title + ''], 'Icon', 'class-constructor', 'class', 'methods', 'objects', 'test']
     },
     { title: 'lib', collapsable: false, children: ['lib/dmd-options', 'lib/jsdoc-to-markdown'] },
     { title: 'subfolder', collapsable: false, children: ['subfolder/subfolder.1/variables', 'subfolder/variables'] }
