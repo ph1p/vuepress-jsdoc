@@ -2,6 +2,8 @@ name: Test and publish to npm
 
 on:
   push:
+    branches:
+      - master
     tags:
       - v*
 
