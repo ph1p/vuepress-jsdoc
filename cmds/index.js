@@ -10,10 +10,17 @@ const chalk = require('chalk');
 
 const vueSidebar = require('../helpers/vue-sidebar');
 const parseVuepressComment = require('../helpers/comment-parser');
-const { checkExtension, getFilename, asyncForEach } = require('../helpers/utils');
+const { checkExtension, getExtension, getFilename, asyncForEach } = require('../helpers/utils');
 const vueDocToMarkdown = require('../helpers/vue-docgen-to-markdown');
 
 const fileTree = [];
+const statistics = {};
+const statusTypes = {
+  success: 'green',
+  error: 'red',
+  exclude: 'blue',
+  empty: 'yellow'
+};
 
 const extensions = ['.ts', '.js', '.tsx', '.jsx', '.vue'];
 
@@ -32,7 +39,16 @@ async function generate(argv) {
   const partials = argv.partials || [];
 
   // remove docs folder, except README.md
-  const deletedPaths = await del([docsFolder + '/**/*', `!${docsFolder}/README.md`, ...rmPattern]);
+  const deletedPaths = await del([`${docsFolder}/**/*`, `!${docsFolder}/README.md`, ...rmPattern]);
+
+  const addToStatistics = (file, status, isFolder = false) => {
+    const extension = !isFolder ? getExtension(file) : 'folder';
+
+    if (!statistics[extension]) {
+      statistics[extension] = Object.keys(statusTypes).reduce((before, curr) => ({ ...before, [curr]: 0 }), {});
+    }
+    statistics[extension][status]++;
+  };
 
   /**
    * Read all files in directory
@@ -40,7 +56,7 @@ async function generate(argv) {
    * @param {number} depth
    * @param {array} tree
    */
-  const readFiles = async (folder, depth = 0, tree) => {
+  const readFiles = async (folder, depth, tree) => {
     try {
       // get all files
       const files = await fs.readdir(folder);
@@ -57,7 +73,9 @@ async function generate(argv) {
       // iterate through all files in folder
       await asyncForEach(files, async file => {
         if (exclude && mm.contains(`${folder}/${file}`, exclude)) {
-          console.log(chalk.black.bgBlue('exclude'), `${folder}/${file}`);
+          console.log(chalk.black.bgBlue.bold(' EXCLUDE '), `${folder}/${file}`);
+
+          addToStatistics(file, 'exclude');
           return;
         }
 
@@ -73,16 +91,20 @@ async function generate(argv) {
         if (stat.isDirectory(folder)) {
           // check file length and skip empty folders
           try {
-            let files = await fs.readdir(`${folder}/${file}`);
+            let dirFiles = await fs.readdir(`${folder}/${file}`);
 
-            files = files.filter(f => !mm.contains(f, exclude));
+            dirFiles = dirFiles.filter(f => !mm.contains(f, exclude));
 
-            if (files.length > 0) {
+            if (dirFiles.length > 0) {
               await fs.mkdir(`${folderPath}/${file}`);
             }
+
+            addToStatistics(file, 'success', true);
           } catch (err) {
             console.log(err);
             console.log(chalk.yellow('cannot create folder, because it already exists'), `${folderPath}/${file}`);
+
+            addToStatistics(file, 'error', true);
           }
 
           // Add to tree
@@ -92,7 +114,11 @@ async function generate(argv) {
           });
 
           // read files from subfolder
-          await readFiles(`${folder}/${file}`, depth + 1, tree.filter(treeItem => file === treeItem.name)[0].children);
+          await readFiles(
+            `${folder}/${file}`,
+            depth + 1,
+            tree.filter(treeItem => file === treeItem.name)[0].children
+          );
         }
         // Else branch accessed when file is not a folder
         else {
@@ -117,24 +143,30 @@ async function generate(argv) {
                     ...partials
                   ]
                 });
-              } catch (e) {
-                const isConfigExclude = e.message.includes('no input files');
-
-                if (!isConfigExclude) {
-                  console.log(e.message);
-                }
+              } catch (error) {
+                const isConfigExclude = error.message.includes('no input files');
 
                 console.log(
-                  chalk.black.bgRed(isConfigExclude ? 'exclude by config' : 'error'),
+                  chalk.black.bgRed.bold(isConfigExclude ? ' EXCLUDE BY CONFIG ' : ' ERROR '),
                   `${folder}/${file} -> ${folderPath}/${fileName}.md`
                 );
+
+                if (!isConfigExclude) {
+                  console.log(error.message);
+
+                  if (process.env.CI || argv.ci) {
+                    throw new Error(error);
+                  }
+
+                  addToStatistics(file, 'error');
+                }
               }
             }
 
             if (mdFileData) {
               const { frontmatter, attributes } = parseVuepressComment(fileData);
 
-              console.log(chalk.black.bgGreen('write file'), `${folder}/${file} -> ${folderPath}/${fileName}.md`);
+              console.log(chalk.black.bgGreen.bold(' SUCCESS '), `${folder}/${file} -> ${folderPath}/${fileName}.md`);
 
               let fileContent = '---\n';
 
@@ -163,26 +195,37 @@ async function generate(argv) {
 
               tree.push({
                 name: fileName,
-                path: '/' + fileName,
+                path: `/${fileName}`,
                 fullPath: `${folderPath.replace(`${docsFolder}/`, '')}/${fileName}`
               });
+
+              addToStatistics(file, 'success');
+            } else {
+              console.log(chalk.black.bgYellow.bold(' EMPTY '), `${folder}/${file} -> ${folderPath}/${fileName}.md`);
+
+              addToStatistics(file, 'empty');
             }
           }
         }
       });
 
       return Promise.resolve(files);
-    } catch (err) {
-      if (err.code === 'ENOENT') {
+    } catch (error) {
+      if (error.code === 'ENOENT') {
         console.log('cannot find source folder');
       } else {
-        console.log(err);
+        console.log(error);
+      }
+
+      if (process.env.CI || argv.ci) {
+        throw new Error(error);
       }
     }
   };
 
   // create docs folder
   mkdirp(docsFolder).then(async () => {
+    const startTime = +new Date();
     // read folder files
     await readFiles(srcFolder, 0, fileTree);
 
@@ -198,8 +241,8 @@ async function generate(argv) {
     );
 
     // create README.md
-    let readMeContent = '### Welcome to ' + title;
-    let readmePath = readme || `${srcFolder}/README.md`;
+    let readMeContent = `### Welcome to ${title}`;
+    const readmePath = readme || `${srcFolder}/README.md`;
 
     try {
       readMeContent = await fs.readFile(readmePath, 'utf-8');
@@ -218,7 +261,32 @@ async function generate(argv) {
       await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
     }
 
-    console.log(`\n${chalk.green.bold('Finished! 👍 ')}`);
+    const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
+
+    //
+    const maxExtLength = Math.max.apply(
+      null,
+      Object.keys(statistics).map(w => w.length)
+    );
+
+    console.log(`\n${Array(maxExtLength + maxExtLength / 2).join('-')}`);
+    Object.entries(statistics)
+      .sort()
+      .forEach(([extension, types]) => {
+        const content = Object.keys(statusTypes)
+          .map(key => types[key] && chalk[statusTypes[key]].bold(`${types[key]} ${key}`))
+          .filter(Boolean)
+          .join(' ');
+
+        const total = Object.keys(statusTypes).reduce((before, curr) => before + types[curr], 0);
+
+        console.log(
+          `${extension}${Array(maxExtLength - extension.length + maxExtLength / 2).join(
+            ' '
+          )}|  ${content} - ${total} total`
+        );
+      });
+    console.log(`${Array(maxExtLength + maxExtLength / 2).join('-')}\nTime: ${resultTime}s\n`);
   });
 }
 

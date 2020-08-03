@@ -32,19 +32,20 @@ If no command passed it will run `generate` as default
 
 ### Options
 
-| Name              | Alias | Default         | Description                                                                             |
-| ----------------- | ----- | --------------- | --------------------------------------------------------------------------------------- |
-| --source          | -s    | ./src           | Source folder with .js or .ts files                                                     |
-| --dist            | -d    | ./documentation | Destination folder                                                                      |
-| --folder          | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime                            |
-| --title           | -t    | API             | Title of your documentation                                                             |
-| --help            | -h    |                 | Show help                                                                               |
-| --version         | -v    |                 | Show current version                                                                    |
-| --readme          | -r    |                 | Path to custom readme file                                                              |
-| --exclude         | -e    |                 | Pattern to exclude files/folders (Comma seperated) - \*.test.js,exclude.js              |
-| --rmPattern       | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern)              |
-| --partials | -p    |                 | jsdoc2markdown partial templates (overwrites default ones) |
-| --jsDocConfigPath | -c    |                 | Path to [JsDoc Config](http://usejsdoc.org/about-configuring-jsdoc.html) (experimental) |
+| Name              | Alias | Default         | Description                                                                                                                                           |
+| ----------------- | ----- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --source          | -s    | ./src           | Source folder with .js or .ts files                                                                                                                   |
+| --dist            | -d    | ./documentation | Destination folder                                                                                                                                    |
+| --folder          | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime                                                                                          |
+| --title           | -t    | API             | Title of your documentation                                                                                                                           |
+| --help            | -h    |                 | Show help                                                                                                                                             |
+| --version         | -v    |                 | Show current version                                                                                                                                  |
+| --readme          | -r    |                 | Path to custom readme file                                                                                                                            |
+| --exclude         | -e    |                 | Pattern to exclude files/folders (Comma seperated) - \*.test.js,exclude.js                                                                            |
+| --rmPattern       | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern)                                                                            |
+| --partials        | -p    |                 | jsdoc2markdown partial templates (overwrites default ones)                                                                                            |
+| --jsDocConfigPath | -c    |                 | Path to [JsDoc Config](http://usejsdoc.org/about-configuring-jsdoc.html) (experimental)                                                               |
+| --ci              | -     | false           | Set this for your continuous integration tool. This causes errors to be thrown and not ignored. You can also use the global env variable `CI` instead |
 
 ### config.js
 
@@ -79,30 +80,30 @@ Create a `.vuepress` folder inside the `documentation` folder and add the follow
 
 ```javascript
 // auto generated sidebar
-const { sidebarTree } = require("../code/config");
+const { sidebarTree } = require('../code/config');
 
 module.exports = {
-  dest: "dist",
+  dest: 'dist',
   locales: {
-    "/": {
-      title: "vuepress-jsdoc",
-      description: "Generate jsdoc markdown files for vuepress"
+    '/': {
+      title: 'vuepress-jsdoc',
+      description: 'Generate jsdoc markdown files for vuepress'
     }
   },
   themeConfig: {
     editLinks: true,
     sidebarDepth: 4,
-    docsDir: "code",
+    docsDir: 'code',
     locales: {
-      "/": {
+      '/': {
         nav: [
           {
-            text: "Home",
-            link: "/"
+            text: 'Home',
+            link: '/'
           }
         ],
         // Add the generated sidebar
-        sidebar: Object.assign({}, sidebarTree("Mainpage title"))
+        sidebar: Object.assign({}, sidebarTree('Mainpage title'))
       }
     }
   }
@@ -119,7 +120,7 @@ If you want it to be overwritten, set `--rmPattern=./documentation/code/README.m
 
 ## @vuepress comment block
 
-You can add custom meta data your pages by using the `@vuepress` block:
+You can add custom meta data to your pages by using the `@vuepress` block:
 
 ```javascript
 /*

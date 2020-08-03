@@ -1,8 +1,11 @@
 'use strict';
 
-const { checkExtension, getFilename, asyncForEach } = require('../helpers/utils');
+const { checkExtension, getExtension, getFilename, asyncForEach } = require('../helpers/utils');
 
 describe('test utils', () => {
+  test('getExtension should return true', () => {
+    expect(getExtension('./dir/test.jpg')).toBe('.jpg');
+  });
   test('checkExtension should return true', () => {
     expect(checkExtension('./dir/test.jpg', ['.jpg'])).toBe(true);
   });

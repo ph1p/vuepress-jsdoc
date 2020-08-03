@@ -26,7 +26,6 @@ jobs:
           npm test
 
   release:
-    if: github.event.base_ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: test
     steps:
