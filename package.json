@@ -46,8 +46,8 @@
       }
     },
     "testMatch": [
-      "**/tests/**/*.(spec|test).js",
-      "!**/src/tests/**/*"
+      "**/__tests__/**/*.(spec|test).js",
+      "!**/src/__tests__/**/*"
     ],
     "bail": true,
     "verbose": true,

@@ -6,13 +6,11 @@ jobs:
   deploy_example:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: borales/actions-yarn@v2.0.0
+      - uses: actions/setup-node@v1
         with:
-          cmd: install
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: test
+          node-version: '12'
+      - run: npm install
+      - run: npm test
 
       - name: Deploy example to now
         env:
