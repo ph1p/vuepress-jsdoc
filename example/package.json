@@ -12,16 +12,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "vuepress": "^1.4.0"
+    "vuepress": "^1.5.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/preset-typescript": "^7.9.0",
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-typescript": "^7.10.4",
     "jsdoc-babel": "^0.5.0",
-    "jsdoc-to-markdown": "^5.0.3",
-    "typescript": "^3.8.3"
+    "jsdoc-to-markdown": "^6.0.1",
+    "typescript": "^3.9.7"
   }
 }
