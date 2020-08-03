@@ -19,5 +19,6 @@ jobs:
           NOW_PROJECT_ID: ${{ secrets.NOW_PROJECT_ID }}
         run: |
           cd example
+          npm install
           npm run docs
           npx now -c --prod -t ${{ secrets.ZEIT_TOKEN }}
