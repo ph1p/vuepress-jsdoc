@@ -1,9 +1,20 @@
+## 3.2.0 (2020-08-04)
+
+* feat(error): drop ci command and exit with error code ([37d4bd6](https://github.com/ph1p/vuepress-jsdoc/commit/37d4bd6))
+
+
+
 ## 3.1.0 (2020-08-03)
 
-* chore: release 3.1.0 ([3f5ccd7](https://github.com/ph1p/vuepress-jsdoc/commit/3f5ccd7))
-* feat(ci): add new ci parameter and new result box ([62a26a9](https://github.com/ph1p/vuepress-jsdoc/commit/62a26a9)), closes [#31](https://github.com/ph1p/vuepress-jsdoc/issues/31)
 * build(deps): update all dependencies ([7367a9a](https://github.com/ph1p/vuepress-jsdoc/commit/7367a9a))
+* build(example): remove file and switch to npm ([73725ac](https://github.com/ph1p/vuepress-jsdoc/commit/73725ac))
+* build(node): drop node 8 ([cfdbdcd](https://github.com/ph1p/vuepress-jsdoc/commit/cfdbdcd))
 * build(workflow): add master condition ([d6989d3](https://github.com/ph1p/vuepress-jsdoc/commit/d6989d3))
+* build(workflow): add missing install ([07eb952](https://github.com/ph1p/vuepress-jsdoc/commit/07eb952))
+* build(workflow): update workflow file ([e06b0c7](https://github.com/ph1p/vuepress-jsdoc/commit/e06b0c7))
+* build(yarn): drop yarn and use npm instead ([9ef5c7a](https://github.com/ph1p/vuepress-jsdoc/commit/9ef5c7a))
+* chore: release 3.1.0 ([31288bb](https://github.com/ph1p/vuepress-jsdoc/commit/31288bb))
+* feat(ci): add new ci parameter and new result box ([62a26a9](https://github.com/ph1p/vuepress-jsdoc/commit/62a26a9)), closes [#31](https://github.com/ph1p/vuepress-jsdoc/issues/31)
 
 
 
