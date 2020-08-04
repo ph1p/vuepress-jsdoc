@@ -66,17 +66,17 @@
   "dependencies": {
     "bluebird": "^3.7.2",
     "chalk": "^4.1.0",
-    "cross-env": "^7.0.2",
+    "commander": "^6.0.0",
     "del": "^5.1.0",
     "front-matter": "^4.0.2",
     "fs.promised": "^3.0.0",
     "jsdoc-to-markdown": "^6.0.1",
     "micromatch": "^4.0.2",
     "mkdirp": "^1.0.4",
-    "vue-docgen-api": "^4.29.1",
-    "yargs": "^15.4.1"
+    "vue-docgen-api": "^4.29.1"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "@release-it/conventional-changelog": "^1.1.4",
     "eslint": "^7.6.0",
     "husky": "^4.2.5",
@@ -104,8 +104,8 @@
     },
     "extends": "eslint:recommended",
     "globals": {
-      "Atomics": "readable",
-      "SharedArrayBuffer": "readable"
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
       "ecmaVersion": 2018

@@ -2,17 +2,17 @@
 
 ```bash
 # Install dependencies
-yarn
+npm install
 
 # Run the CLI
 vuepress-jsdoc
 
 # Generate docs
-yarn run docs
+npm run docs
 
 # Run dev server
-yarn run dev
+npm run dev
 
 # Generate dist folder
-yarn run build
+npm run build
 ```

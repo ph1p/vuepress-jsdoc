@@ -19,7 +19,7 @@ function generateTags({ tags }) {
 }
 
 function fileContent() {
-  let contentArray = [];
+  const contentArray = [];
   let line = 0;
 
   return {

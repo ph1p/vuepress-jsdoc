@@ -18,15 +18,30 @@ const statistics = {};
 const statusTypes = {
   success: 'green',
   error: 'red',
-  exclude: 'blue',
+  exclude: 'blueBright',
   empty: 'yellow'
 };
 
 const extensions = ['.ts', '.js', '.tsx', '.jsx', '.vue'];
 
+/**A
+ * Add status and count to result
+ * @param {string} file
+ * @param {string} status
+ * @param {boolean} isFolder
+ */
+const addToStatistics = (file, status, isFolder = false) => {
+  const extension = !isFolder ? getExtension(file) : 'folder';
+
+  if (!statistics[extension]) {
+    statistics[extension] = Object.keys(statusTypes).reduce((before, curr) => ({ ...before, [curr]: 0 }), {});
+  }
+  statistics[extension][status]++;
+};
+
 /**
  * Default command that generate md files
- * @param {object} argv Arguments passed by yargs
+ * @param {object} argv passed arguments
  */
 async function generate(argv) {
   const exclude = (argv.exclude && argv.exclude.split(',')) || [argv.exclude || ''];
@@ -40,15 +55,6 @@ async function generate(argv) {
 
   // remove docs folder, except README.md
   const deletedPaths = await del([`${docsFolder}/**/*`, `!${docsFolder}/README.md`, ...rmPattern]);
-
-  const addToStatistics = (file, status, isFolder = false) => {
-    const extension = !isFolder ? getExtension(file) : 'folder';
-
-    if (!statistics[extension]) {
-      statistics[extension] = Object.keys(statusTypes).reduce((before, curr) => ({ ...before, [curr]: 0 }), {});
-    }
-    statistics[extension][status]++;
-  };
 
   /**
    * Read all files in directory
@@ -72,8 +78,8 @@ async function generate(argv) {
 
       // iterate through all files in folder
       await asyncForEach(files, async file => {
-        if (exclude && mm.contains(`${folder}/${file}`, exclude)) {
-          console.log(chalk.black.bgBlue.bold(' EXCLUDE '), `${folder}/${file}`);
+        if (exclude && mm.contains(`${chalk.dim(folder)}/${file}`, exclude)) {
+          console.log(chalk.reset.inverse.bold.blueBright(' EXCLUDE '), `${chalk.dim(folder)}/${chalk.bold(file)}`);
 
           addToStatistics(file, 'exclude');
           return;
@@ -100,9 +106,12 @@ async function generate(argv) {
             }
 
             addToStatistics(file, 'success', true);
-          } catch (err) {
-            console.log(err);
-            console.log(chalk.yellow('cannot create folder, because it already exists'), `${folderPath}/${file}`);
+          } catch (error) {
+            console.log(error.message);
+            console.log(
+              chalk.yellow('cannot create folder, because it already exists'),
+              `${chalk.dim(folderPath)}/${file}`
+            );
 
             addToStatistics(file, 'error', true);
           }
@@ -114,11 +123,7 @@ async function generate(argv) {
           });
 
           // read files from subfolder
-          await readFiles(
-            `${folder}/${file}`,
-            depth + 1,
-            tree.filter(treeItem => file === treeItem.name)[0].children
-          );
+          await readFiles(`${folder}/${file}`, depth + 1, tree.filter(treeItem => file === treeItem.name)[0].children);
         }
         // Else branch accessed when file is not a folder
         else {
@@ -147,16 +152,14 @@ async function generate(argv) {
                 const isConfigExclude = error.message.includes('no input files');
 
                 console.log(
-                  chalk.black.bgRed.bold(isConfigExclude ? ' EXCLUDE BY CONFIG ' : ' ERROR '),
-                  `${folder}/${file} -> ${folderPath}/${fileName}.md`
+                  chalk.reset.inverse.bold.red(isConfigExclude ? ' EXCLUDE BY CONFIG ' : ' ERROR '),
+                  `${chalk.dim(folder)}/${chalk.bold(file)} \u2192 ${chalk.dim(folderPath)}/${chalk.bold(
+                    fileName + '.md'
+                  )}`
                 );
 
                 if (!isConfigExclude) {
                   console.log(error.message);
-
-                  if (process.env.CI || argv.ci) {
-                    throw new Error(error);
-                  }
 
                   addToStatistics(file, 'error');
                 }
@@ -166,7 +169,12 @@ async function generate(argv) {
             if (mdFileData) {
               const { frontmatter, attributes } = parseVuepressComment(fileData);
 
-              console.log(chalk.black.bgGreen.bold(' SUCCESS '), `${folder}/${file} -> ${folderPath}/${fileName}.md`);
+              console.log(
+                chalk.reset.inverse.bold.green(' SUCCESS '),
+                `${chalk.dim(folder)}/${chalk.bold(file)} \u2192 ${chalk.dim(folderPath)}/${chalk.bold(
+                  fileName + '.md'
+                )}`
+              );
 
               let fileContent = '---\n';
 
@@ -201,7 +209,12 @@ async function generate(argv) {
 
               addToStatistics(file, 'success');
             } else {
-              console.log(chalk.black.bgYellow.bold(' EMPTY '), `${folder}/${file} -> ${folderPath}/${fileName}.md`);
+              console.log(
+                chalk.reset.inverse.bold.yellow(' EMPTY '),
+                `${chalk.dim(folder)}/${chalk.bold(file)} \u2192 ${chalk.dim(folderPath)}/${chalk.bold(
+                  fileName + '.md'
+                )}`
+              );
 
               addToStatistics(file, 'empty');
             }
@@ -214,11 +227,7 @@ async function generate(argv) {
       if (error.code === 'ENOENT') {
         console.log('cannot find source folder');
       } else {
-        console.log(error);
-      }
-
-      if (process.env.CI || argv.ci) {
-        throw new Error(error);
+        console.log(error.message);
       }
     }
   };
@@ -263,13 +272,13 @@ async function generate(argv) {
 
     const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
 
-    //
-    const maxExtLength = Math.max.apply(
-      null,
-      Object.keys(statistics).map(w => w.length)
-    );
+    // get longest type string
+    const maxExtLength = Math.max.apply(null, Object.keys(statistics).map(w => w.length));
 
     console.log(`\n${Array(maxExtLength + maxExtLength / 2).join('-')}`);
+
+    const errorCount = Object.keys(statistics).reduce((b, c) => b + statistics[c].error, 0);
+    // iterate trough stats
     Object.entries(statistics)
       .sort()
       .forEach(([extension, types]) => {
@@ -286,7 +295,10 @@ async function generate(argv) {
           )}|  ${content} - ${total} total`
         );
       });
+
     console.log(`${Array(maxExtLength + maxExtLength / 2).join('-')}\nTime: ${resultTime}s\n`);
+
+    process.exit(errorCount ? 1 : 0);
   });
 }
 

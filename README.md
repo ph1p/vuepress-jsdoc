@@ -45,7 +45,6 @@ If no command passed it will run `generate` as default
 | --rmPattern       | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern)                                                                            |
 | --partials        | -p    |                 | jsdoc2markdown partial templates (overwrites default ones)                                                                                            |
 | --jsDocConfigPath | -c    |                 | Path to [JsDoc Config](http://usejsdoc.org/about-configuring-jsdoc.html) (experimental)                                                               |
-| --ci              | -     | false           | Set this for your continuous integration tool. This causes errors to be thrown and not ignored. You can also use the global env variable `CI` instead |
 
 ### config.js
 
@@ -59,7 +58,7 @@ You can add all generated documentation files to your existing vuepress project 
 
 ```bash
 # First install vuepress
-yarn  global add vuepress
+yarn global add vuepress
 
 # Run the CLI
 vuepress-jsdoc
@@ -154,19 +153,19 @@ The `./example` folder includes a full working vuepress-jsdoc example.
 
 ```bash
 # Install dependencies
-yarn
+npm install
 
 # Run the CLI
 vuepress-jsdoc
 
 # Generate docs
-yarn docs
+npm run docs
 
 # Run dev server
-yarn dev
+npm run dev
 
 # Generate dist folder
-yarn build
+npm run build
 ```
 
 ## Contribute
