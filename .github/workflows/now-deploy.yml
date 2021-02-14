@@ -1,31 +1,5 @@
-name: Deploy example on now
-
-on: [push]
-
-jobs:
-  deploy_example:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '12'
-      - run: npm install
-      - run: npm test
-
-      - name: Deploy example to now
-        env:
-          NOW_ORG_ID: ${{ secrets.NOW_ORG_ID }}
-          NOW_PROJECT_ID: ${{ secrets.NOW_PROJECT_ID }}
-        run: |
-          cd example
-          npm install
-          npm run docs
-          npx now -c --prod -t ${{ secrets.ZEIT_TOKEN }}
-
-
 name: Deploy example on vercel
-on: [pull_request]
+on: [push]
 jobs:
   deploy:
     runs-on: ubuntu-latest
