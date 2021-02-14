@@ -7,11 +7,11 @@ const jsdoc2md = require('jsdoc-to-markdown');
 const del = require('del');
 const mm = require('micromatch');
 const chalk = require('chalk');
+const child_process = require('child_process');
 
 const vueSidebar = require('../helpers/vue-sidebar');
 const parseVuepressComment = require('../helpers/comment-parser');
 const { checkExtension, getExtension, getFilename, asyncForEach } = require('../helpers/utils');
-const vueDocToMarkdown = require('../helpers/vue-docgen-to-markdown');
 
 const fileTree = [];
 const statistics = {};
@@ -133,7 +133,12 @@ async function generate(argv) {
             let mdFileData = '';
 
             if (/\.vue$/.test(file)) {
-              mdFileData = await vueDocToMarkdown(`${folder}/${file}`);
+              const nodeModulesPath = path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules');
+              process.chdir(folder);
+              child_process.execSync(`${nodeModulesPath}/.bin/vue-docgen ${file} ${path.join('../', folderPath)}`);
+              process.chdir('../');
+
+              mdFileData = fs.readFileSync(`${folderPath}/${fileName}.md`, 'utf-8');
             } else if (/\.(js|ts|jsx|tsx)$/.test(file) && fileData) {
               const configPath = argv.jsDocConfigPath;
 
@@ -273,7 +278,10 @@ async function generate(argv) {
     const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
 
     // get longest type string
-    const maxExtLength = Math.max.apply(null, Object.keys(statistics).map(w => w.length));
+    const maxExtLength = Math.max.apply(
+      null,
+      Object.keys(statistics).map(w => w.length)
+    );
 
     console.log(`\n${Array(maxExtLength + maxExtLength / 2).join('-')}`);
 
