@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "docs": "../bin/vuepress-jsdoc.js -c ./jsdoc.json --source=./src --dist=./documentation --title=API --exclude=*.test.js --partials=./partials/*.hbs",
+    "docs": "../bin/vuepress-jsdoc.js -c ./jsdoc.json --source=./src --dist=./documentation --title=API --exclude=**/*/*.test.js,class.js --partials=./partials/*.hbs",
     "dev": "vuepress dev documentation",
     "build": "vuepress build documentation"
   },

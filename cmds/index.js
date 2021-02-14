@@ -78,11 +78,13 @@ async function generate(argv) {
 
       // iterate through all files in folder
       await asyncForEach(files, async file => {
-        if (exclude && mm.contains(`${chalk.dim(folder)}/${file}`, exclude)) {
+        let isExcluded = false;
+
+        if (exclude && mm.isMatch(path.join(folder.replace(srcFolder, ''), file), exclude)) {
           console.log(chalk.reset.inverse.bold.blueBright(' EXCLUDE '), `${chalk.dim(folder)}/${chalk.bold(file)}`);
 
           addToStatistics(file, 'exclude');
-          return;
+          isExcluded = true;
         }
 
         const stat = await fs.lstat(`${folder}/${file}`);
@@ -97,9 +99,11 @@ async function generate(argv) {
         if (stat.isDirectory(folder)) {
           // check file length and skip empty folders
           try {
-            let dirFiles = await fs.readdir(`${folder}/${file}`);
+            let dirFiles = await fs.readdir(path.join(folder, file));
 
-            dirFiles = dirFiles.filter(f => !mm.contains(f, exclude));
+            dirFiles = dirFiles.filter(f => {
+              return !mm.isMatch(path.join(folder.replace(srcFolder, ''), file, f), exclude);
+            });
 
             if (dirFiles.length > 0) {
               await fs.mkdir(`${folderPath}/${file}`);
@@ -126,7 +130,7 @@ async function generate(argv) {
           await readFiles(`${folder}/${file}`, depth + 1, tree.filter(treeItem => file === treeItem.name)[0].children);
         }
         // Else branch accessed when file is not a folder
-        else {
+        else if (!isExcluded) {
           // check if extension is correct
           if (checkExtension(file, extensions)) {
             const fileData = await fs.readFile(`${folder}/${file}`, 'utf8');
@@ -229,6 +233,7 @@ async function generate(argv) {
 
       return Promise.resolve(files);
     } catch (error) {
+      console.log(error);
       if (error.code === 'ENOENT') {
         console.log('cannot find source folder');
       } else {
@@ -283,7 +288,7 @@ async function generate(argv) {
       Object.keys(statistics).map(w => w.length)
     );
 
-    console.log(`\n${Array(maxExtLength + maxExtLength / 2).join('-')}`);
+    console.log(`\n${Array(maxExtLength).join('-')}`);
 
     const errorCount = Object.keys(statistics).reduce((b, c) => b + statistics[c].error, 0);
     // iterate trough stats
@@ -298,13 +303,13 @@ async function generate(argv) {
         const total = Object.keys(statusTypes).reduce((before, curr) => before + types[curr], 0);
 
         console.log(
-          `${extension}${Array(maxExtLength - extension.length + maxExtLength / 2).join(
+          `${extension}${Array(Math.round(maxExtLength - extension.length + maxExtLength / 2)).join(
             ' '
           )}|  ${content} - ${total} total`
         );
       });
 
-    console.log(`${Array(maxExtLength + maxExtLength / 2).join('-')}\nTime: ${resultTime}s\n`);
+    console.log(`${Array(maxExtLength).join('-')}\nTime: ${resultTime}s\n`);
 
     process.exit(errorCount ? 1 : 0);
   });
