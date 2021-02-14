@@ -1,5 +1,12 @@
+## 3.4.0 (2021-02-14)
+
+* feat(exclude): update pattern check and fix some bugs ([5b89547](https://github.com/ph1p/vuepress-jsdoc/commit/5b89547))
+
+
+
 ## 3.3.0 (2021-02-14)
 
+* 3.3.0 ([a770921](https://github.com/ph1p/vuepress-jsdoc/commit/a770921))
 * build(github): remove unused code ([7d1e02f](https://github.com/ph1p/vuepress-jsdoc/commit/7d1e02f))
 * build(github): update workflow ([840a521](https://github.com/ph1p/vuepress-jsdoc/commit/840a521))
 * feat(vue): add vue-docgen to support better vue file parsing ([787ca8d](https://github.com/ph1p/vuepress-jsdoc/commit/787ca8d))
