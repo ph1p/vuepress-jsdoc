@@ -1,5 +1,15 @@
+## 3.3.0 (2021-02-14)
+
+* build(github): remove unused code ([7d1e02f](https://github.com/ph1p/vuepress-jsdoc/commit/7d1e02f))
+* build(github): update workflow ([840a521](https://github.com/ph1p/vuepress-jsdoc/commit/840a521))
+* feat(vue): add vue-docgen to support better vue file parsing ([787ca8d](https://github.com/ph1p/vuepress-jsdoc/commit/787ca8d))
+* docs(image): update gif ([cc0153e](https://github.com/ph1p/vuepress-jsdoc/commit/cc0153e))
+
+
+
 ## 3.2.0 (2020-08-04)
 
+* 3.2.0 ([8b9c85d](https://github.com/ph1p/vuepress-jsdoc/commit/8b9c85d))
 * feat(error): drop ci command and exit with error code ([37d4bd6](https://github.com/ph1p/vuepress-jsdoc/commit/37d4bd6))
 
 
