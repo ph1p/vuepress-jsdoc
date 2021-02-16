@@ -138,9 +138,10 @@ async function generate(argv) {
 
             if (/\.vue$/.test(file)) {
               const nodeModulesPath = path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules');
-              process.chdir(folder);
-              child_process.execSync(`${nodeModulesPath}/.bin/vue-docgen ${file} ${path.join('../', folderPath)}`);
-              process.chdir('../');
+              const rootProjectFolder = process.cwd()
+              process.chdir(folder); // Change current working directory to the folder of the current source file
+              child_process.execSync(`${nodeModulesPath}/.bin/vue-docgen ${file} ${path.join(rootProjectFolder, folderPath)}`);
+              process.chdir(rootProjectFolder); // Reset current working directory to root project folder
 
               mdFileData = fs.readFileSync(`${folderPath}/${fileName}.md`, 'utf-8');
             } else if (/\.(js|ts|jsx|tsx)$/.test(file) && fileData) {
