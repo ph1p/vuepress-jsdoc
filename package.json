@@ -1,6 +1,6 @@
 {
   "name": "vuepress-jsdoc",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "Generate jsdoc markdown files for vuepress",
   "main": "index.js",
   "scripts": {
@@ -59,7 +59,7 @@
     "coverageDirectory": "./coverage"
   },
   "bin": {
-    "vuepress-jsdoc": "./bin/vuepress-jsdoc.js"
+    "vuepress-jsdoc": "bin/vuepress-jsdoc.js"
   },
   "dependencies": {
     "bluebird": "^3.7.2",

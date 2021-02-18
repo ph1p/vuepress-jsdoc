@@ -1,5 +1,16 @@
+## <small>3.4.1 (2021-02-18)</small>
+
+* refactor(husky): update commit hooks ([717a5cc](https://github.com/ph1p/vuepress-jsdoc/commit/717a5cc))
+* fix(stats): add condition to check stats length ([afa705b](https://github.com/ph1p/vuepress-jsdoc/commit/afa705b))
+* fix(vue): .vue files can be placed in subfolders ([bbd40d3](https://github.com/ph1p/vuepress-jsdoc/commit/bbd40d3))
+* chore: switch to npm 7 ([f3456ac](https://github.com/ph1p/vuepress-jsdoc/commit/f3456ac))
+* docs(readme): update demo link ([30b0d8f](https://github.com/ph1p/vuepress-jsdoc/commit/30b0d8f))
+
+
+
 ## 3.4.0 (2021-02-14)
 
+* 3.4.0 ([c32392f](https://github.com/ph1p/vuepress-jsdoc/commit/c32392f))
 * feat(exclude): update pattern check and fix some bugs ([5b89547](https://github.com/ph1p/vuepress-jsdoc/commit/5b89547))
 
 
