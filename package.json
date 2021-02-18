@@ -73,6 +73,7 @@
     "jsdoc-to-markdown": "^6.0.1",
     "micromatch": "^4.0.2",
     "mkdirp": "^1.0.4",
+    "shell-quote": "^1.7.2",
     "vue-docgen-cli": "^4.35.0"
   },
   "devDependencies": {

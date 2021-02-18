@@ -8,6 +8,7 @@ const del = require('del');
 const mm = require('micromatch');
 const chalk = require('chalk');
 const child_process = require('child_process');
+const quote = require('shell-quote').quote;
 
 const vueSidebar = require('../helpers/vue-sidebar');
 const parseVuepressComment = require('../helpers/comment-parser');
@@ -138,9 +139,14 @@ async function generate(argv) {
 
             if (/\.vue$/.test(file)) {
               const nodeModulesPath = path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules');
-              const rootProjectFolder = process.cwd()
+              const rootProjectFolder = process.cwd();
               process.chdir(folder); // Change current working directory to the folder of the current source file
-              child_process.execSync(`${nodeModulesPath}/.bin/vue-docgen ${file} ${path.join(rootProjectFolder, folderPath)}`);
+              const shellCommand = quote([
+                `${nodeModulesPath}/.bin/vue-docgen`,
+                file,
+                path.join(rootProjectFolder, folderPath)
+              ]);
+              child_process.execSync(shellCommand);
               process.chdir(rootProjectFolder); // Reset current working directory to root project folder
 
               mdFileData = fs.readFileSync(`${folderPath}/${fileName}.md`, 'utf-8');
@@ -284,10 +290,10 @@ async function generate(argv) {
     const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
 
     // get longest type string
-    const maxExtLength = Math.max.apply(
+    const maxExtLength = Object.keys(statistics).length ? Math.max.apply(
       null,
       Object.keys(statistics).map(w => w.length)
-    );
+    ) : 0;
 
     console.log(`\n${Array(maxExtLength).join('-')}`);
 
