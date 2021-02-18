@@ -9,12 +9,10 @@
     "test-coverage": "cross-env NODE_ENV=test jest --coverage",
     "test-watch": "cross-env NODE_ENV=test jest --watchAll",
     "lint": "eslint ./*/*.js",
-    "version": "conventional-changelog -p karma -i CHANGELOG.md -s -r 0 && git add ."
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "version": "conventional-changelog -p karma -i CHANGELOG.md -s -r 0 && git add .",
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
   },
   "keywords": [
     "jsdoc",
@@ -24,7 +22,7 @@
     "vuepress"
   ],
   "license": "MIT",
-  "author": "Philip Stapelfeldt <phil@capshake.com>",
+  "author": "Philip Stapelfeldt <me@ph1p.dev>",
   "repository": {
     "url": "https://github.com/ph1p/vuepress-jsdoc.git",
     "type": "git"
@@ -83,6 +81,7 @@
     "husky": "^5.0.9",
     "jest": "^26.6.3",
     "lint-staged": "^10.5.4",
+    "pinst": "^2.1.4",
     "release-it": "^14.4.0"
   },
   "lint-staged": {
