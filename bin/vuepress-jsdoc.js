@@ -23,6 +23,7 @@ program
   )
   .option('-p, --partials [files...]', 'jsdoc2markdown partial templates (overwrites default ones)', [])
   .option('-c, --jsDocConfigPath <string>', 'Path to jsdoc config')
+  .option('-l --live', 'Watches for changed source files and regenerates corresponding markdown filesZ')
   .action(generate);
 
 program.parse(process.argv);

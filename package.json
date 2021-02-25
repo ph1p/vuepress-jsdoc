@@ -76,6 +76,7 @@
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^2.0.0",
+    "chokidar": "^3.5.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.20.0",
     "husky": "^5.0.9",

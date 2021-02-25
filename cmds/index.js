@@ -9,10 +9,10 @@ const mm = require('micromatch');
 const chalk = require('chalk');
 const child_process = require('child_process');
 const quote = require('shell-quote').quote;
-
 const vueSidebar = require('../helpers/vue-sidebar');
 const parseVuepressComment = require('../helpers/comment-parser');
-const { checkExtension, getExtension, getFilename, asyncForEach } = require('../helpers/utils');
+const { checkExtension, getExtension, getsrcFilename, asyncForEach } = require('../helpers/utils');
+const chokidar = require('chokidar');
 
 const fileTree = [];
 const statistics = {};
@@ -22,10 +22,9 @@ const statusTypes = {
   exclude: 'blueBright',
   empty: 'yellow'
 };
-
 const extensions = ['.ts', '.js', '.tsx', '.jsx', '.vue'];
 
-/**A
+/**
  * Add status and count to result
  * @param {string} file
  * @param {string} status
@@ -41,10 +40,125 @@ const addToStatistics = (file, status, isFolder = false) => {
 };
 
 /**
+ * Generates markdown doc files of all src files. 
+ * Set argv.live param to true to only regenerate docs of modified src files. Useful when live-preview is desired.
+ *  
+ * @param {*} argv 
+ */
+async function generate(argv) {
+  argv.live ? regenerate(argv) : generateAll(argv);
+}
+
+/**
+ *
+ * @param {*} argv
+ */
+async function regenerate(argv) {
+  const options = {
+    exclude: (argv.exclude && argv.exclude.split(',')) || [argv.exclude || ''],
+    srcFolder: argv.source,
+    codeFolder: argv.folder,
+    docsFolder: `${argv.dist}/${argv.folder}`,
+    title: argv.title,
+    readme: argv.readme,
+    rmPattern: argv.rmPattern || [],
+    partials: argv.partials || []
+  };
+
+  chokidar.watch('./src', { ignoreInitial: true }).on('all', async (event, filePath) => {
+    const validExtension = checkExtension(filePath, extensions);
+    if (validExtension) {
+      console.log(`filePath insider chokidar eventHandler: ${filePath}`);
+      const fileData = await readFile(filePath);
+      let mdFileData = await generateMdFileData(fileData, filePath, options);
+    }
+  });
+}
+
+/**
+ * Returns the filedata of the given file path.
+ * @param {*} filePath
+ */
+async function readFile(filePath) {
+  const fileData = await fs.readFile(filePath, 'utf8');
+  return Promise.resolve(fileData);
+}
+
+/**
+ * Generates markdown file data from given source file data. 
+ * Determines source file type and calls corresponding parser.
+ * Supports vue|js|ts|jsx|tsx.
+ * @param {*} fileData
+ * @param {*} filePath
+ * @param {*} options
+ */
+async function generateMdFileData(fileData, filePath, options) {
+  let mdFileData = '';
+  if (/\.vue$/.test(filePath)) {
+    console.log(`filePath insider generateMdFileData: ${filePath}`);
+    mdFileData = await generateVueMdFileData(fileData, filePath, options);
+  } else if (/\.(js|ts|jsx|tsx)$/.test(path) && fileData) {
+    mdFileData = await generateJsMdFileData(fileData, filePath, options);
+  }
+  return mdFileData;
+}
+
+/**
+ * Generates markdown for a single vue src file
+ * @param {*} fileData
+ * @param {*} filePath
+ * @param {*} options
+ */
+async function generateVueMdFileData(fileData, filePath, options) {
+  const filePathSrcExcluded = filePath.substring(filePath.indexOf('/') + 1);
+  const nodeModulesPath = path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules');
+  const rootProjectFolder = process.cwd();
+  const absoluteFolderPath = `${rootProjectFolder}/${path.parse(filePath).dir}`;
+  const cmdSrcsrcFileName = path.parse(filePath).base;
+  const absoluteDocDestPath = path.join(rootProjectFolder, options.docsFolder, filePathSrcExcluded);
+  const absoluteDocDestPathWithoutsrcFilename = path.dirname(absoluteDocDestPath);
+
+  process.chdir(absoluteFolderPath);
+  
+  const shellCommand = quote([
+    `${nodeModulesPath}/.bin/vue-docgen`,
+    cmdSrcsrcFileName,
+    absoluteDocDestPathWithoutsrcFilename
+  ]);
+
+  child_process.execSync(shellCommand);
+
+  process.chdir(rootProjectFolder);
+
+  const relativeDocFolderPath = path.join(
+    options.docsFolder,
+    path.dirname(filePathSrcExcluded),
+    `${path.parse(filePathSrcExcluded).name}.md`
+  );
+
+  const mdFileData = await fs.readFile(`./${relativeDocFolderPath}`, 'utf-8'); 
+  // TODO: Waits infinitly when creating a new .vue file.
+  // Check if any file is present.
+  // If not create new file. If the file must be placed inside one or more new directories than also create these directories.
+
+  return Promise.resolve(mdFileData);
+}
+
+/**
+ * TODO: Implement.
+ * @param {*} fileData
+ * @param {*} path
+ * @param {*} options
+ */
+async function generateJsMdFileData(fileData, path, options) {
+  return Promise.resolve('generateJsMdFileData');
+}
+
+/**
  * Default command that generate md files
  * @param {object} argv passed arguments
  */
-async function generate(argv) {
+async function generateAll(argv) {
   const exclude = (argv.exclude && argv.exclude.split(',')) || [argv.exclude || ''];
   const srcFolder = argv.source;
   const codeFolder = argv.folder;
@@ -290,10 +404,12 @@ async function generate(argv) {
     const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
 
     // get longest type string
-    const maxExtLength = Object.keys(statistics).length ? Math.max.apply(
-      null,
-      Object.keys(statistics).map(w => w.length)
-    ) : 0;
+    const maxExtLength = Object.keys(statistics).length
+      ? Math.max.apply(
+          null,
+          Object.keys(statistics).map(w => w.length)
+        )
+      : 0;
 
     console.log(`\n${Array(maxExtLength).join('-')}`);
 
