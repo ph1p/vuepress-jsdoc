@@ -11,7 +11,7 @@ const child_process = require('child_process');
 const quote = require('shell-quote').quote;
 const vueSidebar = require('../helpers/vue-sidebar');
 const parseVuepressComment = require('../helpers/comment-parser');
-const { checkExtension, getExtension, getsrcFilename, asyncForEach } = require('../helpers/utils');
+const { checkExtension, getExtension, getFilename, asyncForEach } = require('../helpers/utils');
 const chokidar = require('chokidar');
 
 const fileTree = [];
@@ -40,10 +40,10 @@ const addToStatistics = (file, status, isFolder = false) => {
 };
 
 /**
- * Generates markdown doc files of all src files. 
+ * Generates markdown doc files of all src files.
  * Set argv.live param to true to only regenerate docs of modified src files. Useful when live-preview is desired.
- *  
- * @param {*} argv 
+ *
+ * @param {*} argv
  */
 async function generate(argv) {
   argv.live ? regenerate(argv) : generateAll(argv);
@@ -68,9 +68,9 @@ async function regenerate(argv) {
   chokidar.watch('./src', { ignoreInitial: true }).on('all', async (event, filePath) => {
     const validExtension = checkExtension(filePath, extensions);
     if (validExtension) {
-      console.log(`filePath insider chokidar eventHandler: ${filePath}`);
       const fileData = await readFile(filePath);
       let mdFileData = await generateMdFileData(fileData, filePath, options);
+      parseFrontMatter(mdFileData, fileData, filePath, options); // WIP
     }
   });
 }
@@ -85,7 +85,7 @@ async function readFile(filePath) {
 }
 
 /**
- * Generates markdown file data from given source file data. 
+ * Generates markdown file data from given source file data.
  * Determines source file type and calls corresponding parser.
  * Supports vue|js|ts|jsx|tsx.
  * @param {*} fileData
@@ -95,7 +95,6 @@ async function readFile(filePath) {
 async function generateMdFileData(fileData, filePath, options) {
   let mdFileData = '';
   if (/\.vue$/.test(filePath)) {
-    console.log(`filePath insider generateMdFileData: ${filePath}`);
     mdFileData = await generateVueMdFileData(fileData, filePath, options);
   } else if (/\.(js|ts|jsx|tsx)$/.test(path) && fileData) {
     mdFileData = await generateJsMdFileData(fileData, filePath, options);
@@ -119,7 +118,7 @@ async function generateVueMdFileData(fileData, filePath, options) {
   const absoluteDocDestPathWithoutsrcFilename = path.dirname(absoluteDocDestPath);
 
   process.chdir(absoluteFolderPath);
-  
+
   const shellCommand = quote([
     `${nodeModulesPath}/.bin/vue-docgen`,
     cmdSrcsrcFileName,
@@ -127,7 +126,7 @@ async function generateVueMdFileData(fileData, filePath, options) {
   ]);
 
   child_process.execSync(shellCommand);
-
+  
   process.chdir(rootProjectFolder);
 
   const relativeDocFolderPath = path.join(
@@ -136,10 +135,19 @@ async function generateVueMdFileData(fileData, filePath, options) {
     `${path.parse(filePathSrcExcluded).name}.md`
   );
 
-  const mdFileData = await fs.readFile(`./${relativeDocFolderPath}`, 'utf-8'); 
-  // TODO: Waits infinitly when creating a new .vue file.
-  // Check if any file is present.
-  // If not create new file. If the file must be placed inside one or more new directories than also create these directories.
+  let mdFileData;
+
+  try {
+    fs.access(relativeDocFolderPath, err => {
+      if (err) {
+        fs.writeFileSync(relativeDocFolderPath, '');
+        generateVueMdFileData(fileData, filePath, options);
+      }
+    });
+    mdFileData = fs.readFileSync(relativeDocFolderPath, 'utf-8');
+  } catch {
+    console.log("Something went wrong while reading the markdown data from doc file.");
+  }
 
   return Promise.resolve(mdFileData);
 }
@@ -152,6 +160,51 @@ async function generateVueMdFileData(fileData, filePath, options) {
  */
 async function generateJsMdFileData(fileData, path, options) {
   return Promise.resolve('generateJsMdFileData');
+}
+
+/**
+ * Parses frontmatter from source file if present and regenerates doc file.
+ * @param {*} mdFileData
+ */
+async function parseFrontMatter(mdFileData, fileData, filePath, options) {
+  if (mdFileData) {
+    const { frontmatter, attributes } = parseVuepressComment(fileData);
+    const filePathSrcExcluded = filePath.substring(filePath.indexOf('/') + 1);
+    const relativeDocFolderPath = path.join(options.docsFolder, path.dirname(filePathSrcExcluded));
+    const docSrcFileName = `${path.parse(filePathSrcExcluded).name}.md`;
+    const relativeDocFolderPathWithFileName = `${relativeDocFolderPath}/${docSrcFileName}`;
+    let srcFileName = path.parse(filePathSrcExcluded).name;
+
+    // prefix index with underscore, the generated index.html comes from vuepress
+    if (srcFileName === 'index') {
+      srcFileName = '_index';
+    }
+
+    let fileContent = '---\n';
+
+    fileContent += !attributes || !attributes.title ? `title: ${srcFileName}` : '';
+
+    if (frontmatter) {
+      fileContent += !attributes || !attributes.title ? '\n' : '';
+      fileContent += `${frontmatter}`;
+    }
+
+    fileContent += '\n---\n';
+    if ((attributes && attributes.title) || !/\.vue$/.test(filePath)) {
+      let headline = srcFileName;
+
+      if (attributes && attributes.headline) {
+        headline = attributes.headline;
+      } else if (attributes && attributes.title) {
+        headline = attributes.title;
+      }
+
+      fileContent += `\n# ${headline}\n\n`;
+    }
+    fileContent += mdFileData;
+
+    await fs.writeFileSync(relativeDocFolderPathWithFileName, fileContent);
+  }
 }
 
 /**
