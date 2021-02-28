@@ -1,5 +1,5 @@
 {
-  "name": "@rck-dev/vuepress-jsdoc-rck-dev",
+  "name": "@rck-dev/vuepress-jsdoc",
   "version": "3.5.1",
   "description": "Generate jsdoc markdown files for vuepress",
   "main": "index.js",
