@@ -1,31 +1,39 @@
-const { sidebarTree } = require('../code/config');
+const { sidebarTree } = require('./sidebar');
 
 module.exports = {
   contentLoading: true,
   dest: 'public',
   title: 'Hello vuepress-jsdoc',
   description: 'Just playing around with vuepress-jsdoc',
-  locales: {
-    '/': {
-      title: 'vuepress-jsdoc',
-      description: 'A CLI to create jsdoc md files for vuepress'
-    }
-  },
   themeConfig: {
     sidebarDepth: 4,
-    locales: {
-      '/': {
-        nav: [
-          {
-            text: 'Home',
-            link: '/'
-          }
-        ],
-        // Add the generated sidebar
-        sidebar: {
-          ...sidebarTree('Test')
-        }
+    nav: [
+      {
+        text: 'Home',
+        link: '/'
+      },
+      {
+        text: 'Guides',
+        link: '/guides/'
+      },
+      {
+        text: 'Components',
+        link: '/code/components/'
+      },
+      {
+        text: 'Plugins',
+        link: '/code/plugins/'
       }
+    ],
+    // Add the generated sidebar
+    sidebar: {
+      ...sidebarTree('Home'),
+      '/guides/': [
+        '',
+        '/guides/migration/',
+        '/guides/setup/',
+        '/guides/SCSS/'
+      ]
     }
   }
 };

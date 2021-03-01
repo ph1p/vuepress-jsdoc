@@ -1,7 +1,7 @@
 'use strict';
 
 // create vuepress sidebar
-module.exports = ({ fileTree, codeFolder, title }) => {
+module.exports = ({ fileTree, codeFolder, title, multinav }) => {
   let rootFiles = [['', '::vuepress-jsdoc-title::']];
   rootFiles = rootFiles.concat(fileTree.filter(file => !file.children).map(file => file.name));
 
@@ -14,7 +14,7 @@ module.exports = ({ fileTree, codeFolder, title }) => {
       if (child.children && child.children.length > 0) {
         newChildren = newChildren.concat(buildChildren(child.children, child.name, depth + 1));
       } else if (child.fullPath) {
-        newChildren.push(child.fullPath);
+        multinav ? newChildren.push(`/${codeFolder}/${child.fullPath}`) : newChildren.push(child.fullPath);
       }
     });
 
@@ -27,13 +27,24 @@ module.exports = ({ fileTree, codeFolder, title }) => {
     children: buildChildren(folder.children, folder.name, 0)
   }));
 
-  return {
-    [`/${codeFolder}/`]: [
-      {
-        title,
-        collapsable: false,
-        children: rootFiles
-      }
-    ].concat(tree)
-  };
+  let sidebar;
+
+  if (multinav) {
+    sidebar = {};
+    tree.forEach(folder => {
+      sidebar[`/${codeFolder}/${folder.title}/`] = folder.children;
+    });
+  } else {
+    sidebar = {
+      [`/${codeFolder}/`]: [
+        {
+          title,
+          collapsable: false,
+          children: rootFiles
+        }
+      ].concat(tree)
+    };
+  }
+
+  return sidebar;
 };

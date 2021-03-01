@@ -6,6 +6,7 @@
   "scripts": {
     "docs": "../bin/vuepress-jsdoc.js -c ./jsdoc.json --source=./src --dist=./documentation --title=API --exclude=**/*/*.test.js,class.js --partials=./partials/*.hbs",
     "docs-live": "yarn docs --live",
+    "docs-multi": "yarn docs --multinav",
     "dev": "vuepress dev documentation",
     "dev-live": "concurrently \"vuepress dev documentation\" \"yarn docs-live\"",
     "build": "vuepress build documentation"
