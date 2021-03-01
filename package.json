@@ -1,5 +1,5 @@
 {
-  "name": "@rck-dev/vuepress-jsdoc",
+  "name": "vuepress-jsdoc",
   "version": "3.5.1",
   "description": "Generate jsdoc markdown files for vuepress",
   "main": "index.js",
@@ -24,7 +24,7 @@
   "license": "MIT",
   "author": "Philip Stapelfeldt <me@ph1p.dev>",
   "repository": {
-    "url": "https://github.com/RCK-DEV/vuepress-jsdoc.git",
+    "url": "https://github.com/ph1p/vuepress-jsdoc.git",
     "type": "git"
   },
   "prettier": {
