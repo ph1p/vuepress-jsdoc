@@ -13,6 +13,7 @@ const vueSidebar = require('../helpers/vue-sidebar');
 const parseVuepressComment = require('../helpers/comment-parser');
 const { checkExtension, getExtension, getFilename, asyncForEach } = require('../helpers/utils');
 const chokidar = require('chokidar');
+const cpx = require('cpx');
 
 const fileTree = [];
 const statistics = {};
@@ -126,7 +127,7 @@ async function generateVueMdFileData(fileData, filePath, options) {
   ]);
 
   child_process.execSync(shellCommand);
-  
+
   process.chdir(rootProjectFolder);
 
   const relativeDocFolderPath = path.join(
@@ -146,7 +147,7 @@ async function generateVueMdFileData(fileData, filePath, options) {
     });
     mdFileData = fs.readFileSync(relativeDocFolderPath, 'utf-8');
   } catch {
-    console.log("Something went wrong while reading the markdown data from doc file.");
+    console.log('Something went wrong while reading the markdown data from doc file.');
   }
 
   return Promise.resolve(mdFileData);
@@ -207,6 +208,12 @@ async function parseFrontMatter(mdFileData, fileData, filePath, options) {
   }
 }
 
+function copyMarkdownFiles(argv) {
+  const srcFolder = `${argv.source}/**/*.md`;
+  const docsFolder = `${argv.dist}/${argv.folder}/`;
+  cpx.copySync(srcFolder, docsFolder);
+}
+
 /**
  * Default command that generate md files
  * @param {object} argv passed arguments
@@ -220,6 +227,8 @@ async function generateAll(argv) {
   const readme = argv.readme;
   const rmPattern = argv.rmPattern || [];
   const partials = argv.partials || [];
+  const multinav = argv.multinav;
+  const monorepo = argv.monorepo;
 
   // remove docs folder, except README.md
   const deletedPaths = await del([`${docsFolder}/**/*`, `!${docsFolder}/README.md`, ...rmPattern]);
@@ -419,16 +428,20 @@ async function generateAll(argv) {
   // create docs folder
   mkdirp(docsFolder).then(async () => {
     const startTime = +new Date();
+
     // read folder files
     await readFiles(srcFolder, 0, fileTree);
 
     await fs.writeFile(
-      `${docsFolder}/config.js`,
+      `${argv.dist}/.vuepress/sidebar.js`,
       `exports.fileTree=${JSON.stringify(fileTree)};exports.sidebarTree = (title = 'Mainpage') => (${JSON.stringify(
         vueSidebar({
           fileTree,
           codeFolder,
-          title
+          title,
+          multinav,
+          monorepo,
+          exclude
         })
       ).replace('::vuepress-jsdoc-title::', '"+title+"')});`
     );
@@ -453,6 +466,8 @@ async function generateAll(argv) {
     } catch (e) {
       await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
     }
+
+    copyMarkdownFiles(argv);
 
     const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
 

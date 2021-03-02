@@ -23,7 +23,9 @@ program
   )
   .option('-p, --partials [files...]', 'jsdoc2markdown partial templates (overwrites default ones)', [])
   .option('-c, --jsDocConfigPath <string>', 'Path to jsdoc config')
-  .option('-l --live', 'Watches for changed source files and regenerates corresponding markdown filesZ')
+  .option('-l --live', 'Watches for changed source files and regenerates corresponding markdown files')
+  .option('-m --multinav', 'Creates a sidebar for each main navigation')
+  .option('-m --monorepo', 'Use for monorepo folder structure')
   .action(generate);
 
 program.parse(process.argv);
