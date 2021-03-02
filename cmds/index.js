@@ -228,6 +228,7 @@ async function generateAll(argv) {
   const rmPattern = argv.rmPattern || [];
   const partials = argv.partials || [];
   const multinav = argv.multinav;
+  const monorepo = argv.monorepo;
 
   // remove docs folder, except README.md
   const deletedPaths = await del([`${docsFolder}/**/*`, `!${docsFolder}/README.md`, ...rmPattern]);
@@ -438,7 +439,9 @@ async function generateAll(argv) {
           fileTree,
           codeFolder,
           title,
-          multinav
+          multinav,
+          monorepo,
+          exclude
         })
       ).replace('::vuepress-jsdoc-title::', '"+title+"')});`
     );

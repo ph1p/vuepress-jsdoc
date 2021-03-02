@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "docs": "../bin/vuepress-jsdoc.js -c ./jsdoc.json --source=./src --dist=./documentation --title=API --exclude=**/*/*.test.js,class.js --partials=./partials/*.hbs",
+    "docs": "../bin/vuepress-jsdoc.js -c ./jsdoc.json --source=./src --dist=./documentation --title=API --exclude=**/{*.test.js,__tests__/**},class.js,__tests__ --partials=./partials/*.hbs",
     "docs-live": "yarn docs --live",
     "docs-multi": "yarn docs --multinav",
+    "docs-multi-mono": "yarn docs --multinav --monorepo",
     "dev": "vuepress dev documentation",
     "dev-live": "concurrently \"vuepress dev documentation\" \"yarn docs-live\"",
     "build": "vuepress build documentation"
