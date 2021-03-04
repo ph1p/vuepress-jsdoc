@@ -118,8 +118,6 @@ async function generateVueMdFileData(fileData, filePath, options) {
   const absoluteDocDestPath = path.join(rootProjectFolder, options.docsFolder, filePathSrcExcluded);
   const absoluteDocDestPathWithoutsrcFilename = path.dirname(absoluteDocDestPath);
 
-  process.chdir(absoluteFolderPath);
-
   const shellCommand = quote([
     `${nodeModulesPath}/.bin/vue-docgen`,
     cmdSrcsrcFileName,
@@ -127,8 +125,6 @@ async function generateVueMdFileData(fileData, filePath, options) {
   ]);
 
   child_process.execSync(shellCommand);
-
-  process.chdir(rootProjectFolder);
 
   const relativeDocFolderPath = path.join(
     options.docsFolder,
@@ -214,6 +210,10 @@ function copyMarkdownFiles(argv) {
   cpx.copySync(srcFolder, docsFolder);
 }
 
+function moveGeneratedMarkdownFiles() {
+  
+}
+
 /**
  * Default command that generate md files
  * @param {object} argv passed arguments
@@ -283,7 +283,7 @@ async function generateAll(argv) {
             });
 
             if (dirFiles.length > 0) {
-              await fs.mkdir(`${folderPath}/${file}`);
+              await mkdirp(`${folderPath}/${file}`);
             }
 
             addToStatistics(file, 'success', true);
@@ -314,17 +314,8 @@ async function generateAll(argv) {
             let mdFileData = '';
 
             if (/\.vue$/.test(file)) {
-              const nodeModulesPath = path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules');
-              const rootProjectFolder = process.cwd();
-              process.chdir(folder); // Change current working directory to the folder of the current source file
-              const shellCommand = quote([
-                `${nodeModulesPath}/.bin/vue-docgen`,
-                file,
-                path.join(rootProjectFolder, folderPath)
-              ]);
+              const shellCommand = `yarn run vue-docgen`
               child_process.execSync(shellCommand);
-              process.chdir(rootProjectFolder); // Reset current working directory to root project folder
-
               mdFileData = fs.readFileSync(`${folderPath}/${fileName}.md`, 'utf-8');
             } else if (/\.(js|ts|jsx|tsx)$/.test(file) && fileData) {
               const configPath = argv.jsDocConfigPath;

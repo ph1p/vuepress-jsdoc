@@ -1,2 +1,3 @@
 .vercel
 ./documentation/code/
+documentation/.vuepress/sidebar.js
