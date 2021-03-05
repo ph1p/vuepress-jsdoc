@@ -1,5 +1,13 @@
+## 3.5.0 (2021-03-05)
+
+* build(deps): update dependencies ([01ded9e](https://github.com/ph1p/vuepress-jsdoc/commit/01ded9e))
+* chore(build): trigger sonar scan ([1fa5cf0](https://github.com/ph1p/vuepress-jsdoc/commit/1fa5cf0))
+
+
+
 ## <small>3.4.1 (2021-02-18)</small>
 
+* 3.4.1 ([c249827](https://github.com/ph1p/vuepress-jsdoc/commit/c249827))
 * refactor(husky): update commit hooks ([717a5cc](https://github.com/ph1p/vuepress-jsdoc/commit/717a5cc))
 * fix(stats): add condition to check stats length ([afa705b](https://github.com/ph1p/vuepress-jsdoc/commit/afa705b))
 * fix(vue): .vue files can be placed in subfolders ([bbd40d3](https://github.com/ph1p/vuepress-jsdoc/commit/bbd40d3))
