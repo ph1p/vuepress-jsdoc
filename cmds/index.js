@@ -45,7 +45,7 @@ const addToStatistics = (file, status, isFolder = false) => {
  * @param {object} argv passed arguments
  */
 async function generate(argv) {
-  const exclude = (argv.exclude && argv.exclude.split(',')) || [argv.exclude || ''];
+  const exclude = ((argv.exclude && argv.exclude.split(',')) || [argv.exclude || null]).filter(Boolean);
   const srcFolder = argv.source;
   const codeFolder = argv.folder;
   const docsFolder = `${argv.dist}/${codeFolder}`;
@@ -290,10 +290,12 @@ async function generate(argv) {
     const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
 
     // get longest type string
-    const maxExtLength = Object.keys(statistics).length ? Math.max.apply(
-      null,
-      Object.keys(statistics).map(w => w.length)
-    ) : 0;
+    const maxExtLength = Object.keys(statistics).length
+      ? Math.max.apply(
+          null,
+          Object.keys(statistics).map(w => w.length)
+        )
+      : 0;
 
     console.log(`\n${Array(maxExtLength).join('-')}`);
 
