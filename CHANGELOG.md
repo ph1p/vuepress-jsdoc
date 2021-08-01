@@ -1,5 +1,13 @@
+## 3.6.0 (2021-08-01)
+
+* fix(eslint): update script ([0416c53](https://github.com/ph1p/vuepress-jsdoc/commit/0416c53))
+* fix(exclude): remove empty string from exclude array ([81e9a71](https://github.com/ph1p/vuepress-jsdoc/commit/81e9a71)), closes [#43](https://github.com/ph1p/vuepress-jsdoc/issues/43)
+
+
+
 ## 3.5.0 (2021-03-05)
 
+* 3.5.0 ([caa632c](https://github.com/ph1p/vuepress-jsdoc/commit/caa632c))
 * build(deps): update dependencies ([01ded9e](https://github.com/ph1p/vuepress-jsdoc/commit/01ded9e))
 * chore(build): trigger sonar scan ([1fa5cf0](https://github.com/ph1p/vuepress-jsdoc/commit/1fa5cf0))
 
