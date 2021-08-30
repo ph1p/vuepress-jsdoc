@@ -1,5 +1,14 @@
+## 3.7.0 (2021-08-30)
+
+* fix(docgen): remove not necessary path and use build-in fs.promises ([5e7ba4a](https://github.com/ph1p/vuepress-jsdoc/commit/5e7ba4a)), closes [#44](https://github.com/ph1p/vuepress-jsdoc/issues/44)
+* chore: update package lock in example directory ([fff7d06](https://github.com/ph1p/vuepress-jsdoc/commit/fff7d06))
+* build(deps): update package lock ([7ae6a05](https://github.com/ph1p/vuepress-jsdoc/commit/7ae6a05))
+
+
+
 ## 3.6.0 (2021-08-01)
 
+* 3.6.0 ([83e1672](https://github.com/ph1p/vuepress-jsdoc/commit/83e1672))
 * fix(eslint): update script ([0416c53](https://github.com/ph1p/vuepress-jsdoc/commit/0416c53))
 * fix(exclude): remove empty string from exclude array ([81e9a71](https://github.com/ph1p/vuepress-jsdoc/commit/81e9a71)), closes [#43](https://github.com/ph1p/vuepress-jsdoc/issues/43)
 
