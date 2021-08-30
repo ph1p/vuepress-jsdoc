@@ -64,24 +64,22 @@
     "vuepress-jsdoc": "bin/vuepress-jsdoc.js"
   },
   "dependencies": {
-    "bluebird": "^3.7.2",
     "chalk": "^4.1.2",
     "commander": "^8.1.0",
     "del": "^6.0.0",
     "front-matter": "^4.0.2",
-    "fs.promised": "^3.0.0",
     "jsdoc-to-markdown": "^7.0.1",
     "micromatch": "^4.0.4",
     "mkdirp": "^1.0.4",
     "shell-quote": "^1.7.2",
-    "vue-docgen-cli": "^4.40.0"
+    "vue-docgen-cli": "^4.41.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
-    "husky": "^7.0.1",
-    "jest": "^27.0.6",
-    "lint-staged": "^11.1.1",
+    "husky": "^7.0.2",
+    "jest": "^27.1.0",
+    "lint-staged": "^11.1.2",
     "pinst": "^2.1.6"
   },
   "lint-staged": {

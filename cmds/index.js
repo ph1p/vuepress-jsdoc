@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require('fs.promised/promisify')(require('bluebird'));
+const fs = require('fs').promises;
 const path = require('path');
 const mkdirp = require('mkdirp');
 const jsdoc2md = require('jsdoc-to-markdown');
@@ -138,18 +138,13 @@ async function generate(argv) {
             let mdFileData = '';
 
             if (/\.vue$/.test(file)) {
-              const nodeModulesPath = path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules');
               const rootProjectFolder = process.cwd();
               process.chdir(folder); // Change current working directory to the folder of the current source file
-              const shellCommand = quote([
-                `${nodeModulesPath}/.bin/vue-docgen`,
-                file,
-                path.join(rootProjectFolder, folderPath)
-              ]);
+              const shellCommand = quote(['vue-docgen', file, path.join(rootProjectFolder, folderPath)]);
               child_process.execSync(shellCommand);
               process.chdir(rootProjectFolder); // Reset current working directory to root project folder
 
-              mdFileData = fs.readFileSync(`${folderPath}/${fileName}.md`, 'utf-8');
+              mdFileData = await fs.readFile(`${folderPath}/${fileName}.md`, 'utf-8');
             } else if (/\.(js|ts|jsx|tsx)$/.test(file) && fileData) {
               const configPath = argv.jsDocConfigPath;
 
