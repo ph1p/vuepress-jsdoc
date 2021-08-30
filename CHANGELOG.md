@@ -1,8 +1,16 @@
+## <small>3.7.1 (2021-08-30)</small>
+
+* fix(docgen): remove shell command and import cli module directly ([761b7c9](https://github.com/ph1p/vuepress-jsdoc/commit/761b7c9))
+
+
+
 ## 3.7.0 (2021-08-30)
 
+* build: update node versions ([b3624b7](https://github.com/ph1p/vuepress-jsdoc/commit/b3624b7))
+* build(deps): update package lock ([7ae6a05](https://github.com/ph1p/vuepress-jsdoc/commit/7ae6a05))
+* 3.7.0 ([16352a8](https://github.com/ph1p/vuepress-jsdoc/commit/16352a8))
 * fix(docgen): remove not necessary path and use build-in fs.promises ([5e7ba4a](https://github.com/ph1p/vuepress-jsdoc/commit/5e7ba4a)), closes [#44](https://github.com/ph1p/vuepress-jsdoc/issues/44)
 * chore: update package lock in example directory ([fff7d06](https://github.com/ph1p/vuepress-jsdoc/commit/fff7d06))
-* build(deps): update package lock ([7ae6a05](https://github.com/ph1p/vuepress-jsdoc/commit/7ae6a05))
 
 
 
