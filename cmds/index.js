@@ -1,14 +1,14 @@
 'use strict';
 
-const fs = require('fs').promises;
+const fs = require('fs/promises');
 const path = require('path');
 const mkdirp = require('mkdirp');
 const jsdoc2md = require('jsdoc-to-markdown');
 const del = require('del');
 const mm = require('micromatch');
 const chalk = require('chalk');
-const child_process = require('child_process');
-const quote = require('shell-quote').quote;
+const vueDocgen = require('vue-docgen-cli/lib/docgen').default;
+const extractConfig = require('vue-docgen-cli/lib/extractConfig').default;
 
 const vueSidebar = require('../helpers/vue-sidebar');
 const parseVuepressComment = require('../helpers/comment-parser');
@@ -139,12 +139,17 @@ async function generate(argv) {
 
             if (/\.vue$/.test(file)) {
               const rootProjectFolder = process.cwd();
-              process.chdir(folder); // Change current working directory to the folder of the current source file
-              const shellCommand = quote(['vue-docgen', file, path.join(rootProjectFolder, folderPath)]);
-              child_process.execSync(shellCommand);
-              process.chdir(rootProjectFolder); // Reset current working directory to root project folder
 
-              mdFileData = await fs.readFile(`${folderPath}/${fileName}.md`, 'utf-8');
+              await vueDocgen({
+                ...extractConfig(path.join(rootProjectFolder, folder)),
+                components: file,
+                outDir: path.join(rootProjectFolder, folderPath)
+              });
+
+              // just a small workaround to get the written file
+              await new Promise(resolve => setTimeout(resolve, 200));
+
+              mdFileData = await fs.readFile(`${path.join(rootProjectFolder, folderPath, fileName)}.md`, 'utf-8');
             } else if (/\.(js|ts|jsx|tsx)$/.test(file) && fileData) {
               const configPath = argv.jsDocConfigPath;
 
