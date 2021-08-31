@@ -1,21 +1,18 @@
-'use strict';
+import chalk from 'chalk';
+import del from 'del';
+import fs from 'fs/promises';
+import jsdoc2md from 'jsdoc-to-markdown';
+import mm from 'micromatch';
+import mkdirp from 'mkdirp';
+import path from 'path';
+import vueDocgen, { extractConfig } from 'vue-docgen-cli/lib/docgen';
 
-const fs = require('fs/promises');
-const path = require('path');
-const mkdirp = require('mkdirp');
-const jsdoc2md = require('jsdoc-to-markdown');
-const del = require('del');
-const mm = require('micromatch');
-const chalk = require('chalk');
-const vueDocgen = require('vue-docgen-cli/lib/docgen').default;
-const extractConfig = require('vue-docgen-cli/lib/extractConfig').default;
+import parseVuepressComment from './helpers/comment-parser';
+import { checkExtension, getExtension, getFilename, asyncForEach } from './helpers/utils';
+import vueSidebar from './helpers/vue-sidebar';
 
-const vueSidebar = require('../helpers/vue-sidebar');
-const parseVuepressComment = require('../helpers/comment-parser');
-const { checkExtension, getExtension, getFilename, asyncForEach } = require('../helpers/utils');
-
-const fileTree = [];
-const statistics = {};
+const fileTree: any[] = [];
+const statistics: Record<string, any> = {};
 const statusTypes = {
   success: 'green',
   error: 'red',
@@ -25,13 +22,13 @@ const statusTypes = {
 
 const extensions = ['.ts', '.js', '.tsx', '.jsx', '.vue'];
 
-/**A
+/** A
  * Add status and count to result
  * @param {string} file
  * @param {string} status
  * @param {boolean} isFolder
  */
-const addToStatistics = (file, status, isFolder = false) => {
+const addToStatistics = (file: string, status: string, isFolder = false) => {
   const extension = !isFolder ? getExtension(file) : 'folder';
 
   if (!statistics[extension]) {
@@ -44,8 +41,8 @@ const addToStatistics = (file, status, isFolder = false) => {
  * Default command that generate md files
  * @param {object} argv passed arguments
  */
-async function generate(argv) {
-  const exclude = ((argv.exclude && argv.exclude.split(',')) || [argv.exclude || null]).filter(Boolean);
+export const generate = async (argv: Record<string, string>) => {
+  const exclude = (argv.exclude || '').split(',').filter(Boolean);
   const srcFolder = argv.source;
   const codeFolder = argv.folder;
   const docsFolder = `${argv.dist}/${codeFolder}`;
@@ -63,7 +60,7 @@ async function generate(argv) {
    * @param {number} depth
    * @param {array} tree
    */
-  const readFiles = async (folder, depth, tree) => {
+  const readFiles = async (folder: string, depth: number, tree: any[]) => {
     try {
       // get all files
       const files = await fs.readdir(folder);
@@ -97,7 +94,7 @@ async function generate(argv) {
           fileName = '_index';
         }
 
-        if (stat.isDirectory(folder)) {
+        if (stat.isDirectory()) {
           // check file length and skip empty folders
           try {
             let dirFiles = await fs.readdir(path.join(folder, file));
@@ -111,7 +108,8 @@ async function generate(argv) {
             }
 
             addToStatistics(file, 'success', true);
-          } catch (error) {
+          } catch (e) {
+            const error: Error = e as any;
             console.log(error.message);
             console.log(
               chalk.yellow('cannot create folder, because it already exists'),
@@ -164,7 +162,8 @@ async function generate(argv) {
                     ...partials
                   ]
                 });
-              } catch (error) {
+              } catch (e) {
+                const error: Error = e as any;
                 const isConfigExclude = error.message.includes('no input files');
 
                 console.log(
@@ -194,20 +193,20 @@ async function generate(argv) {
 
               let fileContent = '---\n';
 
-              fileContent += !attributes || !attributes.title ? `title: ${fileName}` : '';
+              fileContent += !attributes?.title ? `title: ${fileName}` : '';
 
               if (frontmatter) {
-                fileContent += !attributes || !attributes.title ? '\n' : '';
+                fileContent += !attributes?.title ? '\n' : '';
                 fileContent += `${frontmatter}`;
               }
 
               fileContent += '\n---\n';
-              if ((attributes && attributes.title) || !/\.vue$/.test(file)) {
+              if (attributes?.title || !/\.vue$/.test(file)) {
                 let headline = fileName;
 
-                if (attributes && attributes.headline) {
+                if (attributes?.headline) {
                   headline = attributes.headline;
-                } else if (attributes && attributes.title) {
+                } else if (attributes?.title) {
                   headline = attributes.title;
                 }
 
@@ -239,7 +238,8 @@ async function generate(argv) {
       });
 
       return Promise.resolve(files);
-    } catch (error) {
+    } catch (e) {
+      const error: { code: string; message: string } = e as any;
       console.log(error);
       if (error.code === 'ENOENT') {
         console.log('cannot find source folder');
@@ -272,7 +272,7 @@ async function generate(argv) {
 
     try {
       readMeContent = await fs.readFile(readmePath, 'utf-8');
-      if (deletedPaths.some(p => ~p.indexOf(`${codeFolder}/README.md`))) {
+      if (deletedPaths.some(p => p.indexOf(`${codeFolder}/README.md`) !== -1)) {
         console.log(`\n${chalk.black.bgYellow('found')} ${readmePath} and copies content to ${docsFolder}/README.md`);
       }
     } catch (e) {
@@ -297,10 +297,10 @@ async function generate(argv) {
         )
       : 0;
 
-    console.log(`\n${Array(maxExtLength).join('-')}`);
-
     const errorCount = Object.keys(statistics).reduce((b, c) => b + statistics[c].error, 0);
+
     // iterate trough stats
+    console.log();
     Object.entries(statistics)
       .sort()
       .forEach(([extension, types]) => {
@@ -318,16 +318,8 @@ async function generate(argv) {
         );
       });
 
-    console.log(`${Array(maxExtLength).join('-')}\nTime: ${resultTime}s\n`);
+    console.log(`\n⏰ Time: ${resultTime}s\n`);
 
     process.exit(errorCount ? 1 : 0);
   });
-}
-
-module.exports = {
-  generate,
-  plugin: (options, ctx) => ({
-    name: 'vuepress-plugin-jsdoc',
-    generate: generate(options, ctx)
-  })
 };

@@ -1,6 +1,4 @@
-'use strict';
-
-const vueSidebar = require('../helpers/vue-sidebar');
+import vueSidebar from '../helpers/vue-sidebar';
 
 describe('test sidebar', () => {
   test('vueSidebar should return valid vue config', () => {

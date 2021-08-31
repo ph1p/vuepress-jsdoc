@@ -1,12 +1,10 @@
-'use strict';
-
 /**
  * Get extension of file
  *
  * @param {string} path
  * @returns extension of file
  */
-const getExtension = path => path.substring(path.length, path.lastIndexOf('.'));
+export const getExtension = (path: string) => path.substring(path.length, path.lastIndexOf('.'));
 
 /**
  * Check if extension ist correct
@@ -15,7 +13,7 @@ const getExtension = path => path.substring(path.length, path.lastIndexOf('.'));
  * @param {array} extensions
  * @returns a boolean
  */
-const checkExtension = (path, extensions) => extensions.indexOf(getExtension(path)) >= 0;
+export const checkExtension = (path: string, extensions: string[]) => extensions.indexOf(getExtension(path)) >= 0;
 
 /**
  * Get filename without extension
@@ -23,28 +21,19 @@ const checkExtension = (path, extensions) => extensions.indexOf(getExtension(pat
  * @param {string} path
  * @returns filename
  */
-const getFilename = path =>
-  (path &&
-    path
-      .split('/')
-      .pop()
-      .substring(0, path.lastIndexOf('.'))) ||
-  '';
+export const getFilename = (path: string) =>
+  path
+    ?.split('/')
+    ?.pop()
+    ?.substring(0, path.lastIndexOf('.')) || '';
 
 /**
  * Async foreach loop
  * @param {array} array
  * @param {function} callback
  */
-const asyncForEach = async function(array, callback) {
+export const asyncForEach = async (array: any[], callback: (result: any, index: number, array: any[]) => void) => {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
   }
-};
-
-module.exports = {
-  getExtension,
-  checkExtension,
-  getFilename,
-  asyncForEach
 };

@@ -1,6 +1,4 @@
-'use strict';
-
-const { checkExtension, getExtension, getFilename, asyncForEach } = require('../helpers/utils');
+import { checkExtension, getExtension, getFilename, asyncForEach } from '../helpers/utils';
 
 describe('test utils', () => {
   test('getExtension should return true', () => {
@@ -16,14 +14,16 @@ describe('test utils', () => {
     expect(getFilename('../path/to/test-file.js')).toBe('test-file.js');
   });
   test('getFilename should return empty string', () => {
+    // @ts-ignore
     expect(getFilename(undefined)).toBe('');
+    // @ts-expect-error check empty method
     expect(getFilename()).toBe('');
   });
   test('asyncForEach should run array async', async () => {
     const promise1 = Promise.resolve(1);
     const promise2 = Promise.resolve(2);
 
-    let results = [];
+    const results: number[] = [];
 
     await asyncForEach([promise1, promise2], async result => {
       results.push(await result);

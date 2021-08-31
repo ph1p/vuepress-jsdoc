@@ -2,12 +2,14 @@
   "name": "vuepress-jsdoc",
   "version": "3.7.1",
   "description": "Generate jsdoc markdown files for vuepress",
-  "main": "index.js",
   "scripts": {
     "test": "jest",
     "test-coverage": "cross-env NODE_ENV=test jest --coverage",
     "test-watch": "cross-env NODE_ENV=test jest --watchAll",
-    "lint": "eslint . --ext js",
+    "lint": "eslint --ext .tsx,.ts,.json,.js src/ --fix",
+    "dev": "npm run build -- -w",
+    "build": "tsc",
+    "prepublish": "npm run build",
     "version": "conventional-changelog -p karma -i CHANGELOG.md -s -r 0 && git add .",
     "postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
@@ -45,14 +47,25 @@
         "statements": -10
       }
     },
-    "testMatch": [
-      "**/__tests__/**/*.(spec|test).js",
-      "!**/src/__tests__/**/*"
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
     ],
     "bail": true,
     "verbose": true,
     "collectCoverageFrom": [
-      "**/*.{js,jsx}",
+      "**/*.{js,jsx,ts,tsx}",
       "!**/node_modules/**",
       "!**/coverage/**",
       "!**/example/**",
@@ -74,19 +87,35 @@
     "vue-docgen-cli": "^4.41.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/jest": "^27.0.1",
+    "@types/jsdoc-to-markdown": "^7.0.1",
+    "@types/micromatch": "^4.0.2",
+    "@types/mkdirp": "^1.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.30.0",
+    "@typescript-eslint/parser": "^4.29.3",
+    "babel-jest": "^27.1.0",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jest": "^24.4.0",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
     "husky": "^7.0.2",
     "jest": "^27.1.0",
     "lint-staged": "^11.1.2",
-    "pinst": "^2.1.6"
+    "pinst": "^2.1.6",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.2"
   },
   "lint-staged": {
-    "**/*.{css,scss,json}": [
+    "src/**/*.{css,scss,json}": [
       "prettier --write",
       "git add"
     ],
-    "**/*.{js,jsx,ts,tsx}": [
+    "src/**/*.{js,jsx,ts,tsx}": [
       "eslint",
       "prettier --write",
       "git add"
