@@ -1,4 +1,4 @@
-import commentParser from '../helpers/comment-parser';
+import commentParser from '../utils/comment-parser';
 
 const template = `/*
 * @vuepress

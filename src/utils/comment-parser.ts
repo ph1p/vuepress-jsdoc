@@ -1,5 +1,7 @@
 import fm from 'front-matter';
 
+import { DirectoryFile } from '../interfaces';
+
 const parseComment = (fileContent: string) => {
   try {
     const allCommentBlocks = fileContent.match(/\/*[\s\S]*\/.*/g);
@@ -29,6 +31,34 @@ const parseComment = (fileContent: string) => {
       attributes: null
     };
   }
+};
+
+export const parseVuepressFileHeader = (content: string, file: DirectoryFile) => {
+  const { frontmatter, attributes } = parseComment(content);
+
+  let fileContent = '---\n';
+
+  fileContent += !attributes?.title ? `title: ${file.name}` : '';
+
+  if (frontmatter) {
+    fileContent += !attributes?.title ? '\n' : '';
+    fileContent += `${frontmatter}`;
+  }
+
+  fileContent += '\n---\n';
+  if (attributes?.title || file.ext !== '.vue') {
+    let headline = file.name;
+
+    if (attributes?.headline) {
+      headline = attributes.headline;
+    } else if (attributes?.title) {
+      headline = attributes.title;
+    }
+
+    fileContent += `\n# ${headline}\n\n`;
+  }
+
+  return fileContent;
 };
 
 export default parseComment;
