@@ -79,10 +79,10 @@ export const parseVueFile = async (
   const relativePathDest = join(destFolder, file.folder.replace(srcFolder, ''));
   const folderInDest = join(root, relativePathDest);
   const folderInSrc = join(root, file.folder);
+
   const config = {
     ...extractConfig(join(root, file.folder)),
-    components: file.name + file.ext,
-    outDir: folderInDest
+    components: file.name + file.ext
   };
 
   let success = true;

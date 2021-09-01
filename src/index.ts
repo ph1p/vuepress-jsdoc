@@ -1,10 +1,13 @@
 import chalk from 'chalk';
 import del from 'del';
+import { join } from 'path';
 import mkdirp from 'mkdirp';
+import fs from 'fs/promises';
 
 import { listFolder } from './lib/list-folder';
 import { parseFile, parseVueFile, writeContentToFile } from './lib/parser';
 import { getExtension } from './lib/utils';
+import { generateVueSidebar } from './lib/vue-sidebar';
 
 const fileTree: any[] = [];
 const statistics: Record<string, any> = {};
@@ -56,6 +59,19 @@ export const generate = async (argv: Record<string, string>) => {
   await mkdirp(docsFolder);
 
   const parsePromises: Promise<any>[] = [];
+
+  console.log();
+  for (const file of filesAndFolder) {
+    if (!file.isDir) {
+      process.stdout.clearLine(-1);
+      process.stdout.cursorTo(0);
+      process.stdout.write(`${chalk.dim(` ${file.path} `)}`);
+      await new Promise(resolve => setTimeout(resolve, 20));
+    }
+  }
+  process.stdout.clearLine(-1);
+  process.stdout.cursorTo(0);
+
   for (const file of filesAndFolder) {
     if (!file.isDir) {
       switch (file.ext) {
@@ -83,6 +99,38 @@ export const generate = async (argv: Record<string, string>) => {
         entry.relativePathDest
       )}${chalk.bold(entry.file.name + '.md')}`
     );
+  }
+
+  // await fs.writeFile(
+  //   `${docsFolder}/config.js`,
+  //   `exports.fileTree=${JSON.stringify(fileTree)};exports.sidebarTree = (title = 'Mainpage') => (${JSON.stringify(
+  //     generateVueSidebar({
+  //       fileTree,
+  //       codeFolder,
+  //       title
+  //     })
+  //   ).replace('::vuepress-jsdoc-title::', '"+title+"')});`
+  // );
+
+  // create README.md
+  let readMeContent = `### Welcome to ${title}`;
+  const readmePath = readme || `${srcFolder}/README.md`;
+
+  try {
+    readMeContent = await fs.readFile(readmePath, 'utf-8');
+    if (deletedPaths.some(p => p.indexOf(`${codeFolder}/README.md`) !== -1)) {
+      console.log(`\n${chalk.black.bgYellow('found')} ${readmePath} and copies content to ${docsFolder}/README.md`);
+    }
+  } catch (e) {
+    console.log(`${chalk.white.bgBlack('skipped')} copy README.md`);
+  }
+
+  // Do nothing if README.md already exists
+  try {
+    readMeContent = await fs.readFile(`${docsFolder}/README.md`, 'utf-8');
+    console.log(`\n${chalk.yellow(`${docsFolder}/README.md already exists`)}`);
+  } catch (e) {
+    await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
   }
 
   const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
