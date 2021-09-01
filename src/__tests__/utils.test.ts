@@ -1,4 +1,4 @@
-import { checkExtension, getExtension, getFilename, asyncForEach } from '../utils';
+import { checkExtension, getExtension, getFilename, asyncForEach } from '../lib/utils';
 
 describe('test utils', () => {
   test('getExtension should return true', () => {

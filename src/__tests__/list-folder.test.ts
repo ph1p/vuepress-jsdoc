@@ -1,6 +1,6 @@
 import { fs, vol } from 'memfs';
 
-import { getFileStructure } from '../utils/file-structure';
+import { listFolder } from '../lib/list-folder';
 
 jest.mock('fs');
 jest.mock('fs/promises', () => fs.promises);
@@ -21,7 +21,7 @@ describe('test file-structure', () => {
       './src'
     );
 
-    expect(await getFileStructure('./src', [])).toEqual([
+    expect(await listFolder('./src', [])).toEqual([
       { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
       { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' },
       { ext: '.vue', folder: 'src/lib/', isDir: false, name: 'file3', path: 'src/lib/file3.vue' },

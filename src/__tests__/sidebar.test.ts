@@ -1,4 +1,4 @@
-import { generateVueSidebar } from '../utils/vue-sidebar';
+import { generateVueSidebar } from '../lib/vue-sidebar';
 
 describe('test sidebar', () => {
   test('generateVueSidebar should return valid vue config', () => {

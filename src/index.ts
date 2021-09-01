@@ -1,9 +1,9 @@
 import del from 'del';
 import mkdirp from 'mkdirp';
 
-import { parseFile, parseVueFile, writeContentToFile } from './parser';
-import { getExtension } from './utils';
-import { getFileStructure } from './utils/file-structure';
+import { listFolder } from './lib/list-folder';
+import { parseFile, parseVueFile, writeContentToFile } from './lib/parser';
+import { getExtension } from './lib/utils';
 
 const fileTree: any[] = [];
 const statistics: Record<string, any> = {};
@@ -50,7 +50,7 @@ export const generate = async (argv: Record<string, string>) => {
   // remove docs folder, except README.md
   const deletedPaths = await del([`${docsFolder}/**/*`, `!${docsFolder}/README.md`, ...rmPattern]);
 
-  const filesAndFolder = await getFileStructure(srcFolder, exclude);
+  const filesAndFolder = await listFolder(srcFolder, exclude);
 
   await mkdirp(docsFolder);
 

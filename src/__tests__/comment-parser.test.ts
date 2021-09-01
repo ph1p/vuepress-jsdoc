@@ -1,4 +1,4 @@
-import { parseComment } from '../utils/comment-parser';
+import { parseComment } from '../lib/comment-parser';
 
 const template = `/*
 * @vuepress

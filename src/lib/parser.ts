@@ -5,8 +5,9 @@ import path from 'path';
 import compileTemplates from 'vue-docgen-cli/lib/compileTemplates';
 import { extractConfig } from 'vue-docgen-cli/lib/docgen';
 
-import { DirectoryFile } from './interfaces';
-import { parseVuepressFileHeader } from './utils/comment-parser';
+import { DirectoryFile } from '../interfaces';
+
+import { parseVuepressFileHeader } from './comment-parser';
 
 interface ParseReturn {
   dest: string;

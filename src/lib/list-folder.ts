@@ -5,7 +5,7 @@ import path from 'path';
 
 import { DirectoryFile } from '../interfaces';
 
-export const getFileStructure = async (srcPath: string, exclude: string[] = [], mainPath?: string) => {
+export const listFolder = async (srcPath: string, exclude: string[] = [], mainPath?: string) => {
   const paths: DirectoryFile[] = [];
   const dirs = await fs.readdir(srcPath, {
     withFileTypes: true
@@ -19,7 +19,7 @@ export const getFileStructure = async (srcPath: string, exclude: string[] = [], 
 
     if (!mm.isMatch(path.join(srcPath.replace(mainPath || srcPath, ''), dirent.name), exclude)) {
       if (isDir) {
-        paths.push(...(await getFileStructure(filePath, exclude, mainPath || srcPath)));
+        paths.push(...(await listFolder(filePath, exclude, mainPath || srcPath)));
       }
 
       if (name === 'index') {
