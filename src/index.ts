@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import del from 'del';
 import mkdirp from 'mkdirp';
 
@@ -73,7 +74,16 @@ export const generate = async (argv: Record<string, string>) => {
     }
   }
 
-  await Promise.all(parsePromises);
+  const result = await Promise.all(parsePromises);
+
+  for (const entry of result.flat()) {
+    console.log(
+      chalk.reset.inverse.bold.green(` ${entry.type.toUpperCase()} `),
+      `${chalk.dim(entry.relativePathSrc)}${chalk.bold(entry.file.name + entry.file.ext)} \u2192 ${chalk.dim(
+        entry.relativePathDest
+      )}${chalk.bold(entry.file.name + '.md')}`
+    );
+  }
 
   const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
 
