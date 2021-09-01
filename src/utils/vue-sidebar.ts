@@ -4,7 +4,15 @@ interface Node {
   children: any[];
 }
 
-export default ({ fileTree, codeFolder, title }: { fileTree: any; codeFolder: string; title: string }) => {
+export const generateVueSidebar = ({
+  fileTree,
+  codeFolder,
+  title
+}: {
+  fileTree: any;
+  codeFolder: string;
+  title: string;
+}) => {
   let rootFiles = [['', '::vuepress-jsdoc-title::']];
   rootFiles = rootFiles.concat(fileTree.filter((file: Node) => !file.children).map((file: Node) => file.name));
 

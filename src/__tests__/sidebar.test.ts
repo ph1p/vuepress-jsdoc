@@ -1,7 +1,7 @@
-import vueSidebar from '../utils/vue-sidebar';
+import { generateVueSidebar } from '../utils/vue-sidebar';
 
 describe('test sidebar', () => {
-  test('vueSidebar should return valid vue config', () => {
+  test('generateVueSidebar should return valid vue config', () => {
     const codeFolder = 'test_folder';
     const title = 'test_folder';
     const fileTree = [
@@ -25,7 +25,7 @@ describe('test sidebar', () => {
       { name: 'tests', children: [] }
     ];
 
-    const sidebar = vueSidebar({ fileTree, codeFolder, title });
+    const sidebar = generateVueSidebar({ fileTree, codeFolder, title });
 
     const result = {
       [`/${codeFolder}/`]: [

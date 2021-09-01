@@ -2,7 +2,7 @@ import fm from 'front-matter';
 
 import { DirectoryFile } from '../interfaces';
 
-const parseComment = (fileContent: string) => {
+export const parseComment = (fileContent: string) => {
   try {
     const allCommentBlocks = fileContent.match(/\/*[\s\S]*\/.*/g);
     const vuepressBlock = allCommentBlocks?.filter((block: string) => {
@@ -60,5 +60,3 @@ export const parseVuepressFileHeader = (content: string, file: DirectoryFile) =>
 
   return fileContent;
 };
-
-export default parseComment;

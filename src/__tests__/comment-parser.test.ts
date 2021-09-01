@@ -1,4 +1,4 @@
-import commentParser from '../utils/comment-parser';
+import { parseComment } from '../utils/comment-parser';
 
 const template = `/*
 * @vuepress
@@ -9,8 +9,8 @@ const template = `/*
 * ---
 */`;
 
-describe('commentParser', () => {
-  const { attributes } = commentParser(template);
+describe('parseComment()', () => {
+  const { attributes } = parseComment(template);
 
   test('Title to be "Your custom title"', () => {
     expect(attributes?.title).toBe('Your custom title');
@@ -23,9 +23,9 @@ describe('commentParser', () => {
   });
 });
 
-describe('commentParser fail', () => {
+describe('parseComment() fail', () => {
   // @ts-expect-error check empty method
-  const { frontmatter } = commentParser();
+  const { frontmatter } = parseComment();
 
   test('fontmatter should be null', () => {
     expect(frontmatter).toBe(null);
