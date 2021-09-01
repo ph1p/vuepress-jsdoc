@@ -1,16 +1,9 @@
-import chalk from 'chalk';
 import del from 'del';
-import fs from 'fs/promises';
-import jsdoc2md from 'jsdoc-to-markdown';
-import mm from 'micromatch';
 import mkdirp from 'mkdirp';
-import path from 'path';
 
-import { parseFile, parseVueFile } from './parser';
-import { checkExtension, getExtension, getFilename, asyncForEach } from './utils';
-import parseVuepressComment from './utils/comment-parser';
+import { parseFile, parseVueFile, writeContentToFile } from './parser';
+import { getExtension } from './utils';
 import { getFileStructure } from './utils/file-structure';
-import vueSidebar from './utils/vue-sidebar';
 
 const fileTree: any[] = [];
 const statistics: Record<string, any> = {};
@@ -68,11 +61,13 @@ export const generate = async (argv: Record<string, string>) => {
         case '.tsx':
         case '.ts':
         case '.js':
-          parsePromises.push(parseFile(file, srcFolder, docsFolder, argv.jsDocConfigPath, partials));
+          parsePromises.push(
+            writeContentToFile(parseFile(file, srcFolder, docsFolder, argv.jsDocConfigPath, partials))
+          );
           break;
         case '.jsx':
         case '.vue':
-          parsePromises.push(parseVueFile(file, srcFolder, docsFolder));
+          parsePromises.push(writeContentToFile(parseVueFile(file, srcFolder, docsFolder)));
           break;
       }
     }

@@ -1,15 +1,18 @@
-import chalk from 'chalk';
-import del from 'del';
 import fs from 'fs/promises';
 import jsdoc2md from 'jsdoc-to-markdown';
-import mm from 'micromatch';
 import mkdirp from 'mkdirp';
 import path from 'path';
 import compileTemplates from 'vue-docgen-cli/lib/compileTemplates';
-import vueDocgen, { extractConfig } from 'vue-docgen-cli/lib/docgen';
+import { extractConfig } from 'vue-docgen-cli/lib/docgen';
 
 import { DirectoryFile } from './interfaces';
 import { parseVuepressFileHeader } from './utils/comment-parser';
+
+interface ParseReturn {
+  dest: string;
+  filename: string;
+  content: string;
+}
 
 export const parseFile = async (
   file: DirectoryFile,
@@ -17,39 +20,48 @@ export const parseFile = async (
   destFolder: string,
   configPath: string,
   partials: string | string[]
-) => {
-  if (!file.folder) return;
+): Promise<ParseReturn | null> => {
+  if (!file.folder) return null;
 
   const root = process.cwd();
   const folderInDest = path.join(root, destFolder, file.folder.replace(srcFolder, ''));
   const folderInSrc = path.join(root, file.folder);
 
-  try {
-    // render file
-    const content = await jsdoc2md.render({
-      files: [`${path.join(folderInSrc, file.name + file.ext)}`],
-      configure: configPath,
-      partial: [
-        path.resolve(__filename, '../../template/header.hbs'),
-        path.resolve(__filename, '../../template/main.hbs'),
-        ...partials
-      ]
-    });
+  // render file
+  const content = await jsdoc2md.render({
+    files: [`${path.join(folderInSrc, file.name + file.ext)}`],
+    configure: configPath,
+    partial: [
+      path.resolve(__filename, '../../template/header.hbs'),
+      path.resolve(__filename, '../../template/main.hbs'),
+      ...partials
+    ]
+  });
 
-    const header = parseVuepressFileHeader(
-      await fs.readFile(`${path.join(folderInSrc, file.name + file.ext)}`, 'utf-8'),
-      file
-    );
+  if (!content) {
+    return null;
+  }
 
-    await mkdirp(folderInDest);
-    await fs.writeFile(`${path.join(folderInDest, file.name)}.md`, `${header}${content}`, 'utf-8');
+  let fileContent = parseVuepressFileHeader(
+    await fs.readFile(`${path.join(folderInSrc, file.name + file.ext)}`, 'utf-8'),
+    file
+  );
 
-    return `${header}${content}`;
-  } catch (e) {}
+  fileContent += content;
+
+  return {
+    dest: folderInDest,
+    filename: file.name,
+    content: fileContent
+  };
 };
 
-export const parseVueFile = async (file: DirectoryFile, srcFolder: string, destFolder: string) => {
-  if (!file.folder) return;
+export const parseVueFile = async (
+  file: DirectoryFile,
+  srcFolder: string,
+  destFolder: string
+): Promise<ParseReturn | null> => {
+  if (!file.folder) return null;
 
   const root = process.cwd();
   const folderInDest = path.join(root, destFolder, file.folder.replace(srcFolder, ''));
@@ -66,18 +78,31 @@ export const parseVueFile = async (file: DirectoryFile, srcFolder: string, destF
     file.name + file.ext
   );
 
+  await fs.unlink(`${path.join(folderInDest, file.name)}.md`);
+
   if (!data.content) {
-    return;
+    return null;
   }
 
   let fileContent = parseVuepressFileHeader(
     await fs.readFile(`${path.join(folderInSrc, file.name + file.ext)}`, 'utf-8'),
     file
   );
+
   fileContent += data.content;
 
-  await mkdirp(folderInDest);
-  await fs.writeFile(`${path.join(folderInDest, file.name)}.md`, fileContent, 'utf-8');
+  return {
+    dest: folderInDest,
+    filename: file.name,
+    content: fileContent
+  };
+};
 
-  return fileContent;
+export const writeContentToFile = async (file: Promise<ParseReturn | null>) => {
+  const data = await file;
+
+  if (data) {
+    await mkdirp(data?.dest);
+    await fs.writeFile(`${path.join(data.dest, data.filename)}.md`, data.content, 'utf-8');
+  }
 };
