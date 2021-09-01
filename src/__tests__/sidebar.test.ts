@@ -1,4 +1,4 @@
-import vueSidebar from '../helpers/vue-sidebar';
+import vueSidebar from '../utils/vue-sidebar';
 
 describe('test sidebar', () => {
   test('vueSidebar should return valid vue config', () => {

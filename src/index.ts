@@ -7,9 +7,9 @@ import mkdirp from 'mkdirp';
 import path from 'path';
 
 import { parseFile, parseVueFile } from './parser';
+import { checkExtension, getExtension, getFilename, asyncForEach } from './utils';
 import parseVuepressComment from './utils/comment-parser';
 import { getFileStructure } from './utils/file-structure';
-import { checkExtension, getExtension, getFilename, asyncForEach } from './utils/utils';
 import vueSidebar from './utils/vue-sidebar';
 
 const fileTree: any[] = [];
