@@ -1,4 +1,4 @@
-import { join } from 'path';
+import fs from 'fs';
 interface Node {
   name: string;
   children: any[];
@@ -23,13 +23,15 @@ export const generateVueSidebar = ({
   const buildChildren = (children: any[], name: string, depth: number) => {
     let newChildren: any[] = [];
 
-    children.forEach(child => {
-      if (child.children && child.children.length > 0) {
-        newChildren = newChildren.concat(buildChildren(child.children, child.name, depth + 1));
-      } else if (child.fullPath) {
-        newChildren.push(child.fullPath.replace(`${srcFolder}/`, ''));
+    for (const child of children) {
+      if (fs.existsSync(child.fullPath)) {
+        if (child.children && child.children.length > 0) {
+          newChildren = newChildren.concat(buildChildren(child.children, child.name, depth + 1));
+        } else if (child.fullPath) {
+          newChildren.push(child.fullPath.replace(`${srcFolder}/`, ''));
+        }
       }
-    });
+    }
 
     return newChildren;
   };
