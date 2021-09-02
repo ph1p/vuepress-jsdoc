@@ -92,7 +92,8 @@ export const generate = async (argv: Record<string, string>) => {
     const color = {
       [StatisticType.SUCCESS]: 'green',
       [StatisticType.ERROR]: 'red',
-      [StatisticType.EMPTY]: 'yellow'
+      [StatisticType.EMPTY]: 'yellow',
+      [StatisticType.EXCLUDE]: 'blue'
     }[entry.type];
 
     console.log(

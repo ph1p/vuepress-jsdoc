@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import fs from 'fs/promises';
 import jsdoc2md from 'jsdoc-to-markdown';
 import mkdirp from 'mkdirp';
@@ -15,7 +16,8 @@ interface ParseReturn {
   dest: string;
   file: DirectoryFile;
   content: string;
-  isEmpty: boolean;
+  empty: boolean;
+  excluded?: boolean;
   relativePathSrc: string;
   relativePathDest: string;
 }
@@ -35,14 +37,17 @@ export const parseFile = async (
   const folderInSrc = join(root, file.folder);
 
   let success = true;
-  let isEmpty = false;
+  let empty = false;
+  let excluded = false;
   let fileContent = '';
 
   // parse file
   try {
-    const content = await jsdoc2md.render({
-      files: [`${join(folderInSrc, file.name + file.ext)}`],
-      configure: join(root, configPath),
+    let content = '';
+
+    content = await jsdoc2md.render({
+      files: [join(file.folder, file.name + file.ext)],
+      configure: configPath,
       partial: [
         resolve(__filename, '../../../template/header.hbs'),
         resolve(__filename, '../../../template/main.hbs'),
@@ -58,17 +63,18 @@ export const parseFile = async (
     if (content) {
       fileContent += content;
     } else {
-      isEmpty = true;
+      empty = true;
     }
   } catch (e) {
-    console.log(e);
     success = false;
+    excluded = true;
   }
 
   return {
     success,
     file,
-    isEmpty,
+    empty,
+    excluded,
     relativePathDest,
     relativePathSrc: file.folder,
     dest: folderInDest,
@@ -94,7 +100,7 @@ export const parseVueFile = async (
   };
 
   let success = true;
-  let isEmpty = false;
+  let empty = false;
   let fileContent = '';
 
   try {
@@ -113,7 +119,7 @@ export const parseVueFile = async (
     if (data.content) {
       fileContent += data.content;
     } else {
-      isEmpty = true;
+      empty = true;
     }
   } catch (e) {
     console.log(e);
@@ -123,7 +129,7 @@ export const parseVueFile = async (
   return {
     success,
     file,
-    isEmpty,
+    empty,
     relativePathDest,
     relativePathSrc: file.folder,
     dest: folderInDest,
@@ -137,6 +143,10 @@ export const writeContentToFile = async (parseData: ParseReturn | null, dest: st
 
   let type = StatisticType.ERROR;
 
+  if (parseData?.excluded) {
+    type = StatisticType.EXCLUDE;
+  }
+
   try {
     if (parseData?.content) {
       const path = `${join(dest, parseData.file.name)}.md`;
@@ -144,7 +154,7 @@ export const writeContentToFile = async (parseData: ParseReturn | null, dest: st
       await mkdirp(dest);
       await fs.writeFile(path, parseData.content, 'utf-8');
 
-      type = parseData?.isEmpty ? StatisticType.EMPTY : StatisticType.SUCCESS;
+      type = parseData?.empty ? StatisticType.EMPTY : StatisticType.SUCCESS;
     }
 
     return {
