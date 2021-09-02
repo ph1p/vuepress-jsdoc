@@ -2,6 +2,8 @@ name: Test and publish to npm
 
 on:
   push:
+    branches:
+      - main
     tags:
       - v*
 
@@ -24,7 +26,6 @@ jobs:
       - run: npm test
 
   release:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: test
     steps:
