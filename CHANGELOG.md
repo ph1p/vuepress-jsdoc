@@ -1,5 +1,15 @@
+## <small>4.0.3 (2021-09-02)</small>
+
+* fix(log): remove log ([631a711](https://github.com/ph1p/vuepress-jsdoc/commit/631a711))
+* build: rename workflow and fix command ([8e2dfe5](https://github.com/ph1p/vuepress-jsdoc/commit/8e2dfe5))
+* docs: update workflow and scripts ([88e8f01](https://github.com/ph1p/vuepress-jsdoc/commit/88e8f01))
+* chore: update ignore files ([9c60b4a](https://github.com/ph1p/vuepress-jsdoc/commit/9c60b4a))
+
+
+
 ## <small>4.0.2 (2021-09-02)</small>
 
+* 4.0.2 ([2654a37](https://github.com/ph1p/vuepress-jsdoc/commit/2654a37))
 * docs: document vuepress-jsdoc with itself ([6c93149](https://github.com/ph1p/vuepress-jsdoc/commit/6c93149))
 
 
