@@ -5,7 +5,7 @@ module.exports = {
   dest: 'public',
   title: 'Hello vuepress-jsdoc',
   description: 'Just playing around with vuepress-jsdoc',
-  plugins: [
+  /*plugins: [
     [
       // require('vuepress-jsdoc')
       require('../../../dist/index.js').default,
@@ -21,7 +21,7 @@ module.exports = {
         watch: true
       }
     ]
-  ],
+  ],*/
   locales: {
     '/': {
       title: 'vuepress-jsdoc',
