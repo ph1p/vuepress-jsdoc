@@ -53,7 +53,7 @@ export const listFolder = async (srcPath: string, exclude: string[] = [], mainPa
       });
     } else {
       // excluded
-      console.log(chalk.reset.inverse.bold.blue('EXCLUDE BY CONFIG '), `${chalk.dim('src')}/${chalk.bold(name + ext)}`);
+      console.log(chalk.reset.inverse.bold.blue('EXCLUDE '), `${chalk.dim('src')}/${chalk.bold(name + ext)}`);
     }
   }
 

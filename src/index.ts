@@ -29,6 +29,7 @@ export const generate = async (argv: Record<string, string>) => {
   const deletedPaths = await del([`${docsFolder}/**/*`, ...rmPattern]);
 
   const { tree, paths } = await listFolder(srcFolder, exclude);
+  console.log();
 
   await mkdirp(docsFolder);
 

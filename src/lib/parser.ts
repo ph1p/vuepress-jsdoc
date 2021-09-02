@@ -15,6 +15,7 @@ interface ParseReturn {
   dest: string;
   file: DirectoryFile;
   content: string;
+  isEmpty: boolean;
   relativePathSrc: string;
   relativePathDest: string;
 }
@@ -34,16 +35,17 @@ export const parseFile = async (
   const folderInSrc = join(root, file.folder);
 
   let success = true;
+  let isEmpty = false;
   let fileContent = '';
 
   // parse file
   try {
     const content = await jsdoc2md.render({
       files: [`${join(folderInSrc, file.name + file.ext)}`],
-      configure: configPath,
+      configure: join(root, configPath),
       partial: [
-        resolve(__filename, '../../template/header.hbs'),
-        resolve(__filename, '../../template/main.hbs'),
+        resolve(__filename, '../../../template/header.hbs'),
+        resolve(__filename, '../../../template/main.hbs'),
         ...partials
       ]
     });
@@ -53,7 +55,11 @@ export const parseFile = async (
       file
     );
 
-    fileContent += content;
+    if (content) {
+      fileContent += content;
+    } else {
+      isEmpty = true;
+    }
   } catch (e) {
     console.log(e);
     success = false;
@@ -62,6 +68,7 @@ export const parseFile = async (
   return {
     success,
     file,
+    isEmpty,
     relativePathDest,
     relativePathSrc: file.folder,
     dest: folderInDest,
@@ -87,6 +94,7 @@ export const parseVueFile = async (
   };
 
   let success = true;
+  let isEmpty = false;
   let fileContent = '';
 
   try {
@@ -102,7 +110,11 @@ export const parseVueFile = async (
       file
     );
 
-    fileContent += data.content;
+    if (data.content) {
+      fileContent += data.content;
+    } else {
+      isEmpty = true;
+    }
   } catch (e) {
     console.log(e);
     success = false;
@@ -111,6 +123,7 @@ export const parseVueFile = async (
   return {
     success,
     file,
+    isEmpty,
     relativePathDest,
     relativePathSrc: file.folder,
     dest: folderInDest,
@@ -122,7 +135,7 @@ export const writeContentToFile = async (parseData: ParseReturn | null, dest: st
   const root = process.cwd();
   dest = join(root, dest);
 
-  let type = parseData?.success ? StatisticType.EMPTY : StatisticType.ERROR;
+  let type = StatisticType.ERROR;
 
   try {
     if (parseData?.content) {
@@ -131,7 +144,7 @@ export const writeContentToFile = async (parseData: ParseReturn | null, dest: st
       await mkdirp(dest);
       await fs.writeFile(path, parseData.content, 'utf-8');
 
-      type = StatisticType.SUCCESS;
+      type = parseData?.isEmpty ? StatisticType.EMPTY : StatisticType.SUCCESS;
     }
 
     return {
