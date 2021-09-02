@@ -26,6 +26,10 @@ export const listFolder = async (srcPath: string, exclude: string[] = [], mainPa
     const ext = path.extname(filePath);
     let name = path.basename(filePath).replace(ext, '');
 
+    if (name === 'index') {
+      name = '_index';
+    }
+
     const file = {
       isDir,
       name,
@@ -37,10 +41,6 @@ export const listFolder = async (srcPath: string, exclude: string[] = [], mainPa
     if (name.toLowerCase() === 'readme') continue;
 
     if (!mm.isMatch(path.join(srcPath.replace(mainPath || srcPath, ''), dirent.name), exclude)) {
-      if (name === 'index') {
-        name = '_index';
-      }
-
       const treeEntry: FileTree = {
         name,
         ...(!isDir ? { path: `/${name}`, fullPath: path.join(srcPath, name), ext } : {})
