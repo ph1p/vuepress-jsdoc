@@ -1,5 +1,46 @@
+## 4.0.0 (2021-09-02)
+
+* refactor: add named exports ([f3297ac](https://github.com/ph1p/vuepress-jsdoc/commit/f3297ac))
+* refactor: start to rewrite the code ([9001695](https://github.com/ph1p/vuepress-jsdoc/commit/9001695))
+* refactor: update file loop ([114d6cf](https://github.com/ph1p/vuepress-jsdoc/commit/114d6cf))
+* refactor: update watch mode and fix some bugs ([7b5debd](https://github.com/ph1p/vuepress-jsdoc/commit/7b5debd))
+* refactor(parser): exclude file writing ([a00ef94](https://github.com/ph1p/vuepress-jsdoc/commit/a00ef94))
+* refactor(regex): simplify regular expression ([413ee2b](https://github.com/ph1p/vuepress-jsdoc/commit/413ee2b))
+* refactor(smells): fix some code smells ([45370ea](https://github.com/ph1p/vuepress-jsdoc/commit/45370ea))
+* build: drop pinst and replace with npm scripts ([fbd03cc](https://github.com/ph1p/vuepress-jsdoc/commit/fbd03cc))
+* build: replace npm i with npm ci ([6097456](https://github.com/ph1p/vuepress-jsdoc/commit/6097456))
+* build: update workflow ([2e31d33](https://github.com/ph1p/vuepress-jsdoc/commit/2e31d33))
+* build: update workflow ([17df727](https://github.com/ph1p/vuepress-jsdoc/commit/17df727))
+* build: update workflow ([f0749ff](https://github.com/ph1p/vuepress-jsdoc/commit/f0749ff))
+* build: update workflow and npmignore file ([5147a6f](https://github.com/ph1p/vuepress-jsdoc/commit/5147a6f))
+* build: update workflow file ([a9f1c17](https://github.com/ph1p/vuepress-jsdoc/commit/a9f1c17))
+* build(babel): remove babel config, it is not needed ([4406baa](https://github.com/ph1p/vuepress-jsdoc/commit/4406baa))
+* build(workflow): update github action files ([4200177](https://github.com/ph1p/vuepress-jsdoc/commit/4200177))
+* chore: move and rename some files ([53c423d](https://github.com/ph1p/vuepress-jsdoc/commit/53c423d))
+* chore: remove vscode folder ([4df9d12](https://github.com/ph1p/vuepress-jsdoc/commit/4df9d12))
+* chore: rename master to main ([5e6ea33](https://github.com/ph1p/vuepress-jsdoc/commit/5e6ea33))
+* fix: update build script ([71f9bfa](https://github.com/ph1p/vuepress-jsdoc/commit/71f9bfa))
+* fix(ci): comment out config code ([1b8870e](https://github.com/ph1p/vuepress-jsdoc/commit/1b8870e))
+* fix(clearLine): use readline module ([9d581e7](https://github.com/ph1p/vuepress-jsdoc/commit/9d581e7))
+* fix(config): exclude files by jsdoc config ([af706c5](https://github.com/ph1p/vuepress-jsdoc/commit/af706c5))
+* fix(file): check if file exists ([91279bb](https://github.com/ph1p/vuepress-jsdoc/commit/91279bb))
+* fix(test): move replacement of filename up ([b59411e](https://github.com/ph1p/vuepress-jsdoc/commit/b59411e))
+* fix(type): handle empty type ([0e2fc24](https://github.com/ph1p/vuepress-jsdoc/commit/0e2fc24))
+* feat(result): print out result of file parsing ([c99cf50](https://github.com/ph1p/vuepress-jsdoc/commit/c99cf50))
+* feat(stdout): start to play around with the log ouput ([9edb992](https://github.com/ph1p/vuepress-jsdoc/commit/9edb992))
+* feat(tree): add file tree and handle readme correctly ([74017df](https://github.com/ph1p/vuepress-jsdoc/commit/74017df))
+* feat(typescript): move to typescript and fix eslint errors ([f4d73c8](https://github.com/ph1p/vuepress-jsdoc/commit/f4d73c8))
+* feat(watch): add chokidar to watch files on cli use and enable to watch files as vuepress plugin ([c9694a3](https://github.com/ph1p/vuepress-jsdoc/commit/c9694a3))
+* test: fix and update tests ([180e13f](https://github.com/ph1p/vuepress-jsdoc/commit/180e13f))
+* test: fix tests ([b2a7481](https://github.com/ph1p/vuepress-jsdoc/commit/b2a7481))
+* test: update tests and add file check in vupress config generator ([c1b9e16](https://github.com/ph1p/vuepress-jsdoc/commit/c1b9e16))
+* docs: upload preview gif to github ([6143547](https://github.com/ph1p/vuepress-jsdoc/commit/6143547))
+
+
+
 ## <small>3.7.1 (2021-08-30)</small>
 
+* 3.7.1 ([dd6a1d0](https://github.com/ph1p/vuepress-jsdoc/commit/dd6a1d0))
 * fix(docgen): remove shell command and import cli module directly ([761b7c9](https://github.com/ph1p/vuepress-jsdoc/commit/761b7c9))
 
 
