@@ -1,9 +1,18 @@
-# Home
+## Example
 
-## Section 1
+```bash
+# Install dependencies
+npm install
 
-Section 1
+# Run the CLI
+vuepress-jsdoc
 
-## Section 2
+# Generate docs
+npm run docs
 
-Section 2
+# Run dev server
+npm run dev
+
+# Generate dist folder
+npm run build
+```

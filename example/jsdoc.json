@@ -22,6 +22,6 @@
   "recurseDepth": 10,
   "source": {
     "includePattern": ".+\\.(js|ts)(doc|x)?$",
-    "excludePattern": ".+\\.(test|spec).ts"
+    "excludePattern": ".+\\.(test|spec).js"
   }
 }

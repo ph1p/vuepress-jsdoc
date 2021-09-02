@@ -1,10 +1,20 @@
-// create vuepress sidebar
+import { join } from 'path';
 interface Node {
   name: string;
   children: any[];
 }
 
-export default ({ fileTree, codeFolder, title }: { fileTree: any; codeFolder: string; title: string }) => {
+export const generateVueSidebar = ({
+  fileTree,
+  codeFolder,
+  srcFolder,
+  title
+}: {
+  fileTree: any;
+  codeFolder: string;
+  srcFolder: string;
+  title: string;
+}) => {
   let rootFiles = [['', '::vuepress-jsdoc-title::']];
   rootFiles = rootFiles.concat(fileTree.filter((file: Node) => !file.children).map((file: Node) => file.name));
 
@@ -17,7 +27,7 @@ export default ({ fileTree, codeFolder, title }: { fileTree: any; codeFolder: st
       if (child.children && child.children.length > 0) {
         newChildren = newChildren.concat(buildChildren(child.children, child.name, depth + 1));
       } else if (child.fullPath) {
-        newChildren.push(child.fullPath);
+        newChildren.push(child.fullPath.replace(`${srcFolder}/`, ''));
       }
     });
 

@@ -6,8 +6,7 @@
 
 This npm package is a command line script, which scans your JavaScript, Vue or Typescript source code and generates markdown files for vuepress with the help of [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown) and [vue-docgen-cli](https://github.com/vue-styleguidist/vue-styleguidist/tree/dev/packages/vue-docgen-cli).
 
-![CLI ./example](/example/img/cli.gif)
-
+![CLI ./example](https://user-images.githubusercontent.com/15351728/131877824-0124e47f-9080-4976-88d0-84ad04b64f24.gif)
 ## How to
 
 ```bash
