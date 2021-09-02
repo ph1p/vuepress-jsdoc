@@ -14,11 +14,7 @@ module.exports = {
         jsDocConfigPath: './jsdoc.json',
         source: './src',
         dist: './documentation',
-        title: 'API',
-        exclude: 'class.js',
-        partials: './partials/*.hbs',
-        readme: './README.md',
-        watch: true
+        title: 'API'
       }
     ]
   ],*/

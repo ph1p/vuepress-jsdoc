@@ -2,6 +2,7 @@
   "name": "vuepress-jsdoc",
   "version": "3.7.1",
   "description": "Generate jsdoc markdown files for vuepress",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "test-coverage": "cross-env NODE_ENV=test jest --coverage",
@@ -9,7 +10,7 @@
     "lint": "eslint --ext .tsx,.ts,.json,.js src/ --fix",
     "dev": "npm run build -- -w",
     "build": "tsc",
-    "prepublishOnly": "npm ci && npm run build",
+    "prepublishOnly": "npm i && npm run build",
     "prepare": "husky install",
     "version": "conventional-changelog -p karma -i CHANGELOG.md -s -r 0 && git add ."
   },

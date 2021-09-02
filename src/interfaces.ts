@@ -29,3 +29,10 @@ export interface ParseReturn {
   relativePathSrc: string;
   relativePathDest: string;
 }
+
+export interface FileTree {
+  name: string;
+  path?: string;
+  fullPath?: string;
+  children?: FileTree[];
+}

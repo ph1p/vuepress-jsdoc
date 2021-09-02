@@ -41,6 +41,28 @@ const parseDirectoryFile = async (file: DirectoryFile, argv: CLIArguments) => {
   }
 };
 
+const createReadmeFile = async (argv: CLIArguments, deletedPaths?: string[]) => {
+  const { srcFolder, codeFolder, docsFolder, title, readme } = parseArguments(argv);
+
+  let readMeContent = `### Welcome to ${title}`;
+  const readmePath = readme || `${srcFolder}/README.md`;
+
+  try {
+    readMeContent = await fs.readFile(readmePath, 'utf-8');
+    if (deletedPaths?.some(p => p.indexOf(`${codeFolder}/README.md`) !== -1)) {
+      console.log(
+        `\n${chalk.white.bgBlack(' README ')} ${chalk.dim(readmePath.replace('README.md', ''))}${chalk.bold(
+          'README.md'
+        )} \u2192  ${chalk.dim(docsFolder)}${chalk.bold('/README.md')}`
+      );
+    }
+  } catch (e) {
+    console.log(`\n${chalk.white.bgBlack(' README ')} Add default README.md`);
+  }
+
+  await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
+};
+
 const parseArguments = (argv: CLIArguments) => {
   return {
     exclude: (argv.exclude || '').split(',').filter(Boolean),
@@ -59,7 +81,7 @@ const parseArguments = (argv: CLIArguments) => {
  * @param {object} argv passed arguments
  */
 export const generate = async (argv: CLIArguments) => {
-  const { exclude, srcFolder, codeFolder, docsFolder, title, readme, rmPattern } = parseArguments(argv);
+  const { exclude, srcFolder, codeFolder, docsFolder, title, rmPattern } = parseArguments(argv);
 
   const startTime = +new Date();
 
@@ -133,27 +155,7 @@ export const generate = async (argv: CLIArguments) => {
   }
 
   // create README.md
-  let readMeContent = `### Welcome to ${title}`;
-  const readmePath = readme || `${srcFolder}/README.md`;
-
-  try {
-    readMeContent = await fs.readFile(readmePath, 'utf-8');
-    if (deletedPaths.some(p => p.indexOf(`${codeFolder}/README.md`) !== -1)) {
-      console.log(
-        `\n${chalk.white.bgBlack(' README ')} ${chalk.dim(readmePath.replace('README.md', ''))}${chalk.bold(
-          'README.md'
-        )} \u2192  ${chalk.dim(docsFolder)}${chalk.bold('/README.md')}`
-      );
-    }
-  } catch (e) {
-    console.log(`\n${chalk.white.bgBlack(' README ')} Add default README.md`);
-  }
-
-  try {
-    await fs.access(`${docsFolder}/README.md`);
-  } catch (e) {
-    await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
-  }
+  await createReadmeFile(argv, deletedPaths);
 
   const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
 
@@ -167,7 +169,7 @@ const watchFiles = (argv: CLIArguments) => {
 
   if (argv.watch) {
     console.log('\n---\n\n👀 watching files...');
-    const watcher = chokidar.watch(srcFolder, {
+    const watcher = chokidar.watch([srcFolder, argv.readme, `${srcFolder}/README.md`].filter(Boolean), {
       ignored: /(^|[\/\\])\../,
       persistent: true
     });
@@ -176,10 +178,16 @@ const watchFiles = (argv: CLIArguments) => {
       const lsFolder = await listFolder(srcFolder, exclude);
       const file = lsFolder.paths.find(p => p.path === path);
 
+      readline.clearLine(process.stdout, 0);
+      readline.cursorTo(process.stdout, 0);
+
+      if (path === 'README.md' || path === `${srcFolder}/README.md`) {
+        await createReadmeFile(argv);
+      }
+
       if (file) {
-        readline.clearLine(process.stdout, 0);
-        readline.cursorTo(process.stdout, 0);
         process.stdout.write(chalk.dim(`update ${file.name + file.ext}`));
+
         const data = await parseDirectoryFile(file, argv);
         if (data) {
           await writeContentToFile(data.content, data.dest);
@@ -201,6 +209,7 @@ export default (argv: CLIArguments, ctx) => ({
   name: 'vuepress-plugin-jsdoc',
   ready: async () => {
     if (!ctx.isProd) {
+      argv.watch = true;
       watchFiles(argv);
     }
   }

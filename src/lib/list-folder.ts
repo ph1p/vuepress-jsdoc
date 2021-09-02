@@ -2,14 +2,7 @@ import fs from 'fs/promises';
 import mm from 'micromatch';
 import path from 'path';
 
-import { DirectoryFile } from '../interfaces';
-
-interface FileTree {
-  name: string;
-  path?: string;
-  fullPath?: string;
-  children?: FileTree[];
-}
+import { DirectoryFile, FileTree } from '../interfaces';
 
 export const listFolder = async (srcPath: string, exclude: string[] = [], mainPath?: string, tree: FileTree[] = []) => {
   const paths: DirectoryFile[] = [];

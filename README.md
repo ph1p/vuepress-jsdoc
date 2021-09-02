@@ -22,6 +22,32 @@ npm i vuepress-jsdoc -g
 vuepress-jsdoc --source ./src --dist ./documentation --folder code --title API --exclude=**/*/*.test.js
 ```
 
+#### Plugin (Dev-Mode) `alpha`
+
+You can use `vuepress-jsdoc` also as plugin.
+This plugin watches you generated files.
+
+```javascript
+// .vuepress/config.js
+plugins: [
+  [
+    require('vuepress-jsdoc').default,
+    {
+      folder: 'code',
+      jsDocConfigPath: './jsdoc.json',
+      source: './src',
+      dist: './documentation',
+      title: 'API'
+    }
+  ]
+];
+```
+
+#### Watch-Mode `alpha`
+
+If you do not want to run`vuepress-jsdoc` again and again and again.
+You can simply pass `--watch` or `-w`.
+
 ### Commands
 
 If no command passed it will run `generate` as default
@@ -45,6 +71,7 @@ If no command passed it will run `generate` as default
 | --rmPattern       | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern)                                                                      |
 | --partials        | -p    |                 | jsdoc2markdown partial templates (overwrites default ones)                                                                                      |
 | --jsDocConfigPath | -c    |                 | Path to [JsDoc Config](http://usejsdoc.org/about-configuring-jsdoc.html) (experimental)                                                         |
+| --watch           | -w    |                 | Watch changes and update markdown files                                                                                                         |
 
 ### config.js
 
