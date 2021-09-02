@@ -3,6 +3,7 @@ import del from 'del';
 import fs from 'fs/promises';
 import mkdirp from 'mkdirp';
 import { join } from 'path';
+import readline from 'readline';
 
 import { StatisticType } from './constants';
 import { listFolder } from './lib/list-folder';
@@ -51,14 +52,14 @@ export const generate = async (argv: Record<string, string>) => {
   // print out all files
   for (const file of paths) {
     if (!file.isDir) {
-      process.stdout.clearLine(-1);
-      process.stdout.cursorTo(0);
+      readline.clearLine(process.stdout, 0);
+      readline.cursorTo(process.stdout, 0);
       process.stdout.write(`${chalk.dim(` ${file.path} `)}`);
       await new Promise(resolve => setTimeout(resolve, 20));
     }
   }
-  process.stdout.clearLine(-1);
-  process.stdout.cursorTo(0);
+  readline.clearLine(process.stdout, 0);
+  readline.cursorTo(process.stdout, 0);
 
   // iterate through files and parse them
   for (const file of paths) {
