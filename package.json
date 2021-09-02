@@ -85,9 +85,6 @@
     "vue-docgen-cli": "^4.41.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
-    "@babel/preset-env": "^7.15.0",
-    "@babel/preset-typescript": "^7.15.0",
     "@types/jest": "^27.0.1",
     "@types/jsdoc-to-markdown": "^7.0.1",
     "@types/micromatch": "^4.0.2",
