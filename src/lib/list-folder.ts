@@ -17,16 +17,17 @@ export const listFolder = async (srcPath: string, exclude: string[] = [], mainPa
     const isDir = dirent.isDirectory();
     const ext = path.extname(filePath);
     let name = path.basename(filePath).replace(ext, '');
+    const folder = filePath.replace(name, '').replace(ext, '');
 
     if (name === 'index') {
-      name = '_index';
+      name = '__index__';
     }
 
     const file = {
       isDir,
       name,
       path: filePath,
-      ...(!isDir ? { ext, folder: filePath.replace(name, '').replace(ext, '') } : {})
+      ...(!isDir ? { ext, folder } : {})
     };
 
     // skip readmes as they are automatically resolved

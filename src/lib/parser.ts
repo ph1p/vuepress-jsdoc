@@ -32,9 +32,13 @@ export const parseFile = async (
   // parse file
   try {
     let content = '';
+    let fileName = file.name;
+    if (fileName === '__index__') {
+      fileName = 'index';
+    }
 
     content = await jsdoc2md.render({
-      files: [join(file.folder, file.name + file.ext)],
+      files: [join(process.cwd(), file.folder, fileName + file.ext)],
       configure: configPath,
       partial: [
         resolve(__filename, '../../../template/header.hbs'),
@@ -44,7 +48,7 @@ export const parseFile = async (
     });
 
     fileContent = parseVuepressFileHeader(
-      await fs.readFile(`${join(folderInSrc, file.name + file.ext)}`, 'utf-8'),
+      await fs.readFile(`${join(folderInSrc, fileName + file.ext)}`, 'utf-8'),
       file
     );
 
@@ -92,15 +96,15 @@ export const parseVueFile = async (
   let fileContent = '';
 
   try {
+    let fileName = file.name;
+    if (fileName === '__index__') {
+      fileName = 'index';
+    }
     // parse file
-    const data = await compileTemplates(
-      join(config.componentsRoot, file.name + file.ext),
-      config,
-      file.name + file.ext
-    );
+    const data = await compileTemplates(join(config.componentsRoot, fileName + file.ext), config, fileName + file.ext);
 
     fileContent = parseVuepressFileHeader(
-      await fs.readFile(`${join(folderInSrc, file.name + file.ext)}`, 'utf-8'),
+      await fs.readFile(`${join(folderInSrc, fileName + file.ext)}`, 'utf-8'),
       file
     );
 
