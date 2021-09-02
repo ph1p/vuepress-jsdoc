@@ -46,7 +46,6 @@ export const parseComment = (fileContent: string) => {
  */
 export const parseVuepressFileHeader = (content: string, file: DirectoryFile) => {
   const { frontmatter, attributes } = parseComment(content);
-  console.log({ frontmatter, attributes });
 
   let fileContent = '---\n';
 
