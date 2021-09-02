@@ -35,7 +35,7 @@ export const listFolder = async (srcPath: string, exclude: string[] = [], mainPa
 
       const treeEntry: FileTree = {
         name,
-        ...(!isDir ? { path: `/${name}`, fullPath: path.join(srcPath, name) } : {})
+        ...(!isDir ? { path: `/${name}`, fullPath: path.join(srcPath, name), ext } : {})
       };
 
       tree.push(treeEntry);

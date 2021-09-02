@@ -1,41 +1,37 @@
 import { generateVueSidebar } from '../lib/vue-sidebar';
 
+jest.mock('fs', () => ({
+  existsSync: () => true
+}));
+
 describe('test sidebar', () => {
   test('generateVueSidebar should return valid vue config', () => {
     const codeFolder = 'test_folder';
     const title = 'test_folder';
     const srcFolder = 'test_folder';
+    const docsFolder = 'test_folder';
 
     const fileTree = [
-      { name: 'class', path: '/class', fullPath: './documentation/test_folder/class' },
+      { fullPath: 'src/file1', name: 'file1', path: '/file1', ext: '.js' },
+      { fullPath: 'src/file2', name: 'file2', path: '/file2', ext: '.ts' },
       {
-        name: 'lib',
         children: [
-          { name: 'test1', path: '/test1', fullPath: './documentation/test_folder/test1' },
-          {
-            name: 'test2',
-            path: '/test2',
-            fullPath: './documentation/test_folder/test2',
-            children: [
-              { name: 'test3', path: '/test3', fullPath: './documentation/test_folder/test2/test3' },
-              { name: 'test4', path: '/test4', fullPath: './documentation/test_folder/test2/test4' }
-            ]
-          }
-        ]
-      },
-      { name: 'test', path: '/test', fullPath: './documentation/test_folder/test' },
-      { name: 'tests', children: [] }
+          { fullPath: 'src/lib/file3', name: 'file3', path: '/file3', ext: '.vue' },
+          { fullPath: 'src/lib/_index', name: '_index', path: '/_index', ext: '.js' }
+        ],
+        name: 'lib'
+      }
     ];
 
-    const sidebar = generateVueSidebar({ fileTree, codeFolder, srcFolder, title });
+    const sidebar = generateVueSidebar({ fileTree, codeFolder, docsFolder, srcFolder, title });
 
     const result = {
       [`/${codeFolder}/`]: [
-        { title, collapsable: false, children: [['', '::vuepress-jsdoc-title::'], 'class', 'test'] },
+        { title, collapsable: false, children: [['', '::vuepress-jsdoc-title::'], 'file1', 'file2'] },
         {
           title: 'lib',
           collapsable: false,
-          children: ['./documentation/test1', './documentation/test2/test3', './documentation/test2/test4']
+          children: ['src/lib/file3', 'src/lib/_index']
         }
       ]
     };

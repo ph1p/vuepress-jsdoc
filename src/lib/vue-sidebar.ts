@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { join } from 'path';
 interface Node {
   name: string;
   children: any[];
@@ -8,11 +9,13 @@ export const generateVueSidebar = ({
   fileTree,
   codeFolder,
   srcFolder,
+  docsFolder,
   title
 }: {
   fileTree: any;
   codeFolder: string;
   srcFolder: string;
+  docsFolder: string;
   title: string;
 }) => {
   let rootFiles = [['', '::vuepress-jsdoc-title::']];
@@ -24,10 +27,10 @@ export const generateVueSidebar = ({
     let newChildren: any[] = [];
 
     for (const child of children) {
-      if (fs.existsSync(child.fullPath)) {
-        if (child.children && child.children.length > 0) {
-          newChildren = newChildren.concat(buildChildren(child.children, child.name, depth + 1));
-        } else if (child.fullPath) {
+      if (child.children && child.children.length > 0) {
+        newChildren = newChildren.concat(buildChildren(child.children, child.name, depth + 1));
+      } else if (child.fullPath) {
+        if (fs.existsSync(join(docsFolder, child.fullPath.replace(srcFolder, '')) + '.md')) {
           newChildren.push(child.fullPath.replace(`${srcFolder}/`, ''));
         }
       }

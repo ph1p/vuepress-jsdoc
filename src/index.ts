@@ -36,19 +36,6 @@ export const generate = async (argv: Record<string, string>) => {
 
   const parsePromises: Promise<any>[] = [];
 
-  // write vuepress sidebar
-  await fs.writeFile(
-    `${docsFolder}/config.js`,
-    `exports.fileTree=${JSON.stringify(tree)};exports.sidebarTree = (title = 'Mainpage') => (${JSON.stringify(
-      generateVueSidebar({
-        fileTree: tree,
-        srcFolder,
-        codeFolder,
-        title
-      })
-    ).replace('::vuepress-jsdoc-title::', '"+title+"')});`
-  );
-
   // print out all files
   for (const file of paths) {
     if (!file.isDir) {
@@ -85,6 +72,20 @@ export const generate = async (argv: Record<string, string>) => {
 
   // wait unitl all files resolved
   const result = await Promise.all(parsePromises);
+
+  // write vuepress sidebar
+  await fs.writeFile(
+    `${docsFolder}/config.js`,
+    `exports.fileTree=${JSON.stringify(tree)};exports.sidebarTree = (title = 'Mainpage') => (${JSON.stringify(
+      generateVueSidebar({
+        fileTree: tree,
+        srcFolder,
+        docsFolder,
+        codeFolder,
+        title
+      })
+    ).replace('::vuepress-jsdoc-title::', '"+title+"')});`
+  );
 
   // print stats
   for (const entry of result.flat()) {

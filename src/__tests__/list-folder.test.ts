@@ -2,7 +2,7 @@ import { fs, vol } from 'memfs';
 
 import { listFolder } from '../lib/list-folder';
 
-jest.mock('fs');
+jest.mock('fs', () => fs);
 jest.mock('fs/promises', () => fs.promises);
 
 describe('test file-structure', () => {
@@ -30,12 +30,12 @@ describe('test file-structure', () => {
     ]);
 
     expect((await listFolder('./src', [])).tree).toEqual([
-      { fullPath: 'src/file1', name: 'file1', path: '/file1' },
-      { fullPath: 'src/file2', name: 'file2', path: '/file2' },
+      { fullPath: 'src/file1', name: 'file1', path: '/file1', ext: '.js' },
+      { fullPath: 'src/file2', name: 'file2', path: '/file2', ext: '.ts' },
       {
         children: [
-          { fullPath: 'src/lib/file3', name: 'file3', path: '/file3' },
-          { fullPath: 'src/lib/_index', name: '_index', path: '/_index' }
+          { fullPath: 'src/lib/file3', name: 'file3', path: '/file3', ext: '.vue' },
+          { fullPath: 'src/lib/_index', name: '_index', path: '/_index', ext: '.js' }
         ],
         name: 'lib'
       }
