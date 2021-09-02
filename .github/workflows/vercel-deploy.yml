@@ -29,6 +29,8 @@ jobs:
     steps:
       - name: build
         run: |
+          npm i
+          npm run build
           cd example
           npm install
           npm run docs

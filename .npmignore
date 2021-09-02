@@ -1,5 +1,7 @@
 example/
 src/
-tests/
 coverage/
-.release-it.json
+.husky
+.github
+tsconfig.json
+tsconfig.test.json
