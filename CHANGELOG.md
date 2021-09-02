@@ -1,5 +1,24 @@
+## <small>4.0.1 (2021-09-02)</small>
+
+* fix(index): handle index files ([a65e631](https://github.com/ph1p/vuepress-jsdoc/commit/a65e631))
+* build: remove condition ([f59edb3](https://github.com/ph1p/vuepress-jsdoc/commit/f59edb3))
+
+
+
 ## 4.0.0 (2021-09-02)
 
+* build: drop pinst and replace with npm scripts ([fbd03cc](https://github.com/ph1p/vuepress-jsdoc/commit/fbd03cc))
+* build: replace npm i with npm ci ([6097456](https://github.com/ph1p/vuepress-jsdoc/commit/6097456))
+* build: update condition ([a07bd8f](https://github.com/ph1p/vuepress-jsdoc/commit/a07bd8f))
+* build: update workflow ([2e31d33](https://github.com/ph1p/vuepress-jsdoc/commit/2e31d33))
+* build: update workflow ([17df727](https://github.com/ph1p/vuepress-jsdoc/commit/17df727))
+* build: update workflow ([f0749ff](https://github.com/ph1p/vuepress-jsdoc/commit/f0749ff))
+* build: update workflow and npmignore file ([5147a6f](https://github.com/ph1p/vuepress-jsdoc/commit/5147a6f))
+* build: update workflow file ([a9f1c17](https://github.com/ph1p/vuepress-jsdoc/commit/a9f1c17))
+* build: update workflows ([9218a40](https://github.com/ph1p/vuepress-jsdoc/commit/9218a40))
+* build(babel): remove babel config, it is not needed ([4406baa](https://github.com/ph1p/vuepress-jsdoc/commit/4406baa))
+* build(workflow): update github action files ([4200177](https://github.com/ph1p/vuepress-jsdoc/commit/4200177))
+* 4.0.0 ([58025eb](https://github.com/ph1p/vuepress-jsdoc/commit/58025eb))
 * refactor: add named exports ([f3297ac](https://github.com/ph1p/vuepress-jsdoc/commit/f3297ac))
 * refactor: start to rewrite the code ([9001695](https://github.com/ph1p/vuepress-jsdoc/commit/9001695))
 * refactor: update file loop ([114d6cf](https://github.com/ph1p/vuepress-jsdoc/commit/114d6cf))
@@ -7,15 +26,6 @@
 * refactor(parser): exclude file writing ([a00ef94](https://github.com/ph1p/vuepress-jsdoc/commit/a00ef94))
 * refactor(regex): simplify regular expression ([413ee2b](https://github.com/ph1p/vuepress-jsdoc/commit/413ee2b))
 * refactor(smells): fix some code smells ([45370ea](https://github.com/ph1p/vuepress-jsdoc/commit/45370ea))
-* build: drop pinst and replace with npm scripts ([fbd03cc](https://github.com/ph1p/vuepress-jsdoc/commit/fbd03cc))
-* build: replace npm i with npm ci ([6097456](https://github.com/ph1p/vuepress-jsdoc/commit/6097456))
-* build: update workflow ([2e31d33](https://github.com/ph1p/vuepress-jsdoc/commit/2e31d33))
-* build: update workflow ([17df727](https://github.com/ph1p/vuepress-jsdoc/commit/17df727))
-* build: update workflow ([f0749ff](https://github.com/ph1p/vuepress-jsdoc/commit/f0749ff))
-* build: update workflow and npmignore file ([5147a6f](https://github.com/ph1p/vuepress-jsdoc/commit/5147a6f))
-* build: update workflow file ([a9f1c17](https://github.com/ph1p/vuepress-jsdoc/commit/a9f1c17))
-* build(babel): remove babel config, it is not needed ([4406baa](https://github.com/ph1p/vuepress-jsdoc/commit/4406baa))
-* build(workflow): update github action files ([4200177](https://github.com/ph1p/vuepress-jsdoc/commit/4200177))
 * chore: move and rename some files ([53c423d](https://github.com/ph1p/vuepress-jsdoc/commit/53c423d))
 * chore: remove vscode folder ([4df9d12](https://github.com/ph1p/vuepress-jsdoc/commit/4df9d12))
 * chore: rename master to main ([5e6ea33](https://github.com/ph1p/vuepress-jsdoc/commit/5e6ea33))
