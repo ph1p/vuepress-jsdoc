@@ -200,8 +200,6 @@ const watchFiles = (argv: CLIArguments) => {
 export default (argv: CLIArguments, ctx) => ({
   name: 'vuepress-plugin-jsdoc',
   ready: async () => {
-    console.log('Ready', ctx.isProd);
-
     if (!ctx.isProd) {
       watchFiles(argv);
     }
