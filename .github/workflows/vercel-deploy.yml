@@ -28,10 +28,12 @@ jobs:
     needs: test
     steps:
       - name: build
+      - run: npm i
+      - run: npm run build
+
+      - name: build example
+        working-directory: ./example
         run: |
-          npm i
-          npm run build
-          cd example
           npm install
           npm run docs
 
