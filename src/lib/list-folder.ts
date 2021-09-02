@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import fs from 'fs/promises';
 import mm from 'micromatch';
 import path from 'path';

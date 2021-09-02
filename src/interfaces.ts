@@ -18,3 +18,14 @@ export interface CLIArguments {
   readme: string;
   watch: boolean;
 }
+
+export interface ParseReturn {
+  success: boolean;
+  dest: string;
+  file: DirectoryFile;
+  content: string;
+  empty: boolean;
+  excluded?: boolean;
+  relativePathSrc: string;
+  relativePathDest: string;
+}

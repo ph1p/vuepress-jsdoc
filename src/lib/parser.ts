@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import fs from 'fs/promises';
 import jsdoc2md from 'jsdoc-to-markdown';
 import mkdirp from 'mkdirp';
@@ -7,20 +6,9 @@ import compileTemplates from 'vue-docgen-cli/lib/compileTemplates';
 import { extractConfig } from 'vue-docgen-cli/lib/docgen';
 
 import { StatisticType } from '../constants';
-import { DirectoryFile } from '../interfaces';
+import { DirectoryFile, ParseReturn } from '../interfaces';
 
 import { parseVuepressFileHeader } from './comment-parser';
-
-interface ParseReturn {
-  success: boolean;
-  dest: string;
-  file: DirectoryFile;
-  content: string;
-  empty: boolean;
-  excluded?: boolean;
-  relativePathSrc: string;
-  relativePathDest: string;
-}
 
 export const parseFile = async (
   file: DirectoryFile,

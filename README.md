@@ -1,12 +1,13 @@
 # vuepress-jsdoc
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9ec565a85a134df2a0f6bdf905e438d4)](https://app.codacy.com/app/ph1p/vuepress-jsdoc?utm_source=github.com&utm_medium=referral&utm_content=ph1p/vuepress-jsdoc&utm_campaign=Badge_Grade_Settings)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ph1p_vuepress-jsdoc&metric=alert_status)](https://sonarcloud.io/dashboard?id=ph1p_vuepress-jsdoc)
 [![npm](https://img.shields.io/npm/v/vuepress-jsdoc.svg)](https://www.npmjs.com/package/vuepress-jsdoc)
 [![vercel](https://img.shields.io/badge/vercel-demo-black)](https://vuepress-jsdoc-example.vercel.app)
 
 This npm package is a command line script, which scans your JavaScript, Vue or Typescript source code and generates markdown files for vuepress with the help of [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown) and [vue-docgen-cli](https://github.com/vue-styleguidist/vue-styleguidist/tree/dev/packages/vue-docgen-cli).
 
 ![CLI ./example](https://user-images.githubusercontent.com/15351728/131877824-0124e47f-9080-4976-88d0-84ad04b64f24.gif)
+
 ## How to
 
 ```bash

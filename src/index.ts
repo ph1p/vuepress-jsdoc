@@ -59,7 +59,7 @@ const parseArguments = (argv: CLIArguments) => {
  * @param {object} argv passed arguments
  */
 export const generate = async (argv: CLIArguments) => {
-  const { exclude, srcFolder, codeFolder, docsFolder, title, readme, rmPattern, partials } = parseArguments(argv);
+  const { exclude, srcFolder, codeFolder, docsFolder, title, readme, rmPattern } = parseArguments(argv);
 
   const startTime = +new Date();
 
@@ -77,7 +77,7 @@ export const generate = async (argv: CLIArguments) => {
     if (!file.isDir) {
       readline.clearLine(process.stdout, 0);
       readline.cursorTo(process.stdout, 0);
-      process.stdout.write(`${chalk.dim(` ${file.path} `)}`);
+      process.stdout.write(chalk.dim(` ${file.path} `));
       await new Promise(resolve => setTimeout(resolve, 20));
     }
   }
