@@ -5,8 +5,16 @@ import path from 'path';
 
 import { DirectoryFile } from '../interfaces';
 
-export const listFolder = async (srcPath: string, exclude: string[] = [], mainPath?: string) => {
+interface FileTree {
+  name: string;
+  path?: string;
+  fullPath?: string;
+  children?: FileTree[];
+}
+
+export const listFolder = async (srcPath: string, exclude: string[] = [], mainPath?: string, tree: FileTree[] = []) => {
   const paths: DirectoryFile[] = [];
+
   const dirs = await fs.readdir(srcPath, {
     withFileTypes: true
   });
@@ -17,13 +25,24 @@ export const listFolder = async (srcPath: string, exclude: string[] = [], mainPa
     const ext = path.extname(filePath);
     let name = path.basename(filePath).replace(ext, '');
 
-    if (!mm.isMatch(path.join(srcPath.replace(mainPath || srcPath, ''), dirent.name), exclude)) {
-      if (isDir) {
-        paths.push(...(await listFolder(filePath, exclude, mainPath || srcPath)));
-      }
+    // skip readmes as they are automatically resolved
+    if (name.toLowerCase() === 'readme') continue;
 
+    if (!mm.isMatch(path.join(srcPath.replace(mainPath || srcPath, ''), dirent.name), exclude)) {
       if (name === 'index') {
         name = '_index';
+      }
+
+      const treeEntry: FileTree = {
+        name,
+        ...(!isDir ? { path: `/${name}`, fullPath: path.join(srcPath, name) } : {})
+      };
+
+      tree.push(treeEntry);
+
+      if (isDir) {
+        treeEntry.children = [];
+        paths.push(...(await listFolder(filePath, exclude, mainPath || srcPath, treeEntry.children)).paths);
       }
 
       paths.push({
@@ -38,5 +57,5 @@ export const listFolder = async (srcPath: string, exclude: string[] = [], mainPa
     }
   }
 
-  return paths;
+  return { paths, tree };
 };

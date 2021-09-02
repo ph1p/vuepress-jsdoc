@@ -5,6 +5,7 @@ import { join, resolve } from 'path';
 import compileTemplates from 'vue-docgen-cli/lib/compileTemplates';
 import { extractConfig } from 'vue-docgen-cli/lib/docgen';
 
+import { StatisticType } from '../constants';
 import { DirectoryFile } from '../interfaces';
 
 import { parseVuepressFileHeader } from './comment-parser';
@@ -47,14 +48,14 @@ export const parseFile = async (
       ]
     });
 
-    if (content) {
-      fileContent = parseVuepressFileHeader(
-        await fs.readFile(`${join(folderInSrc, file.name + file.ext)}`, 'utf-8'),
-        file
-      );
-      fileContent += content;
-    }
-  } catch {
+    fileContent = parseVuepressFileHeader(
+      await fs.readFile(`${join(folderInSrc, file.name + file.ext)}`, 'utf-8'),
+      file
+    );
+
+    fileContent += content;
+  } catch (e) {
+    console.log(e);
     success = false;
   }
 
@@ -96,15 +97,14 @@ export const parseVueFile = async (
       file.name + file.ext
     );
 
-    if (data.content) {
-      fileContent = parseVuepressFileHeader(
-        await fs.readFile(`${join(folderInSrc, file.name + file.ext)}`, 'utf-8'),
-        file
-      );
+    fileContent = parseVuepressFileHeader(
+      await fs.readFile(`${join(folderInSrc, file.name + file.ext)}`, 'utf-8'),
+      file
+    );
 
-      fileContent += data.content;
-    }
-  } catch {
+    fileContent += data.content;
+  } catch (e) {
+    console.log(e);
     success = false;
   }
 
@@ -118,30 +118,27 @@ export const parseVueFile = async (
   };
 };
 
-export const writeContentToFile = async (file: Promise<ParseReturn | null>) => {
-  const data = await file;
-  let type = data?.success ? 'empty' : 'error';
+export const writeContentToFile = async (parseData: ParseReturn | null, dest: string) => {
+  const root = process.cwd();
+  dest = join(root, dest);
+
+  let type = parseData?.success ? StatisticType.EMPTY : StatisticType.ERROR;
 
   try {
-    if (data && data?.content) {
-      const path = `${join(data.dest, data.file.name)}.md`;
+    if (parseData?.content) {
+      const path = `${join(dest, parseData.file.name)}.md`;
 
-      await mkdirp(data?.dest);
-      await fs.writeFile(path, data.content, 'utf-8');
+      await mkdirp(dest);
+      await fs.writeFile(path, parseData.content, 'utf-8');
 
-      type = 'success';
+      type = StatisticType.SUCCESS;
     }
 
     return {
-      ...data,
+      ...parseData,
       type
     };
-  } catch {
-    type = 'error';
-  }
+  } catch {}
 
-  return {
-    ...data,
-    type
-  };
+  return null;
 };
