@@ -1,5 +1,13 @@
+## <small>4.0.2 (2021-09-02)</small>
+
+* docs: document vuepress-jsdoc with itself ([6c93149](https://github.com/ph1p/vuepress-jsdoc/commit/6c93149))
+
+
+
 ## <small>4.0.1 (2021-09-02)</small>
 
+* test: fix index file ([227b46b](https://github.com/ph1p/vuepress-jsdoc/commit/227b46b))
+* 4.0.1 ([b445b61](https://github.com/ph1p/vuepress-jsdoc/commit/b445b61))
 * fix(index): handle index files ([a65e631](https://github.com/ph1p/vuepress-jsdoc/commit/a65e631))
 * build: remove condition ([f59edb3](https://github.com/ph1p/vuepress-jsdoc/commit/f59edb3))
 
