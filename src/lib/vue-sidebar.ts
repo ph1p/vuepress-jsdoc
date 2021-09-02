@@ -5,6 +5,11 @@ interface Node {
   children: any[];
 }
 
+/**
+ * Runs through the given tree structure and creates a vuepress config
+ * @param param0
+ * @returns returns the vuepress menu strcture
+ */
 export const generateVueSidebar = ({
   fileTree,
   codeFolder,

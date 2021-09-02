@@ -12,7 +12,10 @@
     "build": "tsc",
     "prepublishOnly": "npm i && npm run build",
     "prepare": "husky install",
-    "version": "conventional-changelog -p karma -i CHANGELOG.md -s -r 0 && git add ."
+    "version": "conventional-changelog -p karma -i CHANGELOG.md -s -r 0 && git add .",
+    "docs": "vuepress-jsdoc --source=./dist --readme ./README.md --exclude=\"**/*.d.ts,**/interfaces.*,**/constants.*,**/cmds.*\"",
+    "docs:dev": "npm run docs && npx vuepress dev documentation",
+    "docs:build": "npx vuepress build documentation"
   },
   "keywords": [
     "jsdoc",

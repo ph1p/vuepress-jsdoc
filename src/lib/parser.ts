@@ -10,6 +10,15 @@ import { DirectoryFile, ParseReturn } from '../interfaces';
 
 import { parseVuepressFileHeader } from './comment-parser';
 
+/**
+ * Parse a typescript or javascript file
+ * @param file
+ * @param srcFolder
+ * @param destFolder
+ * @param configPath
+ * @param partials
+ * @returns file data
+ */
 export const parseFile = async (
   file: DirectoryFile,
   srcFolder: string,
@@ -74,6 +83,13 @@ export const parseFile = async (
   };
 };
 
+/**
+ * Parse a vue file
+ * @param file
+ * @param srcFolder
+ * @param destFolder
+ * @returns file data
+ */
 export const parseVueFile = async (
   file: DirectoryFile,
   srcFolder: string,
@@ -129,6 +145,12 @@ export const parseVueFile = async (
   };
 };
 
+/**
+ * Write content on disk
+ * @param parseData
+ * @param dest
+ * @returns null or type with some data of the saved file
+ */
 export const writeContentToFile = async (parseData: ParseReturn | null, dest: string) => {
   const root = process.cwd();
   dest = join(root, dest);

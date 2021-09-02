@@ -1,3 +1,10 @@
+/*
+ * @vuepress
+ * ---
+ * title: Main
+ * headline: The Main File
+ * ---
+ */
 import chalk from 'chalk';
 import chokidar from 'chokidar';
 import del from 'del';
@@ -12,6 +19,11 @@ import { listFolder } from './lib/list-folder';
 import { parseFile, parseVueFile, writeContentToFile } from './lib/parser';
 import { generateVueSidebar } from './lib/vue-sidebar';
 
+/**
+ * Create the sidebar
+ * @param options
+ * @returns Promise
+ */
 const createVuepressSidebar = options =>
   fs.writeFile(
     `${options.docsFolder}/config.js`,
@@ -23,6 +35,12 @@ const createVuepressSidebar = options =>
     )});`
   );
 
+/**
+ * Parse file
+ * @param file
+ * @param argv
+ * @returns Promise
+ */
 const parseDirectoryFile = async (file: DirectoryFile, argv: CLIArguments) => {
   const { srcFolder, docsFolder, partials } = parseArguments(argv);
   if (!file.isDir && file.folder) {
@@ -63,6 +81,11 @@ const createReadmeFile = async (argv: CLIArguments, deletedPaths?: string[]) => 
   await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
 };
 
+/**
+ * Parse all CLI arguments
+ * @param argv
+ * @returns all arguments
+ */
 const parseArguments = (argv: CLIArguments) => {
   return {
     exclude: (argv.exclude || '').split(',').filter(Boolean),
@@ -205,7 +228,13 @@ const watchFiles = (argv: CLIArguments) => {
   }
 };
 
-export default (argv: CLIArguments, ctx) => ({
+/**
+ * The vuepress plugins
+ * @param argv
+ * @param ctx
+ * @returns plugin
+ */
+const plugin = (argv: CLIArguments, ctx) => ({
   name: 'vuepress-plugin-jsdoc',
   ready: async () => {
     if (!ctx.isProd) {
@@ -214,3 +243,5 @@ export default (argv: CLIArguments, ctx) => ({
     }
   }
 });
+
+export default plugin;

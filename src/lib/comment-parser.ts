@@ -2,9 +2,14 @@ import fm from 'front-matter';
 
 import { DirectoryFile } from '../interfaces';
 
+/**
+ * Search in file for @vuepress comment
+ * @param fileContent
+ * @returns object of found frontmatter data
+ */
 export const parseComment = (fileContent: string) => {
   try {
-    const allCommentBlocks = fileContent.match(/\/*[\s\S]*\/.*/g);
+    const allCommentBlocks = fileContent.match(/\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/g);
     const vuepressBlock = allCommentBlocks?.filter((block: string) => {
       return block.split('\n').filter(line => line.indexOf('@vuepress') >= 0).length;
     })[0];
@@ -33,8 +38,15 @@ export const parseComment = (fileContent: string) => {
   }
 };
 
+/**
+ * Helper function to get header as strctured markdown
+ * @param content : ;
+ * @param file
+ * @returns markdown header
+ */
 export const parseVuepressFileHeader = (content: string, file: DirectoryFile) => {
   const { frontmatter, attributes } = parseComment(content);
+  console.log({ frontmatter, attributes });
 
   let fileContent = '---\n';
 
