@@ -9,7 +9,7 @@
     "lint": "eslint --ext .tsx,.ts,.json,.js src/ --fix",
     "dev": "npm run build -- -w",
     "build": "tsc",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm ci && npm run build",
     "prepare": "husky install",
     "version": "conventional-changelog -p karma -i CHANGELOG.md -s -r 0 && git add ."
   },
