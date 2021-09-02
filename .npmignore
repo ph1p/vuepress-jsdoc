@@ -7,3 +7,4 @@ tsconfig.json
 tsconfig.test.json
 .eslintrc.js
 .eslintignore
+documentation/
