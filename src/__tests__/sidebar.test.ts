@@ -4,6 +4,8 @@ describe('test sidebar', () => {
   test('generateVueSidebar should return valid vue config', () => {
     const codeFolder = 'test_folder';
     const title = 'test_folder';
+    const srcFolder = 'test_folder';
+
     const fileTree = [
       { name: 'class', path: '/class', fullPath: './documentation/test_folder/class' },
       {
@@ -25,7 +27,7 @@ describe('test sidebar', () => {
       { name: 'tests', children: [] }
     ];
 
-    const sidebar = generateVueSidebar({ fileTree, codeFolder, title });
+    const sidebar = generateVueSidebar({ fileTree, codeFolder, srcFolder, title });
 
     const result = {
       [`/${codeFolder}/`]: [
@@ -33,11 +35,7 @@ describe('test sidebar', () => {
         {
           title: 'lib',
           collapsable: false,
-          children: [
-            './documentation/test_folder/test1',
-            './documentation/test_folder/test2/test3',
-            './documentation/test_folder/test2/test4'
-          ]
+          children: ['./documentation/test1', './documentation/test2/test3', './documentation/test2/test4']
         }
       ]
     };
