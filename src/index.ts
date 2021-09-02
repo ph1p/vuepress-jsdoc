@@ -53,19 +53,17 @@ export const generate = async (argv: Record<string, string>) => {
     if (!file.isDir && file.folder) {
       // path where file should be saved
       const dest = join(docsFolder, file.folder.replace(srcFolder, ''));
+      let content;
 
-      switch (file.ext) {
-        case '.tsx':
-        case '.ts':
-        case '.js':
-          parsePromises.push(
-            writeContentToFile(await parseFile(file, srcFolder, docsFolder, argv.jsDocConfigPath, partials), dest)
-          );
-          break;
-        case '.jsx':
-        case '.vue':
-          parsePromises.push(writeContentToFile(await parseVueFile(file, srcFolder, docsFolder), dest));
-          break;
+      if (['.jsx', '.tsx', '.ts', '.js'].includes(file.ext || '')) {
+        content = await parseFile(file, srcFolder, docsFolder, argv.jsDocConfigPath, partials);
+      }
+      if (file.ext === '.vue') {
+        content = await parseVueFile(file, srcFolder, docsFolder);
+      }
+
+      if (content) {
+        parsePromises.push(writeContentToFile(content, dest));
       }
     }
   }
@@ -131,5 +129,5 @@ export const generate = async (argv: Record<string, string>) => {
 
   const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
 
-  console.log(`\n⏰ Time: ${resultTime}s\n`);
+  console.log(`\n⏰ Time: ${resultTime}s`);
 };
