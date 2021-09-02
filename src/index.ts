@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import chokidar from 'chokidar';
 import del from 'del';
 import fs from 'fs/promises';
 import mkdirp from 'mkdirp';
@@ -6,38 +7,73 @@ import { join } from 'path';
 import readline from 'readline';
 
 import { StatisticType } from './constants';
+import { CLIArguments, DirectoryFile } from './interfaces';
 import { listFolder } from './lib/list-folder';
 import { parseFile, parseVueFile, writeContentToFile } from './lib/parser';
 import { generateVueSidebar } from './lib/vue-sidebar';
+
+const createVuepressSidebar = options =>
+  fs.writeFile(
+    `${options.docsFolder}/config.js`,
+    `exports.fileTree=${JSON.stringify(
+      options.fileTree
+    )};exports.sidebarTree = (title = 'Mainpage') => (${JSON.stringify(generateVueSidebar(options)).replace(
+      '::vuepress-jsdoc-title::',
+      '"+title+"'
+    )});`
+  );
+
+const parseDirectoryFile = async (file: DirectoryFile, argv: CLIArguments) => {
+  const { srcFolder, docsFolder, partials } = parseArguments(argv);
+  if (!file.isDir && file.folder) {
+    // path where file should be saved
+    const dest = join(docsFolder, file.folder.replace(srcFolder, ''));
+    let content;
+
+    if (['.jsx', '.tsx', '.ts', '.js'].includes(file.ext || '')) {
+      content = await parseFile(file, srcFolder, docsFolder, argv.jsDocConfigPath, partials);
+    }
+    if (file.ext === '.vue') {
+      content = await parseVueFile(file, srcFolder, docsFolder);
+    }
+
+    return { content, dest };
+  }
+};
+
+const parseArguments = (argv: CLIArguments) => {
+  return {
+    exclude: (argv.exclude || '').split(',').filter(Boolean),
+    srcFolder: argv.source.replace('./', ''),
+    codeFolder: argv.folder,
+    docsFolder: `${argv.dist}/${argv.folder}`,
+    title: argv.title,
+    readme: argv.readme,
+    rmPattern: argv.rmPattern || [],
+    partials: argv.partials || []
+  };
+};
 
 /**
  * Default command that generate md files
  * @param {object} argv passed arguments
  */
-export const generate = async (argv: Record<string, string>) => {
-  const exclude: string[] = (argv.exclude || '').split(',').filter(Boolean);
-  const srcFolder = argv.source.replace('./', '');
-  const codeFolder = argv.folder;
-  const docsFolder = `${argv.dist}/${codeFolder}`;
-  const title = argv.title;
-  const readme = argv.readme;
-  const rmPattern = argv.rmPattern || [];
-  const partials = argv.partials || [];
+export const generate = async (argv: CLIArguments) => {
+  const { exclude, srcFolder, codeFolder, docsFolder, title, readme, rmPattern, partials } = parseArguments(argv);
 
   const startTime = +new Date();
 
   // remove docs folder, except README.md
   const deletedPaths = await del([`${docsFolder}/**/*`, ...rmPattern]);
 
-  const { tree, paths } = await listFolder(srcFolder, exclude);
-  console.log();
+  const lsFolder = await listFolder(srcFolder, exclude);
 
   await mkdirp(docsFolder);
 
   const parsePromises: Promise<any>[] = [];
 
   // print out all files
-  for (const file of paths) {
+  for (const file of lsFolder.paths) {
     if (!file.isDir) {
       readline.clearLine(process.stdout, 0);
       readline.cursorTo(process.stdout, 0);
@@ -49,22 +85,10 @@ export const generate = async (argv: Record<string, string>) => {
   readline.cursorTo(process.stdout, 0);
 
   // iterate through files and parse them
-  for (const file of paths) {
-    if (!file.isDir && file.folder) {
-      // path where file should be saved
-      const dest = join(docsFolder, file.folder.replace(srcFolder, ''));
-      let content;
-
-      if (['.jsx', '.tsx', '.ts', '.js'].includes(file.ext || '')) {
-        content = await parseFile(file, srcFolder, docsFolder, argv.jsDocConfigPath, partials);
-      }
-      if (file.ext === '.vue') {
-        content = await parseVueFile(file, srcFolder, docsFolder);
-      }
-
-      if (content) {
-        parsePromises.push(writeContentToFile(content, dest));
-      }
+  for (const file of lsFolder.paths) {
+    const data = await parseDirectoryFile(file, argv);
+    if (data) {
+      parsePromises.push(writeContentToFile(data.content, data.dest));
     }
   }
 
@@ -72,20 +96,24 @@ export const generate = async (argv: Record<string, string>) => {
   const result = await Promise.all(parsePromises);
 
   // write vuepress sidebar
-  await fs.writeFile(
-    `${docsFolder}/config.js`,
-    `exports.fileTree=${JSON.stringify(tree)};exports.sidebarTree = (title = 'Mainpage') => (${JSON.stringify(
-      generateVueSidebar({
-        fileTree: tree,
-        srcFolder,
-        docsFolder,
-        codeFolder,
-        title
-      })
-    ).replace('::vuepress-jsdoc-title::', '"+title+"')});`
-  );
+  await createVuepressSidebar({
+    fileTree: lsFolder.tree,
+    srcFolder,
+    docsFolder,
+    codeFolder,
+    title
+  });
 
   // print stats
+  for (const file of lsFolder.excluded) {
+    console.log(
+      chalk.reset.inverse.bold.blue(' EXCLUDE '),
+      `${chalk.dim(file.folder)}${chalk.bold(file.name + file.ext)}`
+    );
+  }
+
+  console.log();
+
   for (const entry of result.flat()) {
     if (!entry.file) continue;
 
@@ -130,4 +158,52 @@ export const generate = async (argv: Record<string, string>) => {
   const resultTime = (Math.abs(startTime - +new Date()) / 1000).toFixed(2);
 
   console.log(`\n⏰ Time: ${resultTime}s`);
+
+  watchFiles(argv);
 };
+
+const watchFiles = (argv: CLIArguments) => {
+  const { exclude, srcFolder, codeFolder, docsFolder, title } = parseArguments(argv);
+
+  if (argv.watch) {
+    console.log('\n---\n\n👀 watching files...');
+    const watcher = chokidar.watch(srcFolder, {
+      ignored: /(^|[\/\\])\../,
+      persistent: true
+    });
+
+    watcher.on('change', async path => {
+      const lsFolder = await listFolder(srcFolder, exclude);
+      const file = lsFolder.paths.find(p => p.path === path);
+
+      if (file) {
+        readline.clearLine(process.stdout, 0);
+        readline.cursorTo(process.stdout, 0);
+        process.stdout.write(chalk.dim(`update ${file.name + file.ext}`));
+        const data = await parseDirectoryFile(file, argv);
+        if (data) {
+          await writeContentToFile(data.content, data.dest);
+        }
+
+        await createVuepressSidebar({
+          fileTree: lsFolder.tree,
+          srcFolder,
+          docsFolder,
+          codeFolder,
+          title
+        });
+      }
+    });
+  }
+};
+
+export default (argv: CLIArguments, ctx) => ({
+  name: 'vuepress-plugin-jsdoc',
+  ready: async () => {
+    console.log('Ready', ctx.isProd);
+
+    if (!ctx.isProd) {
+      watchFiles(argv);
+    }
+  }
+});

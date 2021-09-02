@@ -14,6 +14,7 @@ interface FileTree {
 
 export const listFolder = async (srcPath: string, exclude: string[] = [], mainPath?: string, tree: FileTree[] = []) => {
   const paths: DirectoryFile[] = [];
+  const excluded: DirectoryFile[] = [];
 
   const dirs = await fs.readdir(srcPath, {
     withFileTypes: true
@@ -24,6 +25,13 @@ export const listFolder = async (srcPath: string, exclude: string[] = [], mainPa
     const isDir = dirent.isDirectory();
     const ext = path.extname(filePath);
     let name = path.basename(filePath).replace(ext, '');
+
+    const file = {
+      isDir,
+      name,
+      path: filePath,
+      ...(!isDir ? { ext, folder: filePath.replace(name, '').replace(ext, '') } : {})
+    };
 
     // skip readmes as they are automatically resolved
     if (name.toLowerCase() === 'readme') continue;
@@ -45,17 +53,11 @@ export const listFolder = async (srcPath: string, exclude: string[] = [], mainPa
         paths.push(...(await listFolder(filePath, exclude, mainPath || srcPath, treeEntry.children)).paths);
       }
 
-      paths.push({
-        isDir,
-        name,
-        path: filePath,
-        ...(!isDir ? { ext, folder: filePath.replace(name, '').replace(ext, '') } : {})
-      });
+      paths.push(file);
     } else {
-      // excluded
-      console.log(chalk.reset.inverse.bold.blue(' EXCLUDE '), `${chalk.dim('src')}/${chalk.bold(name + ext)}`);
+      excluded.push(file);
     }
   }
 
-  return { paths, tree };
+  return { paths, tree, excluded };
 };

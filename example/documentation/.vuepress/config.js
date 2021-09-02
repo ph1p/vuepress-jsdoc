@@ -5,6 +5,23 @@ module.exports = {
   dest: 'public',
   title: 'Hello vuepress-jsdoc',
   description: 'Just playing around with vuepress-jsdoc',
+  plugins: [
+    [
+      // require('vuepress-jsdoc')
+      require('../../../dist/index.js').default,
+      {
+        folder: 'code',
+        jsDocConfigPath: './jsdoc.json',
+        source: './src',
+        dist: './documentation',
+        title: 'API',
+        exclude: 'class.js',
+        partials: './partials/*.hbs',
+        readme: './README.md',
+        watch: true
+      }
+    ]
+  ],
   locales: {
     '/': {
       title: 'vuepress-jsdoc',

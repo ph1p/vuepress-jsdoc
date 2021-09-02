@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "docs": "../bin/vuepress-jsdoc.js --jsDocConfigPath ./jsdoc.json --source=./src --dist=./documentation --title=API --exclude=class.js --partials=./partials/*.hbs --readme=./README.md",
-    "dev": "vuepress dev documentation",
-    "build": "vuepress build documentation"
+    "dev": "npm run docs && vuepress dev documentation",
+    "build": "npm run docs && vuepress build documentation"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/preset-env": "^7.15.0",
     "@babel/preset-typescript": "^7.15.0",
+    "concurrently": "^6.2.1",
     "jsdoc-babel": "^0.5.0",
     "jsdoc-to-markdown": "^7.0.1",
     "typescript": "^4.4.2"

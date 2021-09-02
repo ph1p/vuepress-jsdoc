@@ -13,6 +13,7 @@ export default (version: string) => {
     .option('-t, --title <string>', 'Title of your documentation', 'API')
     .option('-r, --readme <string>', 'Path to your custom readme')
     .option('-e, --exclude <string>', 'Pattern to exclude files/folders (Comma seperated) - *.test.js,exclude.js')
+    .option('-w, --watch', 'This flag watches your source files')
     .option(
       '-rm, --rmPattern [files...]',
       'Pattern when removing files. You can ex- and include files. (glob pattern)',

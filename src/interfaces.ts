@@ -5,3 +5,16 @@ export interface DirectoryFile {
   name: string;
   folder?: string;
 }
+
+export interface CLIArguments {
+  exclude: string;
+  partials: string[];
+  rmPattern: string[];
+  folder: string;
+  jsDocConfigPath: string;
+  source: string;
+  dist: string;
+  title: string;
+  readme: string;
+  watch: boolean;
+}
