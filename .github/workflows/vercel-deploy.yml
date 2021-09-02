@@ -1,4 +1,4 @@
-name: Deploy example on vercel
+name: Deploy documentation on vercel
 
 on:
   push:
@@ -31,7 +31,7 @@ jobs:
       - name: build
         run: |
           npm ci
-          npm run build:docs
+          npm run docs:build
 
       - uses: amondnet/vercel-action@v20
         with:
