@@ -139,9 +139,6 @@ module.exports = {
 You can easily add a custom path to your readme by using the `--readme ./path/to/file.md` parameter. If you move a `README.md` inside your source folder, it should resolve it automatically.
 You can set the title by passing it to the `sidebarTree('Mainpage title')` function inside your `./.vuepress/config.js`.
 
-Once the README.md has been added, it is no longer overwritten!
-If you want it to be overwritten, set `--rmPattern=./documentation/code/README.md`.
-
 ## @vuepress comment block
 
 You can add custom meta data to your pages by using the `@vuepress` block:
