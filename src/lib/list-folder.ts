@@ -47,19 +47,26 @@ export const listFolder = async (srcPath: string, exclude: string[] = [], mainPa
     // skip readmes as they are automatically resolved
     if (name.toLowerCase() === 'readme') continue;
 
-    if (!mm.isMatch(path.join(srcPath.replace(mainPath || srcPath, ''), dirent.name), exclude)) {
-      const treeEntry: FileTree = {
-        name,
-        ...(!isDir ? { path: `/${name}`, fullPath: path.join(srcPath, name), ext } : {})
-      };
+    const baseSrc = mainPath || srcPath;
 
-      tree.push(treeEntry);
+    if (!mm.isMatch(path.join(srcPath.replace(baseSrc, ''), dirent.name), exclude)) {
+      let treeEntry: FileTree = {
+        name
+      };
 
       if (isDir) {
         treeEntry.children = [];
-        paths.push(...(await listFolder(filePath, exclude, mainPath || srcPath, treeEntry.children)).paths);
+        paths.push(...(await listFolder(filePath, exclude, baseSrc, treeEntry.children)).paths);
+      } else {
+        treeEntry = {
+          ...treeEntry,
+          path: `/${name}`,
+          fullPath: path.join(srcPath, name),
+          ext
+        };
       }
 
+      tree.push(treeEntry);
       paths.push(file);
     } else {
       excluded.push(file);

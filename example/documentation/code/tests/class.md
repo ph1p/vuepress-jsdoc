@@ -39,7 +39,7 @@ Get current name
 **Kind**: instance property of [<code>Test</code>](#Test)  
 <a name="Test+generateFullName"></a>
 
-### test.generateFullName() -> 
+### test.generateFullName() → 
 Generate a fullname
 
 **Kind**: instance method of [<code>Test</code>](#Test)  

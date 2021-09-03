@@ -33,6 +33,7 @@ export interface ParseReturn {
 export interface FileTree {
   name: string;
   path?: string;
+  ext?: string;
   fullPath?: string;
   children?: FileTree[];
 }

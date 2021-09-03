@@ -24,7 +24,7 @@ name
 **Kind**: static property of [<code>obj</code>](#obj)  
 <a name="obj.objMethod"></a>
 
-### obj.objMethod(parameter) -> 
+### obj.objMethod(parameter) → 
 A function with a parameter and returns the name
 
 **Kind**: static method of [<code>obj</code>](#obj)  
