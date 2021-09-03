@@ -11,10 +11,12 @@ module.exports = {
       require('../../dist/index.js').default,
       {
         folder: 'code',
-        jsDocConfigPath: './jsdoc.json',
-        source: './src',
+        source: './dist',
         dist: './documentation',
-        title: 'API'
+        title: 'API',
+        partials: ['./example/partials/*.hbs'],
+        readme: './README.md',
+        exclude: '**/*.d.ts,**/interfaces.*,**/constants.*,**/cmds.*'
       }
     ]
   ],

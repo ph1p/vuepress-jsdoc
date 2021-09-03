@@ -6,19 +6,17 @@
  */
 import fs from 'fs';
 import { join } from 'path';
-interface Node {
-  name: string;
-  children: any[];
-}
+
+import { FileTree } from '../interfaces';
 
 /**
  * Runs through the given tree structure and creates a vuepress config
  * @param data Informations to build config
- * @param data.fileTree tree strcture
- * @param data.codeFolder ./code/ folder
- * @param data.srcFolder ./src/ folder
- * @param data.docsFolder ./documentation/ folder
- * @param data.title title string
+ * @param data.fileTree {array} tree strcture
+ * @param data.codeFolder {string}./code/ folder
+ * @param data.srcFolder {string} ./src/ folder
+ * @param data.docsFolder {string} ./documentation/ folder
+ * @param data.title {string} title string
  * @returns {object} returns the vuepress menu strcture
  */
 export const generateVueSidebar = ({
@@ -35,9 +33,9 @@ export const generateVueSidebar = ({
   title: string;
 }) => {
   let rootFiles = [['', '::vuepress-jsdoc-title::']];
-  rootFiles = rootFiles.concat(fileTree.filter((file: Node) => !file.children).map((file: Node) => file.name));
+  rootFiles = rootFiles.concat(fileTree.filter((file: FileTree) => !file.children).map((file: FileTree) => file.name));
 
-  const rootFolder = fileTree.filter((file: Node) => file.children && file.children.length > 0);
+  const rootFolder = fileTree.filter((file: FileTree) => file.children && file.children.length > 0);
 
   const buildChildren = (children: any[], name: string, depth: number) => {
     let newChildren: any[] = [];
@@ -55,10 +53,10 @@ export const generateVueSidebar = ({
     return newChildren;
   };
 
-  const tree = rootFolder.map((folder: Node) => ({
+  const tree = rootFolder.map((folder: FileTree) => ({
     title: folder.name,
     collapsable: false,
-    children: buildChildren(folder.children, folder.name, 0)
+    children: buildChildren(folder.children!, folder.name, 0)
   }));
 
   return {

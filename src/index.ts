@@ -21,7 +21,7 @@ import { generateVueSidebar } from './lib/vue-sidebar';
 
 /**
  * Create the sidebar
- * @param options
+ * @param options {object}
  * @returns {Promise}
  */
 const createVuepressSidebar = options =>
@@ -37,8 +37,8 @@ const createVuepressSidebar = options =>
 
 /**
  * Parse file
- * @param file
- * @param argv
+ * @param file {DirectoryFile}
+ * @param argv {CLIArguments}
  * @returns {Promise}
  */
 const parseDirectoryFile = async (file: DirectoryFile, argv: CLIArguments) => {
@@ -83,7 +83,7 @@ const createReadmeFile = async (argv: CLIArguments, deletedPaths?: string[]) => 
 
 /**
  * Parse all CLI arguments
- * @param argv
+ * @param argv {CLIArguments}
  * @returns {object} all arguments
  */
 const parseArguments = (argv: CLIArguments) => {
@@ -187,6 +187,10 @@ export const generate = async (argv: CLIArguments) => {
   watchFiles(argv);
 };
 
+/**
+ * Watch files in source folder
+ * @param argv {CLIArguments}
+ */
 const watchFiles = (argv: CLIArguments) => {
   const { exclude, srcFolder, codeFolder, docsFolder, title } = parseArguments(argv);
 
@@ -230,8 +234,8 @@ const watchFiles = (argv: CLIArguments) => {
 
 /**
  * The vuepress plugins
- * @param argv
- * @param ctx
+ * @param argv {CLIArguments}
+ * @param ctx {object}
  * @returns {object}
  */
 const plugin = (argv: CLIArguments, ctx) => ({

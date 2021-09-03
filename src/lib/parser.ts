@@ -18,11 +18,11 @@ import { parseVuepressFileHeader } from './comment-parser';
 
 /**
  * Parse a typescript or javascript file
- * @param file
- * @param srcFolder
- * @param destFolder
- * @param configPath
- * @param partials
+ * @param file {DirectoryFile}
+ * @param srcFolder {string}
+ * @param destFolder {string}
+ * @param configPath {string}
+ * @param partials {string | string[]}
  * @returns {object} file data
  */
 export const parseFile = async (
@@ -91,9 +91,9 @@ export const parseFile = async (
 
 /**
  * Parse a vue file
- * @param file
- * @param srcFolder
- * @param destFolder
+ * @param file {DirectoryFile}
+ * @param srcFolder {string}
+ * @param destFolder {string}
  * @returns {object} file data
  */
 export const parseVueFile = async (
@@ -153,9 +153,9 @@ export const parseVueFile = async (
 
 /**
  * Write content on disk
- * @param parseData
- * @param dest
- * @returns {object | null} null or type with some data of the saved file
+ * @param parseData {ParseReturn | null}
+ * @param dest {string}
+ * @returns {Promise | null} null or type with some data of the saved file
  */
 export const writeContentToFile = async (parseData: ParseReturn | null, dest: string) => {
   const root = process.cwd();

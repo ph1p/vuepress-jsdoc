@@ -12,10 +12,10 @@ import { DirectoryFile, FileTree } from '../interfaces';
 
 /**
  * Recursively traverse folders and return exluded files, a file list and a file tree.
- * @param srcPath
- * @param exclude
- * @param mainPath
- * @param tree
+ * @param srcPath {string} path to source dir
+ * @param exclude {array} exluded file patter list
+ * @param mainPath {string} path to hold source dir
+ * @param tree {object} tree array
  * @returns {object} paths array, tree, excluded array
  */
 export const listFolder = async (srcPath: string, exclude: string[] = [], mainPath?: string, tree: FileTree[] = []) => {

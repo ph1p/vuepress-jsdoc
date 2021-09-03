@@ -1,4 +1,4 @@
-import { checkExtension, getExtension, getFilename, asyncForEach } from '../lib/utils';
+import { checkExtension, getExtension, getFilename } from '../lib/utils';
 
 describe('test utils', () => {
   test('getExtension should return true', () => {
@@ -18,17 +18,5 @@ describe('test utils', () => {
     expect(getFilename(undefined)).toBe('');
     // @ts-expect-error check empty method
     expect(getFilename()).toBe('');
-  });
-  test('asyncForEach should run array async', async () => {
-    const promise1 = Promise.resolve(1);
-    const promise2 = Promise.resolve(2);
-
-    const results: number[] = [];
-
-    await asyncForEach([promise1, promise2], async result => {
-      results.push(await result);
-    });
-
-    expect(results).toEqual([1, 2]);
   });
 });
