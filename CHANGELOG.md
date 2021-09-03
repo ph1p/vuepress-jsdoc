@@ -1,5 +1,17 @@
+## <small>4.0.4 (2021-09-03)</small>
+
+* refactor: fix some code smells ([a910cff](https://github.com/ph1p/vuepress-jsdoc/commit/a910cff))
+* docs: fix watch-mode and add more informations ([c356bcc](https://github.com/ph1p/vuepress-jsdoc/commit/c356bcc))
+* docs: remove old informations ([1e4f344](https://github.com/ph1p/vuepress-jsdoc/commit/1e4f344))
+* docs: update documentation ([453019f](https://github.com/ph1p/vuepress-jsdoc/commit/453019f))
+* docs: update readme ([91bb90b](https://github.com/ph1p/vuepress-jsdoc/commit/91bb90b))
+* docs(readme): update explanation about readme ([5340d78](https://github.com/ph1p/vuepress-jsdoc/commit/5340d78))
+
+
+
 ## <small>4.0.3 (2021-09-02)</small>
 
+* 4.0.3 ([f45ec52](https://github.com/ph1p/vuepress-jsdoc/commit/f45ec52))
 * fix(log): remove log ([631a711](https://github.com/ph1p/vuepress-jsdoc/commit/631a711))
 * build: rename workflow and fix command ([8e2dfe5](https://github.com/ph1p/vuepress-jsdoc/commit/8e2dfe5))
 * docs: update workflow and scripts ([88e8f01](https://github.com/ph1p/vuepress-jsdoc/commit/88e8f01))
