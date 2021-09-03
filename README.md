@@ -19,8 +19,10 @@ npm i vuepress-jsdoc -g
 
 ```bash
 # search code in src and move it to code (./documentation/code) in your vuepress folder (./documentation)
-vuepress-jsdoc --source ./src --dist ./documentation --folder code --title API --exclude=**/*/*.test.js
+vuepress-jsdoc --source ./src --dist ./documentation --folder code --title API --exclude="**/*/*.test.js"
 ```
+
+You can also use `npx vuepress-jsdoc`, if you want.
 
 #### Plugin (Dev-Mode) `alpha`
 
@@ -28,16 +30,18 @@ You can use `vuepress-jsdoc` also as plugin.
 This plugin watches you generated files.
 
 ```javascript
-// .vuepress/config.js
+// ./documentation/.vuepress/config.js
 plugins: [
   [
     require('vuepress-jsdoc').default,
     {
       folder: 'code',
-      jsDocConfigPath: './jsdoc.json',
-      source: './src',
+      source: './dist',
       dist: './documentation',
-      title: 'API'
+      title: 'API',
+      partials: ['./example/partials/*.hbs'],
+      readme: './README.md',
+      exclude: '**/*.d.ts,**/interfaces.*,**/constants.*,**/cmds.*'
     }
   ]
 ];
