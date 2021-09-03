@@ -52,15 +52,9 @@ plugins: [
 If you do not want to run`vuepress-jsdoc` again and again and again.
 You can simply pass `--watch` or `-w`.
 
-### Commands
+### Command-Options
 
-If no command passed it will run `generate` as default
-
-| Name     | Alias  | Description                                                                                             |
-| -------- | ------ | ------------------------------------------------------------------------------------------------------- |
-| generate | gen, g | search code in src and move it to code (./documentation/code) in your vuepress folder (./documentation) |
-
-### Options
+Use these options after `vuepress-jsdoc`.
 
 | Name              | Alias | Default         | Description                                                                                                                                     |
 | ----------------- | ----- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
