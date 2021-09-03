@@ -1,3 +1,9 @@
+/*
+ * @vuepress
+ * ---
+ * headline: lib/parser.ts
+ * ---
+ */
 import fs from 'fs/promises';
 import jsdoc2md from 'jsdoc-to-markdown';
 import mkdirp from 'mkdirp';
@@ -17,7 +23,7 @@ import { parseVuepressFileHeader } from './comment-parser';
  * @param destFolder
  * @param configPath
  * @param partials
- * @returns file data
+ * @returns {object} file data
  */
 export const parseFile = async (
   file: DirectoryFile,
@@ -88,7 +94,7 @@ export const parseFile = async (
  * @param file
  * @param srcFolder
  * @param destFolder
- * @returns file data
+ * @returns {object} file data
  */
 export const parseVueFile = async (
   file: DirectoryFile,
@@ -149,7 +155,7 @@ export const parseVueFile = async (
  * Write content on disk
  * @param parseData
  * @param dest
- * @returns null or type with some data of the saved file
+ * @returns {object | null} null or type with some data of the saved file
  */
 export const writeContentToFile = async (parseData: ParseReturn | null, dest: string) => {
   const root = process.cwd();

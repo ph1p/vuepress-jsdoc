@@ -2,6 +2,7 @@ node_modules
 # for Jetbrains IDEA ides
 .idea
 coverage
-.now
+.vercel
 dist
 public
+documentation/code

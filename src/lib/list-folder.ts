@@ -1,3 +1,9 @@
+/*
+ * @vuepress
+ * ---
+ * headline: lib/list-folder.ts
+ * ---
+ */
 import fs from 'fs/promises';
 import mm from 'micromatch';
 import path from 'path';
@@ -10,7 +16,7 @@ import { DirectoryFile, FileTree } from '../interfaces';
  * @param exclude
  * @param mainPath
  * @param tree
- * @returns paths array, tree, excluded array
+ * @returns {object} paths array, tree, excluded array
  */
 export const listFolder = async (srcPath: string, exclude: string[] = [], mainPath?: string, tree: FileTree[] = []) => {
   const paths: DirectoryFile[] = [];

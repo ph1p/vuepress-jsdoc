@@ -7,7 +7,7 @@
 {{~#if @methodSign}}{{#if (isEvent)}} {{@methodSign}}{{else}}{{@methodSign}}{{/if}}{{/if~}}
 {{{@codeClose}~}}
 </a>
-{{~#if @returnSymbol}} -> {{/if~}}
+{{~#if @returnSymbol}} → {{/if~}}
 {{#if @returnTypes}} {{>linked-type-list types=@returnTypes html=true delimiter=" | " }}{{/if~}}
 {{#if @suffix}} {{@suffix}}{{/if~}}
 {{{@depClose}~}}

@@ -1,7 +1,13 @@
+/*
+ * @vuepress
+ * ---
+ * headline: lib/utils.ts
+ * ---
+ */
 /**
  * Get extension of file
  * @param path
- * @returns extension of file
+ * @returns {string} extension of file
  */
 export const getExtension = (path: string) => path.substring(path.length, path.lastIndexOf('.'));
 
@@ -9,14 +15,14 @@ export const getExtension = (path: string) => path.substring(path.length, path.l
  * Check if extension ist correct
  * @param path
  * @param extensions
- * @returns boolean
+ * @returns {boolean}
  */
 export const checkExtension = (path: string, extensions: string[]) => extensions.indexOf(getExtension(path)) >= 0;
 
 /**
  * Get filename without extension
  * @param path
- * @returns filename
+ * @returns {string} filename
  */
 export const getFilename = (path: string) =>
   path
@@ -27,7 +33,7 @@ export const getFilename = (path: string) =>
 /**
  * Async foreach loop
  * @param array
- * @param callback
+ * @callback callback
  */
 export const asyncForEach = async (
   array: any[],

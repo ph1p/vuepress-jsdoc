@@ -1,3 +1,9 @@
+/*
+ * @vuepress
+ * ---
+ * headline: lib/comment-parser.ts
+ * ---
+ */
 import fm from 'front-matter';
 
 import { DirectoryFile } from '../interfaces';
@@ -5,7 +11,7 @@ import { DirectoryFile } from '../interfaces';
 /**
  * Search in file for @vuepress comment
  * @param fileContent
- * @returns object of found frontmatter data
+ * @returns {object} object of found frontmatter data
  */
 export const parseComment = (fileContent: string) => {
   try {
@@ -42,7 +48,7 @@ export const parseComment = (fileContent: string) => {
  * Helper function to get header as strctured markdown
  * @param content : ;
  * @param file
- * @returns markdown header
+ * @returns {string} markdown header
  */
 export const parseVuepressFileHeader = (content: string, file: DirectoryFile) => {
   const { frontmatter, attributes } = parseComment(content);

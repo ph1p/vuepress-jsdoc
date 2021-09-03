@@ -1,3 +1,9 @@
+/*
+ * @vuepress
+ * ---
+ * headline: lib/vue-sidebar.ts
+ * ---
+ */
 import fs from 'fs';
 import { join } from 'path';
 interface Node {
@@ -7,8 +13,13 @@ interface Node {
 
 /**
  * Runs through the given tree structure and creates a vuepress config
- * @param param0
- * @returns returns the vuepress menu strcture
+ * @param data Informations to build config
+ * @param data.fileTree tree strcture
+ * @param data.codeFolder ./code/ folder
+ * @param data.srcFolder ./src/ folder
+ * @param data.docsFolder ./documentation/ folder
+ * @param data.title title string
+ * @returns {object} returns the vuepress menu strcture
  */
 export const generateVueSidebar = ({
   fileTree,

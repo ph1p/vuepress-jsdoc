@@ -32,6 +32,10 @@ module.exports = {
           {
             text: 'Home',
             link: '/'
+          },
+          {
+            text: 'Github',
+            link: 'https://github.com/ph1p/vuepress-jsdoc'
           }
         ],
         // Add the generated sidebar
