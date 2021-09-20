@@ -1,7 +1,19 @@
+/*
+ * @vuepress
+ * ---
+ * headline: cmds.ts
+ * ---
+ */
 import { program } from 'commander';
 
 import { generate } from '.';
 
+/**
+ * This method builds the cli interface and is necessary because
+ * we need the version from the package.json here. We do not import
+ * this here, because otherwise the folder structure in the dist folder would get mixed up.
+ * @param {string} version a version string
+ */
 export default (version: string) => {
   program.version(version).description('a CLI Tool to generate markdown files for vuepress');
 

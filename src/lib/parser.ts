@@ -91,9 +91,9 @@ export const parseFile = async (
 
 /**
  * Parse a vue file
- * @param file {DirectoryFile}
- * @param srcFolder {string}
- * @param destFolder {string}
+ * @param {DirectoryFile} file
+ * @param {string} srcFolder
+ * @param {string} destFolder
  * @returns {object} file data
  */
 export const parseVueFile = async (
@@ -153,8 +153,8 @@ export const parseVueFile = async (
 
 /**
  * Write content on disk
- * @param parseData {ParseReturn | null}
- * @param dest {string}
+ * @param {ParseReturn | null} parseData
+ * @param {string} dest
  * @returns {Promise | null} null or type with some data of the saved file
  */
 export const writeContentToFile = async (parseData: ParseReturn | null, dest: string) => {

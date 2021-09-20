@@ -21,7 +21,7 @@ import { generateVueSidebar } from './lib/vue-sidebar';
 
 /**
  * Create the sidebar
- * @param options {object}
+ * @param {object} options
  * @returns {Promise}
  */
 const createVuepressSidebar = options =>
@@ -37,8 +37,8 @@ const createVuepressSidebar = options =>
 
 /**
  * Parse file
- * @param file {DirectoryFile}
- * @param argv {CLIArguments}
+ * @param {DirectoryFile} file
+ * @param {CLIArguments} argv
  * @returns {Promise}
  */
 const parseDirectoryFile = async (file: DirectoryFile, argv: CLIArguments) => {
@@ -59,6 +59,12 @@ const parseDirectoryFile = async (file: DirectoryFile, argv: CLIArguments) => {
   }
 };
 
+/**
+ * Create the readme file. First page when entering the documentation.
+ * @param {CLIArguments} argv
+ * @param {string} deletedPaths
+ * @returns {void}
+ */
 const createReadmeFile = async (argv: CLIArguments, deletedPaths?: string[]) => {
   const { srcFolder, codeFolder, docsFolder, title, readme } = parseArguments(argv);
 
@@ -83,7 +89,7 @@ const createReadmeFile = async (argv: CLIArguments, deletedPaths?: string[]) => 
 
 /**
  * Parse all CLI arguments
- * @param argv {CLIArguments}
+ * @param {CLIArguments} argv
  * @returns {object} all arguments
  */
 const parseArguments = (argv: CLIArguments) => {
@@ -189,7 +195,7 @@ export const generate = async (argv: CLIArguments) => {
 
 /**
  * Watch files in source folder
- * @param argv {CLIArguments}
+ * @param {CLIArguments} argv
  */
 const watchFiles = (argv: CLIArguments) => {
   const { exclude, srcFolder, codeFolder, docsFolder, title } = parseArguments(argv);
@@ -234,8 +240,8 @@ const watchFiles = (argv: CLIArguments) => {
 
 /**
  * The vuepress plugins
- * @param argv {CLIArguments}
- * @param ctx {object}
+ * @param {CLIArguments} argv
+ * @param {object} ctx
  * @returns {object}
  */
 const plugin = (argv: CLIArguments, ctx) => ({

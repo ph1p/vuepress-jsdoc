@@ -11,12 +11,12 @@ import { FileTree } from '../interfaces';
 
 /**
  * Runs through the given tree structure and creates a vuepress config
- * @param data Informations to build config
- * @param data.fileTree {array} tree strcture
- * @param data.codeFolder {string}./code/ folder
- * @param data.srcFolder {string} ./src/ folder
- * @param data.docsFolder {string} ./documentation/ folder
- * @param data.title {string} title string
+ * @param {object} data Informations to build config
+ * @param {array} data.fileTree tree strcture
+ * @param {string} data.codeFolder ./code/ folder
+ * @param {string} data.srcFolder ./src/ folder
+ * @param {string} data.docsFolder ./documentation/ folder
+ * @param {string} data.title title string
  * @returns {object} returns the vuepress menu strcture
  */
 export const generateVueSidebar = ({

@@ -10,7 +10,7 @@ import { DirectoryFile } from '../interfaces';
 
 /**
  * Search in file for @vuepress comment
- * @param fileContent {string} content of given file
+ * @param {string} fileContent content of given file
  * @returns {object} object of found frontmatter data
  */
 export const parseComment = (fileContent: string) => {
@@ -46,8 +46,8 @@ export const parseComment = (fileContent: string) => {
 
 /**
  * Helper function to get header as structured markdown
- * @param content {string} file content
- * @param file {object} file object
+ * @param {string} content file content
+ * @param {object} file file object
  * @returns {string} markdown header
  */
 export const parseVuepressFileHeader = (content: string, file: DirectoryFile) => {
