@@ -1,5 +1,12 @@
+## 4.1.0 (2021-09-20)
+
+* chore: update dependencies and documentation ([8e83013](https://github.com/ph1p/vuepress-jsdoc/commit/8e83013))
+
+
+
 ## <small>4.0.4 (2021-09-03)</small>
 
+* 4.0.4 ([1452e46](https://github.com/ph1p/vuepress-jsdoc/commit/1452e46))
 * refactor: fix some code smells ([a910cff](https://github.com/ph1p/vuepress-jsdoc/commit/a910cff))
 * docs: fix watch-mode and add more informations ([c356bcc](https://github.com/ph1p/vuepress-jsdoc/commit/c356bcc))
 * docs: remove old informations ([1e4f344](https://github.com/ph1p/vuepress-jsdoc/commit/1e4f344))
