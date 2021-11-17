@@ -1,5 +1,12 @@
+## 4.2.0 (2021-11-17)
+
+* build(deps): update dependencies ([858dff8](https://github.com/ph1p/vuepress-jsdoc/commit/858dff8))
+
+
+
 ## <small>4.1.1 (2021-10-05)</small>
 
+* 4.1.1 ([975b04f](https://github.com/ph1p/vuepress-jsdoc/commit/975b04f))
 * chore(deps): update dependencies ([b3ac12c](https://github.com/ph1p/vuepress-jsdoc/commit/b3ac12c))
 
 
