@@ -27,7 +27,7 @@ describe('parseComment() fail', () => {
   // @ts-expect-error check empty method
   const { frontmatter } = parseComment();
 
-  test('fontmatter should be null', () => {
+  test('frontmatter should be null', () => {
     expect(frontmatter).toBe(null);
   });
 });

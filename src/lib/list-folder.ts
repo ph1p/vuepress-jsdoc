@@ -18,13 +18,21 @@ import { DirectoryFile, FileTree } from '../interfaces';
  * @param {object} tree tree array
  * @returns {object} paths array, tree, excluded array
  */
-export const listFolder = async (srcPath: string, exclude: string[] = [], mainPath?: string, tree: FileTree[] = []) => {
+export const listFolder = async (srcPath: string, exclude: string[], mainPath?: string, tree: FileTree[] = []) => {
+  if (!Boolean(exclude) || !Array.isArray(exclude)) {
+    exclude = [];
+  }
+
+  exclude = exclude.filter(Boolean);
+
   const paths: DirectoryFile[] = [];
   const excluded: DirectoryFile[] = [];
 
-  const dirs = await fs.readdir(srcPath, {
-    withFileTypes: true
-  });
+  const dirs = srcPath
+    ? await fs.readdir(srcPath, {
+        withFileTypes: true
+      })
+    : [];
 
   for (const dirent of dirs) {
     const filePath = path.join(srcPath, dirent.name);

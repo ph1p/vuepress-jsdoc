@@ -58,7 +58,7 @@ title: sub-test
 
   | Event name     | Properties     | Description  |
   | -------------- |--------------- | -------------|
-  | success | **example** `object` - the demo example<br>**exampleStr** `string` - the demo example<br>**exampleNum** `number` - the demo example | Success event.
+  | success | **example** `object` - the demo example<br/>**exampleStr** `string` - the demo example<br/>**exampleNum** `number` - the demo example | Success event.
 
   
   
