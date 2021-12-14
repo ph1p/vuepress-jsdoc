@@ -24,7 +24,8 @@ export default (version: string) => {
     .option('-f, --folder <string>', 'Folder inside destination folder. Gets overwritten everytime', 'code')
     .option('-t, --title <string>', 'Title of your documentation', 'API')
     .option('-r, --readme <string>', 'Path to your custom readme')
-    .option('-e, --exclude <string>', 'Pattern to exclude files/folders (Comma seperated) - *.test.js,exclude.js')
+    .option('-i, --include <string>', 'Pattern to include files (Comma seperated) - *.test.js,include.js', '**/*')
+    .option('-e, --exclude <string>', 'Pattern to exclude files (Comma seperated) - *.test.js,exclude.js')
     .option('-w, --watch', 'This flag watches your source files')
     .option(
       '-rm, --rmPattern [files...]',

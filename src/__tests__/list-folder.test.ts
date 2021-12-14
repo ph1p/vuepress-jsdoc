@@ -28,8 +28,7 @@ describe('test file-structure', () => {
         { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
         { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' },
         { ext: '.vue', folder: 'src/lib/', isDir: false, name: 'file3', path: 'src/lib/file3.vue' },
-        { ext: '.js', folder: 'src/lib/', isDir: false, name: '__index__', path: 'src/lib/index.js' },
-        { isDir: true, name: 'lib', path: 'src/lib' }
+        { ext: '.js', folder: 'src/lib/', isDir: false, name: '__index__', path: 'src/lib/index.js' }
       ]);
 
       expect(tree).toEqual([
@@ -166,6 +165,91 @@ describe('test file-structure', () => {
 
       // @ts-ignore
       expect(excluded).toEqual([{ ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' }]);
+    });
+  });
+
+  describe('include', () => {
+    beforeEach(() => {
+      vol.reset();
+    });
+
+    test('should include all with empty string', async () => {
+      vol.fromJSON(
+        {
+          'file1.js': '',
+          'file2.ts': ''
+        },
+        './src'
+      );
+
+      const { paths } = await listFolder('./src', [], ['']);
+
+      // @ts-ignore
+      expect(paths).toEqual([
+        { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
+        { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }
+      ]);
+    });
+
+    test('should not include with not matching string', async () => {
+      vol.fromJSON(
+        {
+          'file1.js': '',
+          'file2.ts': ''
+        },
+        './src'
+      );
+
+      const { paths } = await listFolder('./src', [], ['file3']);
+
+      // @ts-ignore
+      expect(paths).toEqual([]);
+    });
+
+    test('should include file', async () => {
+      vol.fromJSON(
+        {
+          'file1.js': '',
+          'file2.ts': ''
+        },
+        './src'
+      );
+
+      const { paths, excluded } = await listFolder('./src', [], ['file1.js']);
+
+      // @ts-ignore
+      expect(paths).toEqual([{ ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' }]);
+
+      // @ts-ignore
+      expect(excluded).toEqual([{ ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }]);
+    });
+  });
+
+  describe('include and exclude', () => {
+    beforeEach(() => {
+      vol.reset();
+    });
+
+    test('should include file2.ts', async () => {
+      vol.fromJSON(
+        {
+          'file1.js': '',
+          'file2.ts': '',
+          'file3.ts': ''
+        },
+        './src'
+      );
+
+      const { paths, excluded } = await listFolder('./src', ['file3.ts'], ['*.ts']);
+
+      // @ts-ignore
+      expect(paths).toEqual([{ ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }]);
+
+      // @ts-ignore
+      expect(excluded).toEqual([
+        { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
+        { ext: '.ts', folder: 'src/', isDir: false, name: 'file3', path: 'src/file3.ts' }
+      ]);
     });
   });
 });

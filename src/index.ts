@@ -93,9 +93,12 @@ const createReadmeFile = async (argv: CLIArguments, deletedPaths?: string[]) => 
  * @returns {object} all arguments
  */
 const parseArguments = (argv: CLIArguments) => {
+  const srcFolder = argv.source;
+
   return {
     exclude: (argv.exclude || '').split(',').filter(Boolean),
-    srcFolder: argv.source.replace('./', ''),
+    include: (argv.include || '**/*').split(',').filter(Boolean),
+    srcFolder,
     codeFolder: argv.folder,
     docsFolder: `${argv.dist}/${argv.folder}`,
     title: argv.title,
@@ -110,14 +113,14 @@ const parseArguments = (argv: CLIArguments) => {
  * @param {object} argv passed arguments
  */
 export const generate = async (argv: CLIArguments) => {
-  const { exclude, srcFolder, codeFolder, docsFolder, title, rmPattern } = parseArguments(argv);
+  const { exclude, include, srcFolder, codeFolder, docsFolder, title, rmPattern } = parseArguments(argv);
 
   const startTime = +new Date();
 
   // remove docs folder, except README.md
   const deletedPaths = await del([`${docsFolder}/**/*`, ...rmPattern]);
 
-  const lsFolder = await listFolder(srcFolder, exclude);
+  const lsFolder = await listFolder(srcFolder, exclude, include);
 
   await mkdirp(docsFolder);
 
@@ -198,7 +201,7 @@ export const generate = async (argv: CLIArguments) => {
  * @param {CLIArguments} argv
  */
 const watchFiles = (argv: CLIArguments) => {
-  const { exclude, srcFolder, codeFolder, docsFolder, title } = parseArguments(argv);
+  const { exclude, include, srcFolder, codeFolder, docsFolder, title } = parseArguments(argv);
 
   if (argv.watch) {
     console.log('\n---\n\n👀 watching files...');
@@ -208,7 +211,7 @@ const watchFiles = (argv: CLIArguments) => {
     });
 
     watcher.on('change', async path => {
-      const lsFolder = await listFolder(srcFolder, exclude);
+      const lsFolder = await listFolder(srcFolder, exclude, include);
       const file = lsFolder.paths.find(p => p.path === path);
 
       readline.clearLine(process.stdout, 0);
