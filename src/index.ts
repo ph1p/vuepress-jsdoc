@@ -10,7 +10,6 @@ import chokidar from 'chokidar';
 import del from 'del';
 import fs from 'fs/promises';
 import mkdirp from 'mkdirp';
-import { join } from 'path';
 import readline from 'readline';
 
 import { StatisticType } from './constants';
