@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "docs": "../bin/vuepress-jsdoc.js --jsDocConfigPath ./jsdoc.json --source=./src --dist=./documentation --title=API --exclude=class.js --partials=./partials/*.hbs --readme=./README.md",
+    "docs": "../bin/vuepress-jsdoc.js --jsDocConfigPath=jsdoc.json --source=./src --dist=./documentation --title=API --exclude=class.js --partials=./partials/*.hbs --readme=./README.md",
     "docs:dev": "npm run docs -- --watch",
     "dev": "npm run docs && vuepress dev documentation",
     "build:local": "npm run docs && vuepress build documentation",
@@ -14,17 +14,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "vuepress": "^1.8.2"
+    "vuepress": "^1.9.7"
   },
   "devDependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.16.0",
-    "@babel/plugin-proposal-class-properties": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
-    "@babel/preset-typescript": "^7.16.0",
-    "concurrently": "^6.4.0",
+    "@babel/cli": "^7.17.3",
+    "@babel/core": "^7.17.3",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "concurrently": "^7.0.0",
     "jsdoc-babel": "^0.5.0",
-    "jsdoc-to-markdown": "^7.1.0",
-    "typescript": "^4.4.4"
+    "jsdoc-to-markdown": "^7.1.1",
+    "typescript": "^4.5.5"
   }
 }

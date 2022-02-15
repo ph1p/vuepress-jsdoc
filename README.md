@@ -66,6 +66,7 @@ Use these options after `vuepress-jsdoc`.
 | --version         | -v    |                 | Show current version                                                                                                                            |
 | --readme          | -r    |                 | Path to custom readme file                                                                                                                      |
 | --exclude         | -e    |                 | Pattern to exclude files/folders (Comma seperated) - \*.test.js,exclude.js [more information](https://github.com/micromatch/micromatch#ismatch) |
+| --include         | -e    |                 | Pattern to include files/folders (Comma seperated) - \*.test.js,exclude.js [more information](https://github.com/micromatch/micromatch#ismatch) |
 | --rmPattern       | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern)                                                                      |
 | --partials        | -p    |                 | jsdoc2markdown partial templates (overwrites default ones)                                                                                      |
 | --jsDocConfigPath | -c    |                 | Path to [JsDoc Config](http://usejsdoc.org/about-configuring-jsdoc.html) (experimental)                                                         |
@@ -162,7 +163,7 @@ Use `headline` to add a custom `h1` title.
 To use typescript, you have to install these dev-dependencies:
 
 ```bash
-yarn add -D typescript jsdoc-babel @babel/cli @babel/core @babel/preset-env @babel/preset-typescript jsdoc-to-markdown
+npm install -D typescript jsdoc-babel @babel/cli @babel/core @babel/preset-env @babel/preset-typescript jsdoc-to-markdown
 ```
 
 Next, you have to add a `jsdoc.json` to your project with some settings and add it with the `-c` parameter.

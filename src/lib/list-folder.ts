@@ -14,16 +14,28 @@ import { DirectoryFile, FileTree } from '../interfaces';
  * Recursively traverse folders and return exluded files, a file list and a file tree.
  * @param {string} srcPath path to source dir
  * @param {array} exclude exluded file patter list
+ * @param {array} include included file patter list
  * @param {string} mainPath path to hold source dir
  * @param {object} tree tree array
  * @returns {object} paths array, tree, excluded array
  */
-export const listFolder = async (srcPath: string, exclude: string[], mainPath?: string, tree: FileTree[] = []) => {
+export const listFolder = async (
+  srcPath: string,
+  exclude: string[],
+  include: string[],
+  mainPath?: string,
+  tree: FileTree[] = []
+) => {
   if (!Boolean(exclude) || !Array.isArray(exclude)) {
     exclude = [];
   }
 
+  if (!Boolean(include) || !Array.isArray(include)) {
+    include = [];
+  }
+
   exclude = exclude.filter(Boolean);
+  include = include.filter(Boolean);
 
   const paths: DirectoryFile[] = [];
   const excluded: DirectoryFile[] = [];
@@ -57,14 +69,17 @@ export const listFolder = async (srcPath: string, exclude: string[], mainPath?: 
 
     const baseSrc = mainPath || srcPath;
 
-    if (!mm.isMatch(path.join(srcPath.replace(baseSrc, ''), dirent.name), exclude)) {
+    if (
+      mm.every(path.join(srcPath.replace(baseSrc, ''), dirent.name), [...include, ...exclude.map(e => '!' + e)]) ||
+      isDir
+    ) {
       let treeEntry: FileTree = {
         name
       };
 
       if (isDir) {
         treeEntry.children = [];
-        paths.push(...(await listFolder(filePath, exclude, baseSrc, treeEntry.children)).paths);
+        paths.push(...(await listFolder(filePath, exclude, include, baseSrc, treeEntry.children)).paths);
       } else {
         treeEntry = {
           ...treeEntry,

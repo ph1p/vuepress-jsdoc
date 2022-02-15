@@ -7,6 +7,7 @@ export interface DirectoryFile {
 }
 
 export interface CLIArguments {
+  include: string;
   exclude: string;
   partials: string[];
   rmPattern: string[];

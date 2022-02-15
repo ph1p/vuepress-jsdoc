@@ -41,21 +41,15 @@ const createVuepressSidebar = options =>
  * @param {CLIArguments} argv
  * @returns {Promise}
  */
-const parseDirectoryFile = async (file: DirectoryFile, argv: CLIArguments) => {
+const parseDirectoryFile = (file: DirectoryFile, argv: CLIArguments) => {
   const { srcFolder, docsFolder, partials } = parseArguments(argv);
   if (!file.isDir && file.folder) {
-    // path where file should be saved
-    const dest = join(docsFolder, file.folder.replace(srcFolder, ''));
-    let content;
-
     if (['.jsx', '.tsx', '.ts', '.js'].includes(file.ext || '')) {
-      content = await parseFile(file, srcFolder, docsFolder, argv.jsDocConfigPath, partials);
+      return parseFile(file, srcFolder, docsFolder, argv.jsDocConfigPath, partials);
     }
     if (file.ext === '.vue') {
-      content = await parseVueFile(file, srcFolder, docsFolder);
+      return parseVueFile(file, srcFolder, docsFolder);
     }
-
-    return { content, dest };
   }
 };
 
@@ -94,6 +88,7 @@ const createReadmeFile = async (argv: CLIArguments, deletedPaths?: string[]) => 
  */
 const parseArguments = (argv: CLIArguments) => {
   return {
+    include: (argv.include || '').split(',').filter(Boolean),
     exclude: (argv.exclude || '').split(',').filter(Boolean),
     srcFolder: argv.source.replace('./', ''),
     codeFolder: argv.folder,
@@ -110,14 +105,14 @@ const parseArguments = (argv: CLIArguments) => {
  * @param {object} argv passed arguments
  */
 export const generate = async (argv: CLIArguments) => {
-  const { exclude, srcFolder, codeFolder, docsFolder, title, rmPattern } = parseArguments(argv);
+  const { exclude, include, srcFolder, codeFolder, docsFolder, title, rmPattern } = parseArguments(argv);
 
   const startTime = +new Date();
 
   // remove docs folder, except README.md
   const deletedPaths = await del([`${docsFolder}/**/*`, ...rmPattern]);
 
-  const lsFolder = await listFolder(srcFolder, exclude);
+  const lsFolder = await listFolder(srcFolder, exclude, include);
 
   await mkdirp(docsFolder);
 
@@ -137,14 +132,20 @@ export const generate = async (argv: CLIArguments) => {
 
   // iterate through files and parse them
   for (const file of lsFolder.paths) {
-    const data = await parseDirectoryFile(file, argv);
-    if (data) {
-      parsePromises.push(writeContentToFile(data.content, data.dest));
-    }
+    parsePromises.push(
+      (async () => {
+        const data = await parseDirectoryFile(file, argv);
+
+        if (data && data?.relativePathDest) {
+          return writeContentToFile(data, data.relativePathDest);
+        }
+      })()
+    );
   }
 
   // wait unitl all files resolved
-  const result = await Promise.all(parsePromises);
+  let result = await Promise.all(parsePromises);
+  result = result.filter(Boolean);
 
   // write vuepress sidebar
   await createVuepressSidebar({
@@ -198,7 +199,7 @@ export const generate = async (argv: CLIArguments) => {
  * @param {CLIArguments} argv
  */
 const watchFiles = (argv: CLIArguments) => {
-  const { exclude, srcFolder, codeFolder, docsFolder, title } = parseArguments(argv);
+  const { exclude, include, srcFolder, codeFolder, docsFolder, title } = parseArguments(argv);
 
   if (argv.watch) {
     console.log('\n---\n\n👀 watching files...');
@@ -208,7 +209,7 @@ const watchFiles = (argv: CLIArguments) => {
     });
 
     watcher.on('change', async path => {
-      const lsFolder = await listFolder(srcFolder, exclude);
+      const lsFolder = await listFolder(srcFolder, exclude, include);
       const file = lsFolder.paths.find(p => p.path === path);
 
       readline.clearLine(process.stdout, 0);
@@ -221,17 +222,18 @@ const watchFiles = (argv: CLIArguments) => {
       if (file) {
         process.stdout.write(chalk.dim(`update ${file.name + file.ext}`));
 
-        const data = await parseDirectoryFile(file, argv);
-        if (data) {
-          await writeContentToFile(data.content, data.dest);
-        }
+        parseDirectoryFile(file, argv)?.then(data => {
+          if (data) {
+            writeContentToFile(data, data.relativePathDest);
+          }
 
-        await createVuepressSidebar({
-          fileTree: lsFolder.tree,
-          srcFolder,
-          docsFolder,
-          codeFolder,
-          title
+          createVuepressSidebar({
+            fileTree: lsFolder.tree,
+            srcFolder,
+            docsFolder,
+            codeFolder,
+            title
+          });
         });
       }
     });

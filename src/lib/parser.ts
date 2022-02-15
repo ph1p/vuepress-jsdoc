@@ -53,6 +53,7 @@ export const parseFile = async (
     }
 
     content = await jsdoc2md.render({
+      'no-cache': configPath ? true : false,
       files: [join(process.cwd(), file.folder, fileName + file.ext)],
       configure: configPath,
       partial: [
