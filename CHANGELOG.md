@@ -1,5 +1,12 @@
+## 4.3.0 (2022-02-15)
+
+* feat(include): add include flag, fix some bugs and improve performance ([082a60a](https://github.com/ph1p/vuepress-jsdoc/commit/082a60a))
+
+
+
 ## 4.2.0 (2021-11-17)
 
+* 4.2.0 ([3cdbc8a](https://github.com/ph1p/vuepress-jsdoc/commit/3cdbc8a))
 * build(deps): update dependencies ([858dff8](https://github.com/ph1p/vuepress-jsdoc/commit/858dff8))
 
 
