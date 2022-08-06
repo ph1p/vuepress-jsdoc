@@ -175,7 +175,7 @@ export const writeContentToFile = async (parseData: ParseReturn | null, dest: st
       await mkdirp(dest);
       await fs.writeFile(path, parseData.content, 'utf-8');
 
-      type = parseData?.empty ? StatisticType.EMPTY : StatisticType.SUCCESS;
+      type = parseData?.empty ? StatisticType.EMPTY : StatisticType.INCLUDE;
     }
 
     return {

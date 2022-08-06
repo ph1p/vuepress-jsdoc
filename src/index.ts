@@ -169,7 +169,7 @@ export const generate = async (argv: CLIArguments) => {
     if (!entry.file) continue;
 
     const color = {
-      [StatisticType.SUCCESS]: 'green',
+      [StatisticType.INCLUDE]: 'green',
       [StatisticType.ERROR]: 'red',
       [StatisticType.EMPTY]: 'yellow',
       [StatisticType.EXCLUDE]: 'blue'

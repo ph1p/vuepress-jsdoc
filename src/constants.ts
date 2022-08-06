@@ -1,6 +1,6 @@
 export enum StatisticType {
   EMPTY = 'EMPTY',
   ERROR = 'ERROR',
-  SUCCESS = 'SUCCESS',
+  INCLUDE = 'INCLUDE',
   EXCLUDE = 'EXCLUDE'
 }
