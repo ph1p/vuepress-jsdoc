@@ -1,5 +1,16 @@
+## <small>4.3.1 (2022-10-06)</small>
+
+* build(deps): update dependencies and fix an npm script ([78a6e83](https://github.com/ph1p/vuepress-jsdoc/commit/78a6e83))
+* build(deps): update dependencies and rename success to include ([dd5b6c4](https://github.com/ph1p/vuepress-jsdoc/commit/dd5b6c4))
+* chore: audit example dependencies ([21823a1](https://github.com/ph1p/vuepress-jsdoc/commit/21823a1))
+* chore: drop node 14 ([ae30caf](https://github.com/ph1p/vuepress-jsdoc/commit/ae30caf))
+* chore: remove unused import ([a52a31e](https://github.com/ph1p/vuepress-jsdoc/commit/a52a31e))
+
+
+
 ## 4.3.0 (2022-02-15)
 
+* 4.3.0 ([18a9a6a](https://github.com/ph1p/vuepress-jsdoc/commit/18a9a6a))
 * feat(include): add include flag, fix some bugs and improve performance ([082a60a](https://github.com/ph1p/vuepress-jsdoc/commit/082a60a))
 
 
