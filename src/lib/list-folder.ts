@@ -13,8 +13,8 @@ import { DirectoryFile, FileTree } from '../interfaces';
 /**
  * Recursively traverse folders and return exluded files, a file list and a file tree.
  * @param {string} srcPath path to source dir
- * @param {array} exclude exluded file patter list
- * @param {array} include included file patter list
+ * @param {array} exclude exluded file pattern list
+ * @param {array} include included file pattern list
  * @param {string} mainPath path to hold source dir
  * @param {object} tree tree array
  * @returns {object} paths array, tree, excluded array
@@ -47,7 +47,7 @@ export const listFolder = async (
     : [];
 
   for (const dirent of dirs) {
-    const filePath = path.join(srcPath, dirent.name);
+    const filePath = path.posix.join(srcPath, dirent.name); // Force "linux" path format for windows env =D
     const isDir = dirent.isDirectory();
     const ext = path.extname(filePath);
     let name = path.basename(filePath).replace(ext, '');
@@ -70,7 +70,7 @@ export const listFolder = async (
     const baseSrc = mainPath || srcPath;
 
     if (
-      mm.every(path.join(srcPath.replace(baseSrc, ''), dirent.name), [...include, ...exclude.map(e => '!' + e)]) ||
+      mm.every(path.posix.join(srcPath.replace(baseSrc, ''), dirent.name), [...include, ...exclude.map(e => '!' + e)]) ||
       isDir
     ) {
       let treeEntry: FileTree = {
@@ -84,7 +84,7 @@ export const listFolder = async (
         treeEntry = {
           ...treeEntry,
           path: `/${name}`,
-          fullPath: path.join(srcPath, name),
+          fullPath: path.posix.join(srcPath, name), // Force "linux" path format for windows env =D
           ext
         };
       }
