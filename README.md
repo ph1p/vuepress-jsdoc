@@ -42,6 +42,7 @@ plugins: [
       partials: ['./example/partials/*.hbs'],
       readme: './README.md',
       exclude: '**/*.d.ts,**/interfaces.*,**/constants.*,**/cmds.*'
+      // Accepts also other jsdoc2md options, see below
     }
   ]
 ];
@@ -70,7 +71,21 @@ Use these options after `vuepress-jsdoc`.
 | --rmPattern       | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern)                                                                      |
 | --partials        | -p    |                 | jsdoc2markdown partial templates (overwrites default ones)                                                                                      |
 | --jsDocConfigPath | -c    |                 | Path to [JsDoc Config](http://usejsdoc.org/about-configuring-jsdoc.html) (experimental)                                                         |
-| --watch           | -w    |                 | Watch changes and update markdown files                                                                                                         |
+| --watch           | -w    |                 | Watch changes and update markdown files    |
+| --j2md-template   |       |                 | jsdoc2markdown template option             |
+| --j2md-heading-depth |       |              | jsdoc2markdown heading-depth option     |
+| --j2md-example-lang |       |               | jsdoc2markdown example-lang option       |
+| --j2md-plugin     |       |                 | jsdoc2markdown plugin option                   |
+| --j2md-helper     |       |                 | jsdoc2markdown helper option      |
+| --j2md-name-format |       |                | jsdoc2markdown name-format option      |
+| --j2md-no-gfm     |       | false           | jsdoc2markdown no-gfm option      |
+| --j2md-separators |       | false           | jsdoc2markdown separators option      |
+| --j2md-module-index-format |       |        | jsdoc2markdown module-index-format option      |
+| --j2md-global-index-format |       |        | jsdoc2markdown global-index-format option      |
+| --j2md-param-list-format |       |          | jsdoc2markdown param-list-format option      |
+| --j2md-property-list-format |       |       | jsdoc2markdown property-list-format option      |
+| --j2md-member-index-format |       |        | jsdoc2markdown member-index-format option      |
+| --j2md-private    |       | false           | jsdoc2markdown private option      |
 
 ### config.js
 
