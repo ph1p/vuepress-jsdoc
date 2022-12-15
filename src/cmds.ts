@@ -34,6 +34,20 @@ export default (version: string) => {
     )
     .option('-p, --partials [files...]', 'jsdoc2markdown partial templates (overwrites default ones)', '')
     .option('-c, --jsDocConfigPath <string>', 'Path to jsdoc config')
+    .option('--j2md-template <string>', 'jsdoc2markdown template option')
+    .option('--j2md-heading-depth <number>', 'jsdoc2markdown heading-depth option')
+    .option('--j2md-example-lang <string>', 'jsdoc2markdown example-lang option')
+    .option('--j2md-plugin [files...]', 'jsdoc2markdown plugin option')
+    .option('--j2md-helper [files...]', 'jsdoc2markdown helper option')
+    .option('--j2md-name-format <string>', 'jsdoc2markdown name-format option')
+    .option('--j2md-no-gfm', 'jsdoc2markdown no-gfm option')
+    .option('--j2md-separators', 'jsdoc2markdown separators option')
+    .option('--j2md-module-index-format <string>', 'jsdoc2markdown module-index-format option')
+    .option('--j2md-global-index-format <string>', 'jsdoc2markdown global-index-format option')
+    .option('--j2md-param-list-format <string>', 'jsdoc2markdown param-list-format option')
+    .option('--j2md-property-list-format <string>', 'jsdoc2markdown property-list-format option')
+    .option('--j2md-member-index-format <string>', 'jsdoc2markdown member-index-format option')
+    .option('--j2md-private', 'jsdoc2markdown private option')
     .action(generate);
 
   program.parse(process.argv);

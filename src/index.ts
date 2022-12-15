@@ -41,13 +41,30 @@ const createVuepressSidebar = options =>
  * @returns {Promise}
  */
 const parseDirectoryFile = (file: DirectoryFile, argv: CLIArguments) => {
-  const { srcFolder, docsFolder, partials } = parseArguments(argv);
+  const parsedArgs = parseArguments(argv);
   if (!file.isDir && file.folder) {
     if (['.jsx', '.tsx', '.ts', '.js'].includes(file.ext || '')) {
-      return parseFile(file, srcFolder, docsFolder, argv.jsDocConfigPath, partials);
+      return parseFile(file, parsedArgs.srcFolder, parsedArgs.docsFolder, {
+        configPath: parsedArgs.jsDocConfigPath,
+        partials: parsedArgs.partials,
+        template: parsedArgs.template,
+        'heading-depth': parsedArgs.headingDepth,
+        'example-lang': parsedArgs.exampleLang,
+        plugin: parsedArgs.plugin,
+        helper: parsedArgs.helper,
+        'name-format': parsedArgs.nameFormat,
+        'no-gfm': parsedArgs.noGfm,
+        separators: parsedArgs.separators,
+        'module-index-format': parsedArgs.moduleIndexFormat,
+        'global-index-format': parsedArgs.globalIndexFormat,
+        'param-list-format': parsedArgs.paramListFormat,
+        'property-list-format': parsedArgs.propertyListFormat,
+        'member-index-format': parsedArgs.memberIndexFormat,
+        private: parsedArgs.privateMembers
+      });
     }
     if (file.ext === '.vue') {
-      return parseVueFile(file, srcFolder, docsFolder);
+      return parseVueFile(file, parsedArgs.srcFolder, parsedArgs.docsFolder);
     }
   }
 };
@@ -95,7 +112,22 @@ const parseArguments = (argv: CLIArguments) => {
     title: argv.title,
     readme: argv.readme,
     rmPattern: argv.rmPattern || [],
-    partials: argv.partials || []
+    jsDocConfigPath: argv.jsDocConfigPath,
+    partials: argv.partials || [],
+    template: argv.j2mdTemplate,
+    headingDepth: argv.j2mdHeadingDepth,
+    exampleLang: argv.j2mdExampleLang,
+    plugin: argv.j2mdPlugin,
+    helper: argv.j2mdHelper,
+    nameFormat: argv.j2mdNameFormat,
+    noGfm: argv.j2mdNoGfm,
+    separators: argv.j2mdSeparators,
+    moduleIndexFormat: argv.j2mdModuleIndexFormat,
+    globalIndexFormat: argv.j2mdGlobalIndexFormat,
+    paramListFormat: argv.j2mdParamListFormat,
+    propertyListFormat: argv.j2mdPropertyListFormat,
+    memberIndexFormat: argv.j2mdMemberIndexFormat,
+    privateMembers: argv.j2mdPrivate
   };
 };
 

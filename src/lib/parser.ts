@@ -12,7 +12,7 @@ import compileTemplates from 'vue-docgen-cli/lib/compileTemplates';
 import { extractConfig } from 'vue-docgen-cli/lib/docgen';
 
 import { StatisticType } from '../constants';
-import { DirectoryFile, ParseReturn } from '../interfaces';
+import { DirectoryFile, ParseReturn, ParseFileOptions } from '../interfaces';
 
 import { parseVuepressFileHeader } from './comment-parser';
 
@@ -21,16 +21,14 @@ import { parseVuepressFileHeader } from './comment-parser';
  * @param file {DirectoryFile}
  * @param srcFolder {string}
  * @param destFolder {string}
- * @param configPath {string}
- * @param partials {string | string[]}
+ * @param options {ParseFileOptions}
  * @returns {object} file data
  */
 export const parseFile = async (
   file: DirectoryFile,
   srcFolder: string,
   destFolder: string,
-  configPath: string,
-  partials: string | string[]
+  options: ParseFileOptions
 ): Promise<ParseReturn | null> => {
   if (!file.folder) return null;
 
@@ -52,16 +50,24 @@ export const parseFile = async (
       fileName = 'index';
     }
 
-    content = await jsdoc2md.render({
+    const { configPath, partials, ...otherOptions } = options;
+
+    const renderOptions = {
       'no-cache': configPath ? true : false,
-      files: [join(process.cwd(), file.folder, fileName + file.ext)],
+      files: [join(root, file.folder, fileName + file.ext)],
       configure: configPath,
       partial: [
         resolve(__filename, '../../../template/header.hbs'),
         resolve(__filename, '../../../template/main.hbs'),
         ...partials
       ]
-    });
+    }
+
+    for (const name in otherOptions) {
+      if (otherOptions[name] !== undefined) renderOptions[name] = otherOptions[name];
+    }
+
+    content = await jsdoc2md.render(renderOptions);
 
     fileContent = parseVuepressFileHeader(
       await fs.readFile(`${join(folderInSrc, fileName + file.ext)}`, 'utf-8'),
