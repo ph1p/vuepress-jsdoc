@@ -1,6 +1,23 @@
+## <small>4.3.2 (2023-01-11)</small>
+
+* build: add conventional-changelog-cli dev dependency ([2701f5a](https://github.com/ph1p/vuepress-jsdoc/commit/2701f5a))
+* build: add vuepress as dev dependency + update vue deps ([00ea99b](https://github.com/ph1p/vuepress-jsdoc/commit/00ea99b))
+* build: update package name ([33989eb](https://github.com/ph1p/vuepress-jsdoc/commit/33989eb))
+* build(example): Update vuepress + install react as dev dependency ([ff2ed4f](https://github.com/ph1p/vuepress-jsdoc/commit/ff2ed4f))
+* docs: update README ([fec7f07](https://github.com/ph1p/vuepress-jsdoc/commit/fec7f07))
+* docs: update README ([3533428](https://github.com/ph1p/vuepress-jsdoc/commit/3533428))
+* feat: add support for vue-docgen configuration ([65b1edc](https://github.com/ph1p/vuepress-jsdoc/commit/65b1edc))
+* feat: jsdoc2md options support ([dcf9b4e](https://github.com/ph1p/vuepress-jsdoc/commit/dcf9b4e))
+* fix(documentation): Node v18 compatibility ([ba6c09a](https://github.com/ph1p/vuepress-jsdoc/commit/ba6c09a))
+* fix(list-folder): prevent windows format paths ([bddf170](https://github.com/ph1p/vuepress-jsdoc/commit/bddf170))
+* WIP ([6641530](https://github.com/ph1p/vuepress-jsdoc/commit/6641530))
+
+
+
 ## <small>4.3.1 (2022-10-06)</small>
 
-* build(deps): update dependencies and fix an npm script ([78a6e83](https://github.com/ph1p/vuepress-jsdoc/commit/78a6e83))
+* 4.3.1 ([8b596fb](https://github.com/ph1p/vuepress-jsdoc/commit/8b596fb))
+* build(deps): update dependencies and fix an npm script ([82a5b93](https://github.com/ph1p/vuepress-jsdoc/commit/82a5b93))
 * build(deps): update dependencies and rename success to include ([dd5b6c4](https://github.com/ph1p/vuepress-jsdoc/commit/dd5b6c4))
 * chore: audit example dependencies ([21823a1](https://github.com/ph1p/vuepress-jsdoc/commit/21823a1))
 * chore: drop node 14 ([ae30caf](https://github.com/ph1p/vuepress-jsdoc/commit/ae30caf))
