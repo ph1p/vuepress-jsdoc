@@ -74,3 +74,4 @@ title: test
 
   
   
+This is an overridden component template!

@@ -64,7 +64,9 @@ const parseDirectoryFile = (file: DirectoryFile, argv: CLIArguments) => {
       });
     }
     if (file.ext === '.vue') {
-      return parseVueFile(file, parsedArgs.srcFolder, parsedArgs.docsFolder);
+      return parseVueFile(file, parsedArgs.srcFolder, parsedArgs.docsFolder, {
+        configPath: parsedArgs.docgenConfigPath
+      });
     }
   }
 };
@@ -113,6 +115,7 @@ const parseArguments = (argv: CLIArguments) => {
     readme: argv.readme,
     rmPattern: argv.rmPattern || [],
     jsDocConfigPath: argv.jsDocConfigPath,
+    docgenConfigPath: argv.docgenConfigPath,
     partials: argv.partials || [],
     template: argv.j2mdTemplate,
     headingDepth: argv.j2mdHeadingDepth,

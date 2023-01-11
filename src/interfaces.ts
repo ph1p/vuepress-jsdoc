@@ -1,4 +1,4 @@
-import { RenderOptions, JsdocOptions } from "jsdoc-to-markdown";
+import { RenderOptions, JsdocOptions } from 'jsdoc-to-markdown';
 
 export interface DirectoryFile {
   path: string;
@@ -15,6 +15,7 @@ export interface CLIArguments {
   rmPattern: string[];
   folder: string;
   jsDocConfigPath: string;
+  docgenConfigPath: string;
   source: string;
   dist: string;
   title: string;
@@ -37,22 +38,26 @@ export interface CLIArguments {
 }
 
 export interface ParseFileOptions {
-  configPath: JsdocOptions['configure'],
-  partials: string | string[],
-  template: RenderOptions['template'],
-  'heading-depth': RenderOptions['heading-depth'],
-  'example-lang': RenderOptions['example-lang'],
-  plugin: RenderOptions['plugin'],
-  helper: RenderOptions['helper'],
-  'name-format': RenderOptions['name-format'],
-  'no-gfm': RenderOptions['no-gfm'],
-  separators: RenderOptions['separators'],
-  'module-index-format': RenderOptions['module-index-format'],
-  'global-index-format': RenderOptions['global-index-format'],
-  'param-list-format': RenderOptions['param-list-format'],
-  'property-list-format': RenderOptions['property-list-format'],
-  'member-index-format': RenderOptions['member-index-format'],
-  private: boolean
+  configPath: JsdocOptions['configure'];
+  partials: string | string[];
+  template: RenderOptions['template'];
+  'heading-depth': RenderOptions['heading-depth'];
+  'example-lang': RenderOptions['example-lang'];
+  plugin: RenderOptions['plugin'];
+  helper: RenderOptions['helper'];
+  'name-format': RenderOptions['name-format'];
+  'no-gfm': RenderOptions['no-gfm'];
+  separators: RenderOptions['separators'];
+  'module-index-format': RenderOptions['module-index-format'];
+  'global-index-format': RenderOptions['global-index-format'];
+  'param-list-format': RenderOptions['param-list-format'];
+  'property-list-format': RenderOptions['property-list-format'];
+  'member-index-format': RenderOptions['member-index-format'];
+  private: boolean;
+}
+
+export interface ParseVueFileOptions {
+  configPath: string | undefined;
 }
 
 export interface ParseReturn {

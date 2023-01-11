@@ -54,3 +54,4 @@ To render an example as highlighted source code remove the live modifier
 
   
   
+This is an overridden component template!

@@ -7,12 +7,12 @@
 import fs from 'fs/promises';
 import jsdoc2md from 'jsdoc-to-markdown';
 import mkdirp from 'mkdirp';
-import { join, resolve } from 'path';
+import { join, resolve, dirname } from 'path';
 import compileTemplates from 'vue-docgen-cli/lib/compileTemplates';
 import { extractConfig } from 'vue-docgen-cli/lib/docgen';
 
 import { StatisticType } from '../constants';
-import { DirectoryFile, ParseReturn, ParseFileOptions } from '../interfaces';
+import { DirectoryFile, ParseReturn, ParseFileOptions, ParseVueFileOptions } from '../interfaces';
 
 import { parseVuepressFileHeader } from './comment-parser';
 
@@ -61,7 +61,7 @@ export const parseFile = async (
         resolve(__filename, '../../../template/main.hbs'),
         ...partials
       ]
-    }
+    };
 
     for (const name in otherOptions) {
       if (otherOptions[name] !== undefined) renderOptions[name] = otherOptions[name];
@@ -106,7 +106,8 @@ export const parseFile = async (
 export const parseVueFile = async (
   file: DirectoryFile,
   srcFolder: string,
-  destFolder: string
+  destFolder: string,
+  options: ParseVueFileOptions
 ): Promise<ParseReturn | null> => {
   if (!file.folder) return null;
 
@@ -115,8 +116,17 @@ export const parseVueFile = async (
   const folderInDest = join(root, relativePathDest);
   const folderInSrc = join(root, file.folder);
 
+  let docgenConfig;
+
+  if (options.configPath) {
+    docgenConfig = extractConfig(dirname(join(root, options.configPath)));
+  } else {
+    docgenConfig = extractConfig(join(root, file.folder));
+  }
+
   const config = {
-    ...extractConfig(join(root, file.folder)),
+    ...docgenConfig,
+    componentsRoot: folderInSrc,
     components: file.name + file.ext
   };
 

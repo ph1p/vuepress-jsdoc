@@ -34,6 +34,7 @@ export default (version: string) => {
     )
     .option('-p, --partials [files...]', 'jsdoc2markdown partial templates (overwrites default ones)', '')
     .option('-c, --jsDocConfigPath <string>', 'Path to jsdoc config')
+    .option('--docgenConfigPath <string>', 'Path to vue-docgen config')
     .option('--j2md-template <string>', 'jsdoc2markdown template option')
     .option('--j2md-heading-depth <number>', 'jsdoc2markdown heading-depth option')
     .option('--j2md-example-lang <string>', 'jsdoc2markdown example-lang option')

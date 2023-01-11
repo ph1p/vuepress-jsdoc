@@ -58,10 +58,7 @@ Returns markdown documentation from jsdoc-annoted source code.
 | [options.member-index-format] |  | grouped, list |
 
 **Example**  
-Pass in filepaths (`**` glob matching supported) of javascript source files:
-```js
-> jsdoc2md.render({ files: 'lib/*.js' }).then(console.log)
-```
+Pass in filepaths (`**` glob matching supported) of javascript source files:```js> jsdoc2md.render({ files: 'lib/*.js' }).then(console.log)```
 <a name="module_jsdoc-to-markdown--JsdocToMarkdown+getTemplateData"></a>
 
 #### jsdoc2md.getTemplateData([options]) →  <code>Promise</code>
