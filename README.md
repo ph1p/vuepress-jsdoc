@@ -71,6 +71,7 @@ Use these options after `vuepress-jsdoc`.
 | --rmPattern       | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern)                                                                      |
 | --partials        | -p    |                 | jsdoc2markdown partial templates (overwrites default ones)                                                                                      |
 | --jsDocConfigPath | -c    |                 | Path to [JsDoc Config](http://usejsdoc.org/about-configuring-jsdoc.html) (experimental)                                                         |
+| --docgenConfigPath | -c    |                 | Path to [vue-docgen-cli Config](https://vue-styleguidist.github.io/docs/docgen-cli.html#config) (experimental)                                                         |
 | --watch           | -w    |                 | Watch changes and update markdown files    |
 | --j2md-template   |       |                 | jsdoc2markdown template option             |
 | --j2md-heading-depth |       |              | jsdoc2markdown heading-depth option     |
