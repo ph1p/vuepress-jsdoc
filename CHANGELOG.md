@@ -1,5 +1,24 @@
+## 4.4.0-beta (2023-02-20)
+
+* Update package.json ([f8e4df3](https://github.com/ph1p/vuepress-jsdoc/commit/f8e4df3))
+* Update pre-commit ([0c9689c](https://github.com/ph1p/vuepress-jsdoc/commit/0c9689c))
+* docs(example): update example ([a85ba6d](https://github.com/ph1p/vuepress-jsdoc/commit/a85ba6d))
+* feat: add vuepress-docblock-handler for vue-docgen ([4aa36b7](https://github.com/ph1p/vuepress-jsdoc/commit/4aa36b7))
+* refactor: commentParser now returns frontmatter as object ([4395960](https://github.com/ph1p/vuepress-jsdoc/commit/4395960))
+* refactor: refact parser and CLI options ([82063cd](https://github.com/ph1p/vuepress-jsdoc/commit/82063cd))
+* refactor(template): separate jsdoc2md & vue-docgen-cli handlebars template ([b596a2d](https://github.com/ph1p/vuepress-jsdoc/commit/b596a2d))
+* refactor(utils): remove unused utils ([519c273](https://github.com/ph1p/vuepress-jsdoc/commit/519c273))
+
+
+### BREAKING CHANGE
+
+* CLI options has changed, see README file.
+
+
 ## <small>4.3.2 (2023-01-11)</small>
 
+* 4.3.2 ([d2a99df](https://github.com/ph1p/vuepress-jsdoc/commit/d2a99df))
+* WIP ([6641530](https://github.com/ph1p/vuepress-jsdoc/commit/6641530))
 * build: add conventional-changelog-cli dev dependency ([2701f5a](https://github.com/ph1p/vuepress-jsdoc/commit/2701f5a))
 * build: add vuepress as dev dependency + update vue deps ([00ea99b](https://github.com/ph1p/vuepress-jsdoc/commit/00ea99b))
 * build: update package name ([33989eb](https://github.com/ph1p/vuepress-jsdoc/commit/33989eb))
@@ -10,7 +29,6 @@
 * feat: jsdoc2md options support ([dcf9b4e](https://github.com/ph1p/vuepress-jsdoc/commit/dcf9b4e))
 * fix(documentation): Node v18 compatibility ([ba6c09a](https://github.com/ph1p/vuepress-jsdoc/commit/ba6c09a))
 * fix(list-folder): prevent windows format paths ([bddf170](https://github.com/ph1p/vuepress-jsdoc/commit/bddf170))
-* WIP ([6641530](https://github.com/ph1p/vuepress-jsdoc/commit/6641530))
 
 
 
