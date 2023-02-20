@@ -1,9 +1,10 @@
-/*
+/**
  * @vuepress
  * ---
  * headline: lib/comment-parser.ts
  * ---
  */
+
 import fm from 'front-matter';
 
 import { DirectoryFile } from '../interfaces';
@@ -45,24 +46,19 @@ export const parseComment = (fileContent: string) => {
 };
 
 /**
- * Helper function to get header as structured markdown
+ * Helper function to get front matter object
  * @param {string} content file content
  * @param {object} file file object
- * @returns {string} markdown header
+ * @returns {Object} Front matter as plain object
  */
 export const parseVuepressFileHeader = (content: string, file: DirectoryFile) => {
-  const { frontmatter, attributes } = parseComment(content);
+  const { attributes } = parseComment(content);
 
-  let fileContent = '---\n';
+  const frontMatterObj = attributes || {};
 
-  fileContent += !attributes?.title ? `title: ${file.name}` : '';
-
-  if (frontmatter) {
-    fileContent += !attributes?.title ? '\n' : '';
-    fileContent += `${frontmatter}`;
-  }
-
-  fileContent += '\n---\n';
+  // Check if title exists
+  frontMatterObj.title = frontMatterObj.title || file.name; // set filename if title is not set
+  // Process headline attribute
   if (attributes?.title || file.ext !== '.vue') {
     let headline = file.name;
 
@@ -72,8 +68,8 @@ export const parseVuepressFileHeader = (content: string, file: DirectoryFile) =>
       headline = attributes.title;
     }
 
-    fileContent += `\n# ${headline}\n\n`;
+    frontMatterObj.headline = headline;
   }
 
-  return fileContent;
+  return frontMatterObj;
 };
