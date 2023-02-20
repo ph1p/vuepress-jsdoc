@@ -1,4 +1,4 @@
-import { checkExtension, getExtension, getFilename } from '../lib/utils';
+import { checkExtension, getExtension } from '../lib/utils';
 
 describe('test utils', () => {
   describe('getExtension()', () => {
@@ -38,23 +38,6 @@ describe('test utils', () => {
     });
     test('should return true', () => {
       expect(checkExtension('./dir/test.jpg', ['.jpg'])).toBe(true);
-    });
-  });
-
-  describe('getFilename()', () => {
-    test('should return only filename', () => {
-      expect(getFilename('test-file2.js')).toBe('test-file2');
-    });
-    test('should return only filename', () => {
-      expect(getFilename('../path/to/test-file.js')).toBe('test-file');
-    });
-    test('should return empty string', () => {
-      // @ts-ignore
-      expect(getFilename(321)).toBe('');
-      // @ts-ignore
-      expect(getFilename()).toBe('');
-      // @ts-ignore
-      expect(getFilename(undefined)).toBe('');
     });
   });
 });

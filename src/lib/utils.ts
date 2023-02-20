@@ -4,6 +4,22 @@
  * headline: lib/utils.ts
  * ---
  */
+
+import { readFileSync } from 'fs';
+import { isAbsolute, posix } from 'path';
+import YAML from 'yaml';
+
+/**
+ * Read file sync
+ * @param {string} path
+ * @returns {String} File content
+ */
+export const readFile = (path: string, options: object = {}): string =>
+  readFileSync(path, {
+    encoding: 'utf8',
+    ...options
+  });
+
 /**
  * Get extension of file
  * @param {string} path
@@ -25,14 +41,27 @@ export const checkExtension = (path: string, extensions: string[]) => {
 };
 
 /**
- * Get filename without extension
+ * Returns an absolute path (POSIX format)
  * @param {string} path
- * @returns {string} filename
+ * @param {string?} root - The root path (default: `process.cwd()`). If path argument is relative, it will be resolved with this value.
+ * @returns {string} Absolute path
  */
-export const getFilename = (path: string) => {
-  if (!path || (path && typeof path !== 'string')) return '';
+export const toAbsolutePath = (path: string, root?: string): string => {
+  return isAbsolute(path) ? posix.resolve(path) : posix.join(root || process.cwd(), path);
+};
 
-  const splitted = path.split('/').pop() ?? path;
-
-  return splitted.substring(0, splitted.lastIndexOf('.'));
+/**
+ * Converts front matter object to string
+ * @param {Object} fmObj - The front matter object to convert
+ * @returns {string|null}
+ */
+export const frontMatterToString = (fmObj: object) => {
+  let str = '';
+  // If object is not empty
+  if (Object.keys(fmObj).length) {
+    str += '---\n';
+    str += YAML.stringify(fmObj);
+    str += '---';
+  }
+  return str.length ? str : null;
 };
