@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "docs": "node ../bin/vuepress-jsdoc.js --jsDocConfigPath=jsdoc.json --docgenConfigPath=docgen.config.js --source=./src --dist=./documentation --title=API --exclude=class.js --partials=./partials/*.hbs --readme=./README.md",
+    "docs": "node ../bin/vuepress-jsdoc.js --source=./src --dist=./documentation --title=API --exclude=class.js  --readme=./README.md --jsDoc-configPath=jsdoc.json --j2md-partial=./partials/*.hbs --docgen-configPath=docgen.config.js",
     "docs:dev": "npm run docs -- --watch",
     "dev": "npm run docs && vuepress dev documentation",
     "build:local": "npm run docs && vuepress build documentation",

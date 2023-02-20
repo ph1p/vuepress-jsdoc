@@ -1,9 +1,8 @@
 ---
-title: class
 test: test class
+title: class
+headline: class
 ---
-
-# class
 
 <a name="Test"></a>
 

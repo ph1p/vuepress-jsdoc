@@ -13,6 +13,15 @@
 </template>
 
 <script>
+/**
+ * @vuepress
+ * ---
+ * title: Test component
+ * headline: The doc headline
+ * sidebarDepth: 2
+ * ---
+ */
+
 import { text } from './utils';
 
 /**
@@ -133,6 +142,18 @@ export default {
       this.$emit('success', {
         demo: 'example',
       })
+    },
+    /**
+     * This is another public documented method
+     * @public
+     * @category Awesome methods
+     * @param {*} a - First argument
+     * @param {Object[]|Toto} [b = 'Coucou batard'] - Second argument
+     * @param {...*} args - Third argument
+     * @return {Object}
+     */
+    otherPublicMethod: function (a, b, ...args) {
+      return { a, b, ...args }
     },
 
     hiddenMethod: function(){

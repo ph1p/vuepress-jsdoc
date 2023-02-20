@@ -1,57 +1,42 @@
----
-title: vue-md
----
 
-  # Button
+# Button
 
-  
-  > The only true button.
-  
-  
-  
-  
-  
-  
-  
+The only true button.
 
-  
+> This component is globally registered by Vue
+
 ## Props
 
-  | Prop name     | Description | Type      | Values      | Default     |
-  | ------------- | ----------- | --------- | ----------- | ----------- |
-  | color | The color for the button. | string | - | '#333' |
-| size | The size of the button | string | `small`, `normal`, `large` | 'normal' |
-| onClick | Gets called when the user clicks on the button<br/>`@ignore` true | func | - | event => {<br/>  console.log('You have clicked me!', event.target);<br/>} |
+| Prop name | Description | Type | Values | Default | Origin |
+| - | - | - | - | - | - |
+| color | The color for the button. | `string` | | '#333' | |
+| size | The size of the button | `string` | `small`, `normal`, `large` | 'normal' | |
+| onClick | Gets called when the user clicks on the button | `function` | | event => {
+  console.log('You have clicked me!', event.target);
+} | |
 
-  
-  
-  
-  
 ## Slots
 
-  | Name          | Description  | Bindings |
-  | ------------- | ------------ | -------- |
-  | default | Content of button |  |
+| Name | Description | Bindings |
+| - | - | - |
+| default | Content of button | |
 
-  ---
+---
 Use vue live right here too
 
-````markdown
-```jsx live
-<Button>I’m transparent!</Button>
-```
-````
+&#x60;&#x60;&#x60;&#x60;markdown
+&#x60;&#x60;&#x60;jsx live
+&lt;Button&gt;I’m transparent!&lt;/Button&gt;
+&#x60;&#x60;&#x60;
+&#x60;&#x60;&#x60;&#x60;
 
-```jsx live
-<Button>I’m transparent!</Button>
-```
+&#x60;&#x60;&#x60;jsx live
+&lt;Button&gt;I’m transparent!&lt;/Button&gt;
+&#x60;&#x60;&#x60;
 
 To render an example as highlighted source code remove the live modifier
 
-```html
-<Button>I’m transparent!</Button>
-```
-
-  
-  
-This is an overridden component template!
+&#x60;&#x60;&#x60;html
+&lt;Button&gt;I’m transparent!&lt;/Button&gt;
+&#x60;&#x60;&#x60;
+---
