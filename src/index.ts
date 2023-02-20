@@ -15,7 +15,7 @@ import readline from 'readline';
 import { StatisticType } from './constants';
 import { CLIArguments, DirectoryFile } from './interfaces';
 import { listFolder } from './lib/list-folder';
-import { parseFile, parseVueFile, writeContentToFile } from './lib/parser';
+import { parse, writeContentToFile } from './lib/parser';
 import { generateVueSidebar } from './lib/vue-sidebar';
 
 /**
@@ -38,36 +38,13 @@ const createVuepressSidebar = options =>
  * Parse file
  * @param {DirectoryFile} file
  * @param {CLIArguments} argv
+ * @param {ParseOptions} options
  * @returns {Promise}
  */
 const parseDirectoryFile = (file: DirectoryFile, argv: CLIArguments) => {
   const parsedArgs = parseArguments(argv);
   if (!file.isDir && file.folder) {
-    if (['.jsx', '.tsx', '.ts', '.js'].includes(file.ext || '')) {
-      return parseFile(file, parsedArgs.srcFolder, parsedArgs.docsFolder, {
-        configPath: parsedArgs.jsDocConfigPath,
-        partials: parsedArgs.partials,
-        template: parsedArgs.template,
-        'heading-depth': parsedArgs.headingDepth,
-        'example-lang': parsedArgs.exampleLang,
-        plugin: parsedArgs.plugin,
-        helper: parsedArgs.helper,
-        'name-format': parsedArgs.nameFormat,
-        'no-gfm': parsedArgs.noGfm,
-        separators: parsedArgs.separators,
-        'module-index-format': parsedArgs.moduleIndexFormat,
-        'global-index-format': parsedArgs.globalIndexFormat,
-        'param-list-format': parsedArgs.paramListFormat,
-        'property-list-format': parsedArgs.propertyListFormat,
-        'member-index-format': parsedArgs.memberIndexFormat,
-        private: parsedArgs.privateMembers
-      });
-    }
-    if (file.ext === '.vue') {
-      return parseVueFile(file, parsedArgs.srcFolder, parsedArgs.docsFolder, {
-        configPath: parsedArgs.docgenConfigPath
-      });
-    }
+    return parse(file, parsedArgs);
   }
 };
 
@@ -114,23 +91,31 @@ const parseArguments = (argv: CLIArguments) => {
     title: argv.title,
     readme: argv.readme,
     rmPattern: argv.rmPattern || [],
-    jsDocConfigPath: argv.jsDocConfigPath,
-    docgenConfigPath: argv.docgenConfigPath,
-    partials: argv.partials || [],
-    template: argv.j2mdTemplate,
-    headingDepth: argv.j2mdHeadingDepth,
-    exampleLang: argv.j2mdExampleLang,
-    plugin: argv.j2mdPlugin,
-    helper: argv.j2mdHelper,
-    nameFormat: argv.j2mdNameFormat,
-    noGfm: argv.j2mdNoGfm,
-    separators: argv.j2mdSeparators,
-    moduleIndexFormat: argv.j2mdModuleIndexFormat,
-    globalIndexFormat: argv.j2mdGlobalIndexFormat,
-    paramListFormat: argv.j2mdParamListFormat,
-    propertyListFormat: argv.j2mdPropertyListFormat,
-    memberIndexFormat: argv.j2mdMemberIndexFormat,
-    privateMembers: argv.j2mdPrivate
+    jsDoc: {
+      configure: argv.jsDocConfigPath
+    },
+    jsdoc2md: {
+      'example-lang': argv.j2mdExampleLang,
+      'global-index-format': argv.j2mdGlobalIndexFormat,
+      'heading-depth': argv.j2mdHeadingDepth,
+      helper: argv.j2mdHelper,
+      'member-index-format': argv.j2mdMemberIndexFormat,
+      'module-index-format': argv.j2mdModuleIndexFormat,
+      'name-format': argv.j2mdNameFormat,
+      'no-gfm': argv.j2mdNoGfm,
+      'param-list-format': argv.j2mdParamListFormat,
+      partial: argv.j2mdPartial || [],
+      plugin: argv.j2mdPlugin,
+      'property-list-format': argv.j2mdPropertyListFormat,
+      separators: argv.j2mdSeparators,
+      template: argv.j2mdTemplate
+    },
+    vueDocgen: {
+      configPath: argv.docgenConfigPath,
+      helper: argv.docgenHelper,
+      partial: argv.docgenPartial,
+      template: argv.docgenTemplate
+    }
   };
 };
 

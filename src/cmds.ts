@@ -18,7 +18,12 @@ export default (version: string) => {
   program.version(version).description('a CLI Tool to generate markdown files for vuepress');
 
   program
-    .description('Generate the md files')
+    .description(
+      'Generate the md files.\n' +
+        'See also:\n' +
+        '- jsdoc-to-markdown RenderOptions documentation (https://github.com/jsdoc2md/jsdoc-to-markdown/blob/master/docs/API.md#jsdoc2mdrenderoptions--promise)\n' +
+        '- vue-docgen-cli configuration documentation (https://vue-styleguidist.github.io/docs/docgen-cli.html#config)'
+    )
     .option('-s, --source <string>', 'Source folder with .js or .ts files', './src')
     .option('-d, --dist <string>', 'Destination folder', './documentation')
     .option('-f, --folder <string>', 'Folder inside destination folder. Gets overwritten everytime', 'code')
@@ -32,23 +37,37 @@ export default (version: string) => {
       'Pattern when removing files. You can ex- and include files. (glob pattern)',
       ''
     )
-    .option('-p, --partials [files...]', 'jsdoc2markdown partial templates (overwrites default ones)', '')
-    .option('-c, --jsDocConfigPath <string>', 'Path to jsdoc config')
-    .option('--docgenConfigPath <string>', 'Path to vue-docgen config')
-    .option('--j2md-template <string>', 'jsdoc2markdown template option')
-    .option('--j2md-heading-depth <number>', 'jsdoc2markdown heading-depth option')
-    .option('--j2md-example-lang <string>', 'jsdoc2markdown example-lang option')
-    .option('--j2md-plugin [files...]', 'jsdoc2markdown plugin option')
-    .option('--j2md-helper [files...]', 'jsdoc2markdown helper option')
-    .option('--j2md-name-format <string>', 'jsdoc2markdown name-format option')
-    .option('--j2md-no-gfm', 'jsdoc2markdown no-gfm option')
-    .option('--j2md-separators', 'jsdoc2markdown separators option')
-    .option('--j2md-module-index-format <string>', 'jsdoc2markdown module-index-format option')
-    .option('--j2md-global-index-format <string>', 'jsdoc2markdown global-index-format option')
-    .option('--j2md-param-list-format <string>', 'jsdoc2markdown param-list-format option')
-    .option('--j2md-property-list-format <string>', 'jsdoc2markdown property-list-format option')
-    .option('--j2md-member-index-format <string>', 'jsdoc2markdown member-index-format option')
-    .option('--j2md-private', 'jsdoc2markdown private option')
+    .option('--jsDoc-configPath <string>', 'Path to jsDoc config')
+    .option('--j2md-example-lang <string>', 'jsdoc2md example-lang option')
+    .option('--j2md-global-index-format <string>', 'jsdoc2md global-index-format option')
+    .option('--j2md-heading-depth <number>', 'jsdoc2md heading-depth option')
+    .option('--j2md-helper [files...]', 'jsdoc2md helper option')
+    .option('--j2md-member-index-format <string>', 'jsdoc2md member-index-format option')
+    .option('--j2md-module-index-format <string>', 'jsdoc2md module-index-format option')
+    .option('--j2md-name-format <string>', 'jsdoc2md name-format option')
+    .option('--j2md-no-gfm', 'jsdoc2md no-gfm option')
+    .option('--j2md-partial [files...]', 'jsdoc2md partial templates (overwrites default ones)', '')
+    .option('--j2md-param-list-format <string>', 'jsdoc2md param-list-format option')
+    .option('--j2md-plugin [files...]', 'jsdoc2md plugin option')
+    .option('--j2md-property-list-format <string>', 'jsdoc2md property-list-format option')
+    .option('--j2md-separators', 'jsdoc2md separators option')
+    .option(
+      '--j2md-template <string>',
+      'Path to root template handlebars file. File content will be passed to jsdoc2md template option'
+    )
+    .option('--docgen-configPath <string>', 'Path to vue-docgen-cli config')
+    .option(
+      '--docgen-helper <string>',
+      'Handlebars helper files to override or extend the default set (similar to --j2md-helper option)'
+    )
+    .option(
+      '--docgen-partial <string>',
+      'Handlebars partial files to override or extend the default set (similar to --j2md-partial option)'
+    )
+    .option(
+      '--docgen-template <string>',
+      'Handlebars template file to override default component template (similar to --j2md-template option)'
+    )
     .action(generate);
 
   program.parse(process.argv);

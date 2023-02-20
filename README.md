@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/v/vuepress-jsdoc.svg)](https://www.npmjs.com/package/vuepress-jsdoc)
 [![vercel](https://img.shields.io/badge/vercel-demo-black)](https://vuepress-jsdoc-example.vercel.app)
 
-This npm package is a command line script, which scans your JavaScript, Vue or Typescript source code and generates markdown files for vuepress with the help of [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown) and [vue-docgen-cli](https://github.com/vue-styleguidist/vue-styleguidist/tree/dev/packages/vue-docgen-cli).
+This npm package is a command line script, which scans your JavaScript, Vue or Typescript source code and generates markdown files for vuepress with the help of [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown) and [vue-docgen-cli](https://github.com/vue-styleguidist/vue-styleguidist/tree/dev/packages/vue-docgen-cli) with [@hperchec/vue-docgen-template](https://www.npmjs.com/package/@hperchec/vue-docgen-template) custom template.
 
 ![CLI ./example](https://user-images.githubusercontent.com/15351728/131877824-0124e47f-9080-4976-88d0-84ad04b64f24.gif)
 
@@ -57,36 +57,38 @@ You can simply pass `--watch` or `-w`.
 
 Use these options after `vuepress-jsdoc`.
 
-| Name              | Alias | Default         | Description                                                                                                                                     |
-| ----------------- | ----- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| --source          | -s    | ./src           | Source folder with .js or .ts files                                                                                                             |
-| --dist            | -d    | ./documentation | Destination folder                                                                                                                              |
-| --folder          | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime                                                                                    |
-| --title           | -t    | API             | Title of your documentation                                                                                                                     |
-| --help            | -h    |                 | Show help                                                                                                                                       |
-| --version         | -v    |                 | Show current version                                                                                                                            |
-| --readme          | -r    |                 | Path to custom readme file                                                                                                                      |
-| --exclude         | -e    |                 | Pattern to exclude files/folders (Comma seperated) - \*.test.js,exclude.js [more information](https://github.com/micromatch/micromatch#ismatch) |
-| --include         | -e    |                 | Pattern to include files/folders (Comma seperated) - \*.test.js,exclude.js [more information](https://github.com/micromatch/micromatch#ismatch) |
-| --rmPattern       | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern)                                                                      |
-| --partials        | -p    |                 | jsdoc2markdown partial templates (overwrites default ones)                                                                                      |
-| --jsDocConfigPath | -c    |                 | Path to [JsDoc Config](http://usejsdoc.org/about-configuring-jsdoc.html) (experimental)                                                         |
-| --docgenConfigPath | -c    |                 | Path to [vue-docgen-cli Config](https://vue-styleguidist.github.io/docs/docgen-cli.html#config) (experimental)                                                         |
-| --watch           | -w    |                 | Watch changes and update markdown files    |
-| --j2md-template   |       |                 | jsdoc2markdown template option             |
-| --j2md-heading-depth |       |              | jsdoc2markdown heading-depth option     |
-| --j2md-example-lang |       |               | jsdoc2markdown example-lang option       |
-| --j2md-plugin     |       |                 | jsdoc2markdown plugin option                   |
-| --j2md-helper     |       |                 | jsdoc2markdown helper option      |
-| --j2md-name-format |       |                | jsdoc2markdown name-format option      |
-| --j2md-no-gfm     |       | false           | jsdoc2markdown no-gfm option      |
-| --j2md-separators |       | false           | jsdoc2markdown separators option      |
-| --j2md-module-index-format |       |        | jsdoc2markdown module-index-format option      |
-| --j2md-global-index-format |       |        | jsdoc2markdown global-index-format option      |
-| --j2md-param-list-format |       |          | jsdoc2markdown param-list-format option      |
-| --j2md-property-list-format |       |       | jsdoc2markdown property-list-format option      |
-| --j2md-member-index-format |       |        | jsdoc2markdown member-index-format option      |
-| --j2md-private    |       | false           | jsdoc2markdown private option      |
+| Name                        | Alias | Default         | Description                                                                                                                                     |
+| --------------------------- | ----- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| --source                    | -s    | ./src           | Source folder with .js or .ts files                                                                                                             |
+| --dist                      | -d    | ./documentation | Destination folder                                                                                                                              |
+| --folder                    | -f    | ./code          | Folder inside destination folder. Gets overwritten everytime                                                                                    |
+| --title                     | -t    | API             | Title of your documentation                                                                                                                     |
+| --help                      | -h    |                 | Show help                                                                                                                                       |
+| --version                   | -v    |                 | Show current version                                                                                                                            |
+| --readme                    | -r    |                 | Path to custom readme file                                                                                                                      |
+| --exclude                   | -e    |                 | Pattern to exclude files/folders (Comma seperated) - \*.test.js,exclude.js [more information](https://github.com/micromatch/micromatch#ismatch) |
+| --include                   | -e    |                 | Pattern to include files/folders (Comma seperated) - \*.test.js,exclude.js [more information](https://github.com/micromatch/micromatch#ismatch) |
+| --watch                     | -w    |                 | Watch changes and update markdown files                                                                                                         |
+| --rmPattern                 | -rm   |                 | Pattern when removing files. You can ex- and include files. (glob pattern)                                                                      |
+| --jsDoc-configPath          | -c    |                 | Path to [JsDoc Config](http://usejsdoc.org/about-configuring-jsdoc.html) (experimental)                                                         |
+| --j2md-example-lang         |       |                 | jsdoc2markdown example-lang option                                                                                                              |
+| --j2md-global-index-format  |       |                 | jsdoc2markdown global-index-format option                                                                                                       |
+| --j2md-heading-depth        |       |                 | jsdoc2markdown heading-depth option                                                                                                             |
+| --j2md-helper               |       |                 | jsdoc2markdown helper option                                                                                                                    |
+| --j2md-member-index-format  |       |                 | jsdoc2markdown member-index-format option                                                                                                       |
+| --j2md-module-index-format  |       |                 | jsdoc2markdown module-index-format option                                                                                                       |
+| --j2md-name-format          |       |                 | jsdoc2markdown name-format option                                                                                                               |
+| --j2md-no-gfm               |       | false           | jsdoc2markdown no-gfm option                                                                                                                    |
+| --j2md-partial              | -p    |                 | jsdoc2markdown partial templates (overwrites default ones)                                                                                      |
+| --j2md-plugin               |       |                 | jsdoc2markdown plugin option                                                                                                                    |
+| --j2md-param-list-format    |       |                 | jsdoc2markdown param-list-format option                                                                                                         |
+| --j2md-property-list-format |       |                 | jsdoc2markdown property-list-format option                                                                                                      |
+| --j2md-separators           |       | false           | jsdoc2markdown separators option                                                                                                                |
+| --j2md-template             |       |                 | jsdoc2markdown template option                                                                                                                  |
+| --docgen-configPath         |       |                 | Path to [vue-docgen-cli Config](https://vue-styleguidist.github.io/docs/docgen-cli.html#config)                                                 |
+| --docgen-helper             |       |                 | Handlebars helper files to override or extend the default set (similar to --j2md-helper option)                                                 |
+| --docgen-partial            |       |                 | Handlebars partial files to override or extend the default set (similar to --j2md-partial option)                                               |
+| --docgen-template           |       |                 | Handlebars template file to override default component template (similar to --j2md-template option)                                             |
 
 ### config.js
 
@@ -158,10 +160,10 @@ You can set the title by passing it to the `sidebarTree('Mainpage title')` funct
 
 ## @vuepress comment block
 
-You can add custom meta data to your pages by using the `@vuepress` block:
+You can add custom meta data to your pages by using the `@vuepress` block in top level of `.js` files or in `<script>` tag in Vue SFC:
 
 ```javascript
-/*
+/**
  * @vuepress
  * ---
  * title: Your custom title
