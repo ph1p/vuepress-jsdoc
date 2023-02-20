@@ -13,7 +13,7 @@
     "prepublishOnly": "npm i && npm run build",
     "prepare": "husky install",
     "version": "conventional-changelog -p karma -i CHANGELOG.md -s -r 0 && git add .",
-    "docs": "node ./bin/vuepress-jsdoc.js --source=./dist --partials=./example/partials/*.hbs --readme ./README.md --include=\"**/*.(ts|js)\" --exclude=\"**/*.d.ts,**/interfaces.*,**/constants.*\"",
+    "docs": "node ./bin/vuepress-jsdoc.js --source=./dist --readme ./README.md --include=\"**/*.(ts|js)\" --exclude=\"**/*.d.ts,**/interfaces.*,**/constants.*\" --j2md-partial=./example/partials/*.hbs",
     "docs:dev": "npx concurrently --kill-others \"npm run dev\" \"npm run docs -- -w\" \"npx vuepress dev documentation\"",
     "docs:build": "npm run build && npm run docs && npx vuepress build documentation"
   },
@@ -79,18 +79,23 @@
     "vuepress-jsdoc": "bin/vuepress-jsdoc.js"
   },
   "dependencies": {
+    "@hperchec/vue-docgen-template": "^1.0.8",
     "chalk": "^4.1.2",
     "chokidar": "^3.5.3",
     "commander": "^9.4.1",
+    "deepmerge": "^4.3.0",
     "del": "^6.0.0",
     "front-matter": "^4.0.2",
     "jsdoc-to-markdown": "^7.1.1",
+    "markdown-table": "^2.0.0",
     "micromatch": "^4.0.5",
     "mkdirp": "^1.0.4",
     "vue-docgen-cli": "^4.51.0",
-    "vue-template-compiler": "^2.7.14"
+    "vue-template-compiler": "^2.7.14",
+    "yaml": "^2.2.1"
   },
   "devDependencies": {
+    "@hperchec/readme-generator": "^1.0.4",
     "@types/jest": "^29.1.1",
     "@types/jsdoc-to-markdown": "^7.0.3",
     "@types/micromatch": "^4.0.2",
