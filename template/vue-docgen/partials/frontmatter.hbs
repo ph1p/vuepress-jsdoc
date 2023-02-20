@@ -1,0 +1,6 @@
+{{#if (isObjectEmpty ./frontMatter) ~}}
+{{else~}}
+---
+{{yaml-stringify frontMatter ~}}
+---
+{{/if}}
