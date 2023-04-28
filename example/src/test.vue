@@ -148,7 +148,7 @@ export default {
      * @public
      * @category Awesome methods
      * @param {*} a - First argument
-     * @param {Object[]|Toto} [b = 'Coucou batard'] - Second argument
+     * @param {Object[]|CustomType} b - Second argument
      * @param {...*} args - Third argument
      * @return {Object}
      */

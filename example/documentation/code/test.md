@@ -46,7 +46,7 @@ Sets the order
 | --- | --- | --- |
 | key | `string` | Key to order |
 
-### otherPublicMethod(a, [b], ...args) ⇒ `Object`
+### otherPublicMethod(a, b, ...args) ⇒ `Object`
 This is another public documented method
 
 **Returns**: `Object`
@@ -56,11 +56,11 @@ This is another public documented method
 **Params**:
 
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| a | `*` |  | First argument |
-| [b] | `Array.<Object>` \| `Toto` | `&#x27;Coucou batard&#x27;` | Second argument |
-| ...args | `*` |  | Third argument |
+| Param | Type | Description |
+| --- | --- | --- |
+| a | `*` | First argument |
+| b | `Array.<Object>` \| `CustomType` | Second argument |
+| ...args | `*` | Third argument |
 
 ## Events
 
