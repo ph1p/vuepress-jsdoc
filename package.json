@@ -3,6 +3,9 @@
   "version": "4.4.0-beta",
   "description": "Generate jsdoc markdown files for vuepress",
   "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "jest",
     "test-coverage": "cross-env NODE_ENV=test jest --coverage",
