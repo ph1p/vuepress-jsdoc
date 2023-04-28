@@ -1,7 +1,18 @@
+## 4.4.0 (2023-04-28)
+
+* build: specify public access for publishing in package.json ([cfb6cb5](https://github.com/ph1p/vuepress-jsdoc/commit/cfb6cb5))
+* fix: example typo ([8561575](https://github.com/ph1p/vuepress-jsdoc/commit/8561575))
+* fix: Node v18 compatibility ([78c845c](https://github.com/ph1p/vuepress-jsdoc/commit/78c845c))
+* fix: pass the correct option "configure" to parser ([a9cebff](https://github.com/ph1p/vuepress-jsdoc/commit/a9cebff))
+* refact(parse-vue-file): Remove multiple consecutive blank lines at end of generated content ([7ac174c](https://github.com/ph1p/vuepress-jsdoc/commit/7ac174c))
+
+
+
 ## 4.4.0-beta (2023-02-20)
 
 * Update package.json ([f8e4df3](https://github.com/ph1p/vuepress-jsdoc/commit/f8e4df3))
 * Update pre-commit ([0c9689c](https://github.com/ph1p/vuepress-jsdoc/commit/0c9689c))
+* v4.4.0-beta ([fde502c](https://github.com/ph1p/vuepress-jsdoc/commit/fde502c))
 * docs(example): update example ([a85ba6d](https://github.com/ph1p/vuepress-jsdoc/commit/a85ba6d))
 * feat: add vuepress-docblock-handler for vue-docgen ([4aa36b7](https://github.com/ph1p/vuepress-jsdoc/commit/4aa36b7))
 * refactor: commentParser now returns frontmatter as object ([4395960](https://github.com/ph1p/vuepress-jsdoc/commit/4395960))
