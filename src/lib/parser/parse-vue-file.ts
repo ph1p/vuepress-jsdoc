@@ -133,6 +133,9 @@ export const parseVueFile = async (
     success = false;
   }
 
+  // Remove multiple consecutive blank lines at end of file:
+  fileContent = fileContent.replace(/(\n){2,}$/, '\n');
+
   return {
     success,
     file,
