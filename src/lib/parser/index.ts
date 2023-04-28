@@ -35,12 +35,12 @@ export const parse = (file: DirectoryFile, config: any) => {
   if (['.jsx', '.tsx', '.ts', '.js'].includes(file.ext || '')) {
     return parseFile(file, config.srcFolder, config.docsFolder, {
       ...config.jsdoc2md,
-      jsDoc: config.jsDoc
+      configure: config.jsDoc.configure
     });
   } else if (file.ext === '.vue') {
     return parseVueFile(file, config.srcFolder, config.docsFolder, {
       ...config.vueDocgen,
-      jsDoc: config.jsDoc
+      configure: config.jsDoc.configure
     });
   } else {
     console.log(`[${file.name}] Not supported file extension: ${file.ext}`);
