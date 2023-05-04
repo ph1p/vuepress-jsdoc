@@ -1,5 +1,12 @@
+## 4.5.0 (2023-05-04)
+
+* feat: pass frontMatter option to jsdoc2md ([77cdc8e](https://github.com/ph1p/vuepress-jsdoc/commit/77cdc8e))
+
+
+
 ## 4.4.0 (2023-04-28)
 
+* 4.4.0 ([a019ad6](https://github.com/ph1p/vuepress-jsdoc/commit/a019ad6))
 * build: specify public access for publishing in package.json ([cfb6cb5](https://github.com/ph1p/vuepress-jsdoc/commit/cfb6cb5))
 * fix: example typo ([8561575](https://github.com/ph1p/vuepress-jsdoc/commit/8561575))
 * fix: Node v18 compatibility ([78c845c](https://github.com/ph1p/vuepress-jsdoc/commit/78c845c))
