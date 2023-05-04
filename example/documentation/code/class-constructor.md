@@ -3,6 +3,8 @@ title: Classes
 headline: Classes
 ---
 
+# Classes
+
 ## Classes
 
 <dl>

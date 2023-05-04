@@ -3,6 +3,8 @@ title: Icon
 headline: Icon
 ---
 
+# Icon
+
 ## Constants
 
 <dl>

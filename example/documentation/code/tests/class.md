@@ -4,6 +4,8 @@ title: class
 headline: class
 ---
 
+# class
+
 <a name="Test"></a>
 
 ## Test

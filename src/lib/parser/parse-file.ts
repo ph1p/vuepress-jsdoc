@@ -55,7 +55,7 @@ export const parseFile = async (
   const folderInDest = path.join(root, relativePathDest);
   const folderInSrc = path.join(root, file.folder);
 
-  const { configure, partial, template: templateOpt, ...otherOptions } = options;
+  const { configure, partial, helper, template: templateOpt, ...otherOptions } = options;
 
   // If template option provided
   if (templateOpt) {
@@ -86,6 +86,10 @@ export const parseFile = async (
         path.join(templatePath, 'jsdoc2md/partials/header.hbs'),
         path.join(templatePath, 'jsdoc2md/partials/main.hbs'),
         ...partial
+      ],
+      helper: [
+        path.join(templatePath, 'jsdoc2md/helpers/headline.js'),
+        ...(helper ? (Array.isArray(helper) ? helper : [helper]) : [])
       ]
     };
 
@@ -93,11 +97,15 @@ export const parseFile = async (
       if (otherOptions[name] !== undefined) renderOptions[name] = otherOptions[name];
     }
 
-    // Render
-    content = await jsdoc2md.render(renderOptions);
-
     // Parse @vuepress block and extract front matter
     const frontMatter = parseVuepressFileHeader(readFile(path.join(folderInSrc, fileName + file.ext)), file);
+
+    // Pass frontmatter to dmd options
+    // @ts-ignore
+    renderOptions.frontMatter = frontMatter;
+
+    // Render
+    content = await jsdoc2md.render(renderOptions);
 
     const frontMatterStr = frontMatterToString(frontMatter);
 

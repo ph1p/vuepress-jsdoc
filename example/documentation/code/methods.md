@@ -3,6 +3,8 @@ title: A normal ES6 Method
 headline: Custom Title!
 ---
 
+# Custom Title!
+
 ## Functions
 
 <dl>
