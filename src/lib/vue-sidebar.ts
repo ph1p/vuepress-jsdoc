@@ -11,13 +11,13 @@ import { FileTree } from '../interfaces';
 
 /**
  * Runs through the given tree structure and creates a vuepress config
- * @param {object} data Informations to build config
- * @param {array} data.fileTree tree strcture
+ * @param {object} data Information to build config
+ * @param {array} data.fileTree tree structure
  * @param {string} data.codeFolder ./code/ folder
  * @param {string} data.srcFolder ./src/ folder
  * @param {string} data.docsFolder ./documentation/ folder
  * @param {string} data.title title string
- * @returns {object} returns the vuepress menu strcture
+ * @returns {object} returns the vuepress menu structure
  */
 export const generateVueSidebar = ({
   fileTree,
@@ -32,20 +32,24 @@ export const generateVueSidebar = ({
   docsFolder: string;
   title: string;
 }) => {
-  let rootFiles = [['', '::vuepress-jsdoc-title::']];
-  rootFiles = rootFiles.concat(fileTree.filter((file: FileTree) => !file.children).map((file: FileTree) => file.name));
+  let rootFiles = [{ link: `/${codeFolder}/`, text: '::vuepress-jsdoc-title::' }];
+  rootFiles = rootFiles.concat(
+    fileTree.filter((file: FileTree) => !file.children).map((file: FileTree) => `/${join(codeFolder, file.name)}`)
+  );
 
   const rootFolder = fileTree.filter((file: FileTree) => file.children && file.children.length > 0);
 
-  const buildChildren = (children: any[], name: string, depth: number) => {
+  const buildChildren = (children: FileTree[], name: string, depth: number) => {
     let newChildren: any[] = [];
 
     for (const child of children) {
       if (child.children && child.children.length > 0) {
         newChildren = newChildren.concat(buildChildren(child.children, child.name, depth + 1));
       } else if (child.fullPath) {
-        if (fs.existsSync(join(docsFolder, child.fullPath.replace(srcFolder, '')) + '.md')) {
-          newChildren.push(child.fullPath.replace(`${srcFolder}/`, ''));
+        const path = child.fullPath.replace(srcFolder, '');
+
+        if (fs.existsSync(`${join(docsFolder, path)}.md`)) {
+          newChildren.push(`/${join(codeFolder, path)}`);
         }
       }
     }
@@ -54,7 +58,7 @@ export const generateVueSidebar = ({
   };
 
   const tree = rootFolder.map((folder: FileTree) => ({
-    title: folder.name,
+    text: folder.name,
     collapsable: false,
     children: buildChildren(folder.children!, folder.name, 0)
   }));
@@ -62,7 +66,7 @@ export const generateVueSidebar = ({
   return {
     [`/${codeFolder}/`]: [
       {
-        title,
+        text: title,
         collapsable: false,
         children: rootFiles
       }
