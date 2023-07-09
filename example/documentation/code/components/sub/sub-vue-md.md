@@ -21,7 +21,7 @@ title: sub-vue-md
   | ------------- | ----------- | --------- | ----------- | ----------- |
   | color | The color for the button. | string | - | '#333' |
 | size | The size of the button | string | `small`, `normal`, `large` | 'normal' |
-| onClick | Gets called when the user clicks on the button<br/>`@ignore` true | func | - | event => {<br/>  console.log('You have clicked me!', event.target);<br/>} |
+| onClick | Gets called when the user clicks on the button<br/>`@ignore` true | func | - | event =&gt; {<br/>  console.log('You have clicked me!', event.target);<br/>} |
 
   
   
@@ -33,6 +33,7 @@ title: sub-vue-md
   | ------------- | ------------ | -------- |
   | default | Content of button |  |
 
+  
   ---
 Use vue live right here too
 

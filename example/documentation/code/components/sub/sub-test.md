@@ -23,7 +23,7 @@ title: sub-test
   | Prop name     | Description | Type      | Values      | Default     |
   | ------------- | ----------- | --------- | ----------- | ----------- |
   | msg | object/array defaults should be returned from a factory function<br/>`@version` 1.0.5<br/>`@since` Version 1.0.1<br/>`@see` See [Wikipedia](https://en.wikipedia.org/wiki/Web_colors#HTML_color_names) for a list of color names<br/>`@link` See [Wikipedia](https://en.wikipedia.org/wiki/Web_colors#HTML_color_names) for a list of color names | string\|number | - | text |
-| myF | Function | func | - | (param, param2) => {} |
+| myF | Function | func | - | (param, param2) =&gt; {} |
 | v-model | Model example<br/>`@model` true | string | - |  |
 | data | describe data<br/>`@version` 1.0.5 | array | - |  |
 | columns | get columns list | array | - |  |
@@ -69,6 +69,7 @@ title: sub-test
   | header | Use this slot header |  |
 | footer | Use this slot footer |  |
 
+  
   ---
 
 
