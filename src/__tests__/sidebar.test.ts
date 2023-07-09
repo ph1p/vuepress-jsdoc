@@ -27,11 +27,19 @@ describe('test sidebar', () => {
 
     const result = {
       [`/${codeFolder}/`]: [
-        { title, collapsable: false, children: [['', '::vuepress-jsdoc-title::'], 'file1', 'file2'] },
         {
-          title: 'lib',
+          text: title,
           collapsable: false,
-          children: ['src/lib/file3', 'src/lib/_index']
+          children: [
+            { link: `/${codeFolder}/`, text: '::vuepress-jsdoc-title::' },
+            `/${codeFolder}/file1`,
+            `/${codeFolder}/file2`
+          ]
+        },
+        {
+          text: 'lib',
+          collapsable: false,
+          children: [`/${codeFolder}/src/lib/file3`, `/${codeFolder}/src/lib/_index`]
         }
       ]
     };

@@ -108,9 +108,10 @@ export const parseVueFile = async (
   const relativePathDest = join(destFolder, file.folder.replace(srcFolder, ''));
   const folderInDest = join(root, relativePathDest);
   const folderInSrc = join(root, file.folder);
+  const vueDocGenCliConf = await extractConfig(join(root, file.folder));
 
   const config = {
-    ...extractConfig(join(root, file.folder)),
+    ...vueDocGenCliConf,
     components: file.name + file.ext
   };
 
@@ -124,7 +125,12 @@ export const parseVueFile = async (
       fileName = 'index';
     }
     // parse file
-    const data = await compileTemplates(join(config.componentsRoot, fileName + file.ext), config, fileName + file.ext);
+    const data = await compileTemplates(
+      'add',
+      join(config.componentsRoot, fileName + file.ext),
+      config,
+      fileName + file.ext
+    );
 
     fileContent = parseVuepressFileHeader(
       await fs.readFile(`${join(folderInSrc, fileName + file.ext)}`, 'utf-8'),
