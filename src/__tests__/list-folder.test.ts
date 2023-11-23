@@ -2,8 +2,8 @@ import { fs, vol } from 'memfs';
 
 import { listFolder } from '../lib/list-folder';
 
-jest.mock('fs', () => fs);
-jest.mock('fs/promises', () => fs.promises);
+jest.mock('node:fs', () => fs);
+jest.mock('node:fs/promises', () => fs.promises);
 
 describe('test file-structure', () => {
   describe('with children', () => {
@@ -28,7 +28,7 @@ describe('test file-structure', () => {
         { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
         { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' },
         { ext: '.vue', folder: 'src/lib/', isDir: false, name: 'file3', path: 'src/lib/file3.vue' },
-        { ext: '.js', folder: 'src/lib/', isDir: false, name: '__index__', path: 'src/lib/index.js' },
+        { ext: '.js', folder: 'src/lib/', isDir: false, name: 'src-lib-index', path: 'src/lib/index.js' },
         { isDir: true, name: 'lib', path: 'src/lib' }
       ]);
 
@@ -38,7 +38,7 @@ describe('test file-structure', () => {
         {
           children: [
             { fullPath: 'src/lib/file3', name: 'file3', path: '/file3', ext: '.vue' },
-            { fullPath: 'src/lib/__index__', name: '__index__', path: '/__index__', ext: '.js' }
+            { fullPath: 'src/lib/src-lib-index', name: 'src-lib-index', path: '/src-lib-index', ext: '.js' }
           ],
           name: 'lib'
         }

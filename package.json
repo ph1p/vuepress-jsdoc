@@ -14,8 +14,8 @@
     "prepare": "husky install",
     "version": "conventional-changelog -p karma -i CHANGELOG.md -s -r 0 && git add .",
     "docs": "./bin/vuepress-jsdoc.js --source=./dist --partials=./example/partials/*.hbs --readme ./README.md --include=\"**/*.(ts|js)\" --exclude=\"**/*.d.ts,**/interfaces.*,**/constants.*\"",
-    "docs:dev": "npx concurrently --kill-others \"npm run dev\" \"npm run docs -- -w\" \"npx vuepress dev documentation\"",
-    "docs:build": "npm run build && npm run docs && npx vuepress build documentation"
+    "docs:dev": "npx concurrently --kill-others \"npm run dev\" \"npm run docs -- -w\" \"vuepress dev documentation\"",
+    "docs:build": "npm run build && npm run docs && vuepress build documentation"
   },
   "keywords": [
     "jsdoc",
@@ -79,37 +79,39 @@
     "vuepress-jsdoc": "bin/vuepress-jsdoc.js"
   },
   "dependencies": {
-    "chalk": "^4.1.2",
     "chokidar": "^3.5.3",
-    "commander": "^11.0.0",
+    "commander": "^11.1.0",
     "del": "^6.0.0",
     "front-matter": "^4.0.2",
     "jsdoc-to-markdown": "^8.0.0",
+    "kleur": "^4.1.5",
     "micromatch": "^4.0.5",
-    "mkdirp": "^1.0.4",
+    "mkdirp": "^3.0.1",
     "vue-docgen-cli": "^4.67.0"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.2",
-    "@types/jsdoc-to-markdown": "^7.0.3",
-    "@types/micromatch": "^4.0.2",
+    "@types/jest": "^29.5.10",
+    "@types/jsdoc-to-markdown": "^7.0.6",
+    "@types/micromatch": "^4.0.6",
     "@types/mkdirp": "^1.0.2",
-    "@typescript-eslint/eslint-plugin": "^5.61.0",
-    "@typescript-eslint/parser": "^5.61.0",
-    "babel-jest": "^29.6.1",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "@vuepress/client": "^2.0.0-rc.0",
+    "babel-jest": "^29.7.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.44.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jest": "^27.2.2",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jest": "^27.6.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "husky": "^8.0.3",
-    "jest": "^29.6.1",
-    "lint-staged": "^13.2.3",
-    "memfs": "^4.2.0",
+    "jest": "^29.7.0",
+    "lint-staged": "^15.1.0",
+    "memfs": "^4.6.0",
     "ts-jest": "^29.1.1",
-    "typescript": "^4.8.4",
-    "vue": "^2.7.14"
+    "typescript": "^5.3.2",
+    "vue": "^3.3.8",
+    "vuepress": "^2.0.0-rc.0"
   },
   "lint-staged": {
     "src/**/*.{css,scss,json}": [

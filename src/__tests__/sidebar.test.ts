@@ -1,15 +1,15 @@
 import { generateVueSidebar } from '../lib/vue-sidebar';
 
-jest.mock('fs', () => ({
+jest.mock('node:fs', () => ({
   existsSync: () => true
 }));
 
 describe('test sidebar', () => {
   test('generateVueSidebar should return valid vue config', () => {
-    const codeFolder = 'test_folder';
+    const codeFolder = 'test_folder_code';
     const title = 'test_folder';
-    const srcFolder = 'test_folder';
-    const docsFolder = 'test_folder';
+    const srcFolder = 'test_folder_src';
+    const docsFolder = 'test_folder_docs';
 
     const fileTree = [
       { fullPath: 'src/file1', name: 'file1', path: '/file1', ext: '.js' },
@@ -17,7 +17,7 @@ describe('test sidebar', () => {
       {
         children: [
           { fullPath: 'src/lib/file3', name: 'file3', path: '/file3', ext: '.vue' },
-          { fullPath: 'src/lib/_index', name: '_index', path: '/_index', ext: '.js' }
+          { fullPath: 'src/lib/index', name: 'index', path: '/index', ext: '.js' }
         ],
         name: 'lib'
       }
@@ -39,7 +39,7 @@ describe('test sidebar', () => {
         {
           text: 'lib',
           collapsable: false,
-          children: [`/${codeFolder}/src/lib/file3`, `/${codeFolder}/src/lib/_index`]
+          children: [`/${codeFolder}/src/lib/file3`, `/${codeFolder}/src/lib/index`]
         }
       ]
     };

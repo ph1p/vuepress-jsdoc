@@ -6,3 +6,5 @@ coverage
 dist
 public
 documentation/code
+.cache
+.temp

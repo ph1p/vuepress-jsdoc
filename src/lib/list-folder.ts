@@ -4,9 +4,9 @@
  * headline: lib/list-folder.ts
  * ---
  */
-import fs from 'fs/promises';
 import mm from 'micromatch';
-import path from 'path';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 import { DirectoryFile, FileTree } from '../interfaces';
 
@@ -53,8 +53,8 @@ export const listFolder = async (
     let name = path.basename(filePath).replace(ext, '');
     const folder = filePath.replace(name, '').replace(ext, '');
 
-    if (name === 'index') {
-      name = '__index__';
+    if (name.endsWith('index')) {
+      name = srcPath.replace(/\//g, '-') + '-' + name;
     }
 
     const file = {
@@ -70,7 +70,7 @@ export const listFolder = async (
     const baseSrc = mainPath || srcPath;
 
     if (
-      mm.every(path.join(srcPath.replace(baseSrc, ''), dirent.name), [...include, ...exclude.map(e => '!' + e)]) ||
+      mm.every(path.join(srcPath.replace(baseSrc, ''), dirent.name), [...include, ...exclude.map((e) => '!' + e)]) ||
       isDir
     ) {
       let treeEntry: FileTree = {

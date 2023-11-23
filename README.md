@@ -4,9 +4,13 @@
 [![npm](https://img.shields.io/npm/v/vuepress-jsdoc.svg)](https://www.npmjs.com/package/vuepress-jsdoc)
 [![vercel](https://img.shields.io/badge/vercel-demo-black)](https://vuepress-jsdoc-example.vercel.app)
 
-This npm package is a command line script, which scans your JavaScript, Vue or Typescript source code and generates markdown files for vuepress with the help of [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown) and [vue-docgen-cli](https://github.com/vue-styleguidist/vue-styleguidist/tree/dev/packages/vue-docgen-cli).
+This npm package serves as a command line script designed to analyze your JavaScript, Vue, or TypeScript source code. Leveraging [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown) and [vue-docgen-cli](https://github.com/vue-styleguidist/vue-styleguidist/tree/dev/packages/vue-docgen-cli), it dynamically generates markdown files tailored for VuePress.
 
 ![CLI ./example](https://user-images.githubusercontent.com/15351728/131877824-0124e47f-9080-4976-88d0-84ad04b64f24.gif)
+
+## Vuepress support
+
+This npm package is compatible with VuePress 2; however, it requires a version lower than `5.0.0` for proper functionality with VuePress 1.
 
 ## How to
 
@@ -23,29 +27,6 @@ vuepress-jsdoc --source ./src --dist ./documentation --folder code --title API -
 ```
 
 You can also use `npx vuepress-jsdoc`, if you want.
-
-#### Plugin (Dev-Mode) `alpha`
-
-You can use `vuepress-jsdoc` also as plugin.
-This plugin watches you generated files.
-
-```javascript
-// ./documentation/.vuepress/config.js
-plugins: [
-  [
-    require('vuepress-jsdoc').default,
-    {
-      folder: 'code',
-      source: './dist',
-      dist: './documentation',
-      title: 'API',
-      partials: ['./example/partials/*.hbs'],
-      readme: './README.md',
-      exclude: '**/*.d.ts,**/interfaces.*,**/constants.*,**/cmds.*'
-    }
-  ]
-];
-```
 
 #### Watch-Mode `alpha`
 
@@ -137,12 +118,13 @@ module.exports = {
 
 ## Custom readme
 
-You can easily add a custom path to your readme by using the `--readme ./path/to/file.md` parameter. If you move a `README.md` inside your source folder, it should resolve it automatically.
-You can set the title by passing it to the `sidebarTree('Mainpage title')` function inside your `./.vuepress/config.js`.
+To include a custom path for your readme, simply utilize the `--readme ./path/to/file.md` parameter. If you relocate a `README.md` file into your source folder, the system will automatically resolve it.
+
+For setting the title, provide it as an argument to the `sidebarTree('Mainpage title')` function within your `./.vuepress/config.js` file.
 
 ## @vuepress comment block
 
-You can add custom meta data to your pages by using the `@vuepress` block:
+Enhance your page customization by incorporating custom metadata through the `@vuepress` block:
 
 ```javascript
 /*
@@ -160,15 +142,13 @@ Use `headline` to add a custom `h1` title.
 
 ## Typescript
 
-To use typescript, you have to install these dev-dependencies:
+To integrate TypeScript support, install the following dev-dependencies with the following command:
 
 ```bash
 npm install -D typescript jsdoc-babel @babel/cli @babel/core @babel/preset-env @babel/preset-typescript jsdoc-to-markdown
 ```
 
-Next, you have to add a `jsdoc.json` to your project with some settings and add it with the `-c` parameter.
-You can find a full working example with all settings inside the `./example` folder.
-The example shows also how to use babel-`plugins`.
+After installation, include a `jsdoc.json` file in your project with specific settings, and reference it using the `-c` parameter. For a comprehensive example with all the necessary configurations, refer to the `./example` folder. The example also demonstrates the usage of Babel plugins.
 
 ## Example
 

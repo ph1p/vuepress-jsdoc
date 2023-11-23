@@ -5,12 +5,12 @@
  * headline: The Main File
  * ---
  */
-import chalk from 'chalk';
 import chokidar from 'chokidar';
 import del from 'del';
-import fs from 'fs/promises';
-import mkdirp from 'mkdirp';
-import readline from 'readline';
+import kleur from 'kleur';
+import { mkdirp } from 'mkdirp';
+import fs from 'node:fs/promises';
+import readline from 'node:readline';
 
 import { StatisticType } from './constants';
 import { CLIArguments, DirectoryFile } from './interfaces';
@@ -23,7 +23,7 @@ import { generateVueSidebar } from './lib/vue-sidebar';
  * @param {object} options
  * @returns {Promise}
  */
-const createVuepressSidebar = options =>
+const createVuepressSidebar = (options) =>
   fs.writeFile(
     `${options.docsFolder}/config.js`,
     `exports.fileTree=${JSON.stringify(
@@ -66,15 +66,15 @@ const createReadmeFile = async (argv: CLIArguments, deletedPaths?: string[]) => 
 
   try {
     readMeContent = await fs.readFile(readmePath, 'utf-8');
-    if (deletedPaths?.some(p => p.indexOf(`${codeFolder}/README.md`) !== -1)) {
+    if (deletedPaths?.some((p) => p.indexOf(`${codeFolder}/README.md`) !== -1)) {
       console.log(
-        `\n${chalk.white.bgBlack(' README ')} ${chalk.dim(readmePath.replace('README.md', ''))}${chalk.bold(
+        `\n${kleur.white().bgBlack(' README ')} ${kleur.dim(readmePath.replace('README.md', ''))}${kleur.bold(
           'README.md'
-        )} \u2192  ${chalk.dim(docsFolder)}${chalk.bold('/README.md')}`
+        )} \u2192  ${kleur.dim(docsFolder)}${kleur.bold('/README.md')}`
       );
     }
   } catch (e) {
-    console.log(`\n${chalk.white.bgBlack(' README ')} Add default README.md`);
+    console.log(`\n${kleur.white().bgBlack(' README ')} Add default README.md`);
   }
 
   await fs.writeFile(`${docsFolder}/README.md`, readMeContent);
@@ -122,8 +122,8 @@ export const generate = async (argv: CLIArguments) => {
     if (!file.isDir) {
       readline.clearLine(process.stdout, 0);
       readline.cursorTo(process.stdout, 0);
-      process.stdout.write(chalk.dim(` ${file.path} `));
-      await new Promise(resolve => setTimeout(resolve, 20));
+      process.stdout.write(kleur.dim(` ${file.path} `));
+      await new Promise((resolve) => setTimeout(resolve, 20));
     }
   }
   readline.clearLine(process.stdout, 0);
@@ -158,8 +158,8 @@ export const generate = async (argv: CLIArguments) => {
   // print stats
   for (const file of lsFolder.excluded) {
     console.log(
-      chalk.reset.inverse.bold.blue(' EXCLUDE '),
-      `${chalk.dim(file.folder)}${chalk.bold(file.name + file.ext)}`
+      kleur.reset().inverse().bold().blue(' EXCLUDE '),
+      `${kleur.dim(file.folder as string)}${kleur.bold(file.name + file.ext)}`
     );
   }
 
@@ -169,17 +169,17 @@ export const generate = async (argv: CLIArguments) => {
     if (!entry.file) continue;
 
     const color = {
-      [StatisticType.INCLUDE]: 'green',
-      [StatisticType.ERROR]: 'red',
-      [StatisticType.EMPTY]: 'yellow',
-      [StatisticType.EXCLUDE]: 'blue'
+      [StatisticType.INCLUDE]: kleur.reset().inverse().bold().green,
+      [StatisticType.ERROR]: kleur.reset().inverse().bold().red,
+      [StatisticType.EMPTY]: kleur.reset().inverse().bold().yellow,
+      [StatisticType.EXCLUDE]: kleur.reset().inverse().bold().blue
     }[entry.type];
 
     console.log(
-      chalk.reset.inverse.bold[color](` ${entry.type} `),
-      `${chalk.dim(entry.relativePathSrc)}${chalk.bold(entry.file.name + entry.file.ext)} \u2192 ${chalk.dim(
+      color(` ${entry.type} `),
+      `${kleur.dim(entry.relativePathSrc)}${kleur.bold(entry.file.name + entry.file.ext)} \u2192 ${kleur.dim(
         entry.relativePathDest
-      )}${chalk.bold(entry.file.name + '.md')}`
+      )}${kleur.bold(entry.file.name + '.md')}`
     );
   }
 
@@ -197,7 +197,7 @@ export const generate = async (argv: CLIArguments) => {
  * Watch files in source folder
  * @param {CLIArguments} argv
  */
-const watchFiles = (argv: CLIArguments) => {
+export const watchFiles = (argv: CLIArguments) => {
   const { exclude, include, srcFolder, codeFolder, docsFolder, title } = parseArguments(argv);
 
   if (argv.watch) {
@@ -207,9 +207,9 @@ const watchFiles = (argv: CLIArguments) => {
       persistent: true
     });
 
-    watcher.on('change', async path => {
+    watcher.on('change', async (path) => {
       const lsFolder = await listFolder(srcFolder, exclude, include);
-      const file = lsFolder.paths.find(p => p.path === path);
+      const file = lsFolder.paths.find((p) => p.path === path);
 
       readline.clearLine(process.stdout, 0);
       readline.cursorTo(process.stdout, 0);
@@ -219,9 +219,9 @@ const watchFiles = (argv: CLIArguments) => {
       }
 
       if (file) {
-        process.stdout.write(chalk.dim(`update ${file.name + file.ext}`));
+        process.stdout.write(kleur.dim(`update ${file.name + file.ext}`));
 
-        parseDirectoryFile(file, argv)?.then(data => {
+        parseDirectoryFile(file, argv)?.then((data) => {
           if (data) {
             writeContentToFile(data, data.relativePathDest);
           }
@@ -238,21 +238,3 @@ const watchFiles = (argv: CLIArguments) => {
     });
   }
 };
-
-/**
- * The vuepress plugins
- * @param {CLIArguments} argv
- * @param {object} ctx
- * @returns {object}
- */
-const plugin = (argv: CLIArguments, ctx) => ({
-  name: 'vuepress-plugin-jsdoc',
-  ready: async () => {
-    if (!ctx.isProd) {
-      argv.watch = true;
-      watchFiles(argv);
-    }
-  }
-});
-
-export default plugin;

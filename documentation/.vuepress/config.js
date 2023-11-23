@@ -1,39 +1,29 @@
-const { sidebarTree } = require('../code/config');
+import { defaultTheme } from '@vuepress/theme-default';
+import { sidebarTree } from '../code/config';
 
-module.exports = {
+export default {
   contentLoading: true,
   dest: 'public',
   title: 'vuepress-jsdoc',
   description: 'vuepress-jsdoc documented with itself',
-  plugins: [
-    [
-      // require('vuepress-jsdoc')
-      require('../../dist/index.js').default,
-      {
-        folder: 'code',
-        source: './dist',
-        dist: './documentation',
-        title: 'API',
-        partials: ['./example/partials/*.hbs'],
-        readme: './README.md',
-        exclude: '**/*.d.ts,**/interfaces.*,**/constants.*,**/cmds.*'
-      }
-    ]
-  ],
   locales: {
     '/': {
       title: 'vuepress-jsdoc',
-      description: 'A CLI to create jsdoc md files for vuepress'
+      description: 'A CLI to create jsdoc md files for vuepress',
+      home: '/code/'
     }
   },
-  themeConfig: {
-    sidebarDepth: 4,
+  theme: defaultTheme({
     locales: {
       '/': {
-        nav: [
+        navbar: [
           {
             text: 'Home',
             link: '/'
+          },
+          {
+            text: 'Code',
+            link: '/code/'
           },
           {
             text: 'Github',
@@ -46,5 +36,5 @@ module.exports = {
         }
       }
     }
-  }
+  })
 };
