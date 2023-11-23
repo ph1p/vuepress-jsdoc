@@ -1,6 +1,25 @@
+## 5.0.0 (2023-11-23)
+
+* feat(vuepress): switch to vuepress 2 ([351af08](https://github.com/ph1p/vuepress-jsdoc/commit/351af08))
+* build(deps): update dependencies ([2e85188](https://github.com/ph1p/vuepress-jsdoc/commit/2e85188))
+* build(deps): update example ([c9529fe](https://github.com/ph1p/vuepress-jsdoc/commit/c9529fe))
+* build(workflow): set node 16 in github action ([4822a0a](https://github.com/ph1p/vuepress-jsdoc/commit/4822a0a))
+* Make sidebar config compatible with Vuepress 2 ([592a7b5](https://github.com/ph1p/vuepress-jsdoc/commit/592a7b5))
+* Wait for async `extractConfig()` call to complete ([6ddb19f](https://github.com/ph1p/vuepress-jsdoc/commit/6ddb19f))
+
+
+### BREAKING CHANGE
+
+* no vuepress 1 support anymore, drop older node versions
+
+Switch from chalk to kleur
+Fix some bugs
+
+
 ## <small>4.3.1 (2022-10-06)</small>
 
-* build(deps): update dependencies and fix an npm script ([78a6e83](https://github.com/ph1p/vuepress-jsdoc/commit/78a6e83))
+* 4.3.1 ([8b596fb](https://github.com/ph1p/vuepress-jsdoc/commit/8b596fb))
+* build(deps): update dependencies and fix an npm script ([82a5b93](https://github.com/ph1p/vuepress-jsdoc/commit/82a5b93))
 * build(deps): update dependencies and rename success to include ([dd5b6c4](https://github.com/ph1p/vuepress-jsdoc/commit/dd5b6c4))
 * chore: audit example dependencies ([21823a1](https://github.com/ph1p/vuepress-jsdoc/commit/21823a1))
 * chore: drop node 14 ([ae30caf](https://github.com/ph1p/vuepress-jsdoc/commit/ae30caf))
