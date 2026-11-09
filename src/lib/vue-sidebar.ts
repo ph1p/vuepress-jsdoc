@@ -35,6 +35,8 @@ export interface SidebarOptions {
   format?: SiteFormat;
   /** text of the first entry, which links to the readme */
   readmeTitle?: string;
+  /** make the top level groups collapsible. Nested folders are always collapsible. */
+  collapsible?: boolean;
 }
 
 export type SiteFormat = 'vuepress' | 'vitepress';
@@ -65,7 +67,8 @@ export const generateVueSidebar = ({
   srcFolder,
   docsFolder,
   title,
-  readmeTitle = SIDEBAR_TITLE_PLACEHOLDER
+  readmeTitle = SIDEBAR_TITLE_PLACEHOLDER,
+  collapsible = false
 }: SidebarOptions) => {
   const base = getSidebarBase(codeFolder);
   const root = normalizePath(srcFolder);
@@ -105,11 +108,11 @@ export const generateVueSidebar = ({
 
   const folders: SidebarGroup[] = fileTree
     .filter((file) => file.children)
-    .map((folder) => ({ text: folder.name, collapsible: false, children: buildChildren(folder.children!) }))
+    .map((folder) => ({ text: folder.name, collapsible, children: buildChildren(folder.children!) }))
     .filter((group) => group.children.length > 0);
 
   return {
-    [base]: [{ text: title, collapsible: false, children: rootFiles }, ...folders]
+    [base]: [{ text: title, collapsible, children: rootFiles }, ...folders]
   };
 };
 
@@ -143,7 +146,7 @@ export const generateVitepressSidebar = (data: SidebarOptions) => {
     return readPageTitle(`${path.join(data.docsFolder, relativePath)}.md`) ?? (isIndex ? 'index' : name);
   };
 
-  const toVitepressItem = (item: SidebarItem): VitepressSidebarItem => {
+  const toVitepressItem = (item: SidebarItem, nested = true): VitepressSidebarItem => {
     if (typeof item === 'string') {
       return { text: getText(item), link: item };
     }
@@ -152,13 +155,14 @@ export const generateVitepressSidebar = (data: SidebarOptions) => {
     }
     return {
       text: item.text,
-      // nested folders are collapsed, vitepress opens groups with the active page
-      ...(item.collapsible ? { collapsed: true } : {}),
-      items: item.children.map(toVitepressItem)
+      // nested folders are collapsed, vitepress opens groups with the active page.
+      // collapsible top level groups stay open.
+      ...(item.collapsible ? { collapsed: nested } : {}),
+      items: item.children.map((child) => toVitepressItem(child))
     };
   };
 
-  return { [base]: generateVueSidebar(data)[base].map(toVitepressItem) };
+  return { [base]: generateVueSidebar(data)[base].map((group) => toVitepressItem(group, false)) };
 };
 
 /**

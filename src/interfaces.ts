@@ -34,6 +34,8 @@ export interface CLIArguments {
   readme?: string;
   /** Watch the source files */
   watch?: boolean;
+  /** Make the top level sidebar groups collapsible, default `false` */
+  collapsible?: boolean;
   /** Sidebar format of the generated `config.js`, default `vuepress` */
   format?: 'vuepress' | 'vitepress';
   /** Path to a config file */

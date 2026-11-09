@@ -54,6 +54,12 @@ describe('generateVueSidebar()', () => {
     });
   });
 
+  test('makes the top level groups collapsible', () => {
+    const groups = generateVueSidebar({ ...options, collapsible: true })['/code/'];
+
+    expect(groups.map((g) => g.collapsible)).toEqual([true, true]);
+  });
+
   test('handles "./" in the source folder', () => {
     expect(generateVueSidebar({ ...options, srcFolder: './src' })['/code/'][0].children).toContain('/code/file1');
   });
@@ -81,6 +87,14 @@ describe('generateVitepressSidebar()', () => {
         }
       ]
     });
+  });
+
+  test('keeps collapsible top level groups open', () => {
+    const [root, lib] = generateVitepressSidebar({ ...options, collapsible: true })['/code/'];
+
+    expect(root.collapsed).toBe(false);
+    expect(lib.collapsed).toBe(false);
+    expect(lib.items?.at(-1)).toMatchObject({ text: 'deep', collapsed: true });
   });
 
   test('is used by createSidebarConfig() with format "vitepress"', async () => {

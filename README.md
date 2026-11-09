@@ -56,6 +56,7 @@ Use these options after `vuepress-jsdoc`.
 | --partials        | -p    |                 | jsdoc2markdown partial templates (overwrites default ones)                                                                                           |
 | --jsDocConfigPath | -c    |                 | Path to [JsDoc Config](https://jsdoc.app/about-configuring-jsdoc.html)                                                                               |
 | --watch           | -w    |                 | Watch changes and update markdown files                                                                                                              |
+| --collapsible     |       |                 | Make the top level sidebar groups collapsible (nested folders are always collapsible)                                                                |
 | --format          |       | vuepress        | Sidebar format of the generated `config.js`: `vuepress` or `vitepress`                                                                               |
 | --config          |       |                 | Path to a config file (default: `vuepress-jsdoc.config.{js,mjs,cjs,json}`)                                                                           |
 

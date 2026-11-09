@@ -35,6 +35,7 @@ export const cli = async (version: string, argv = process.argv) => {
     .option('-i, --include <string>', 'Pattern to include files/folders (comma separated) - **/*.js,include.js')
     .option('-e, --exclude <string>', 'Pattern to exclude files/folders (comma separated) - **/*.test.js,exclude.js')
     .option('-w, --watch', 'Watch your source files and update the documentation')
+    .option('--collapsible', 'Make the top level sidebar groups collapsible')
     .option('--rm, --rmPattern [files...]', 'Additional glob patterns of files to remove before generating')
     .option('-p, --partials [files...]', 'jsdoc2markdown partial templates (overwrites default ones)')
     .option('-c, --jsDocConfigPath <string>', 'Path to jsdoc config')

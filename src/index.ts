@@ -61,6 +61,7 @@ export const parseArguments = (argv: CLIArguments) => {
     rmPattern: toList(argv.rmPattern),
     partials: toList(argv.partials),
     jsDocConfigPath: argv.jsDocConfigPath,
+    collapsible: Boolean(argv.collapsible),
     format: argv.format === 'vitepress' ? ('vitepress' as const) : ('vuepress' as const)
   };
 };
@@ -101,7 +102,8 @@ export const getSidebarOptions = (options: Options, fileTree: FileTree[]): Sideb
   docsFolder: options.docsFolder,
   codeFolder: options.codeFolder,
   title: options.title,
-  format: options.format
+  format: options.format,
+  collapsible: options.collapsible
 });
 
 /**
