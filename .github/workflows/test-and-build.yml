@@ -1,16 +1,31 @@
 name: Test and Build
 
-on: [pull_request]
+on:
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - run: pnpm lint
+      - run: pnpm typecheck
+
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22, 24]
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
         with:
-          node-version: 20
-      - run: npm ci
-      - run: npm run build
-      - run: npm test
+          node-version: ${{ matrix.node-version }}
+      - run: pnpm build
+      - run: pnpm test
