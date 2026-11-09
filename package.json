@@ -1,6 +1,6 @@
 {
   "name": "vuepress-jsdoc",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "Generate jsdoc markdown files for vuepress",
   "type": "module",
   "main": "dist/index.js",

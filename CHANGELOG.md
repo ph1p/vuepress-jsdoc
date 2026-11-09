@@ -1,3 +1,13 @@
+## [6.0.0](https://github.com/ph1p/vuepress-jsdoc/compare/v5.0.0...v6.0.0) (2026-11-09)
+
+### Features
+
+* vitepress format, vuepress plugin, config file and pnpm ([9f39d4f](https://github.com/ph1p/vuepress-jsdoc/commit/9f39d4f1c9af524e535f70576f4c2d5992fdb15d))
+
+### Bug Fixes
+
+* **docs:** page titles in vitepress sidebar, document cmds and constants ([89f999c](https://github.com/ph1p/vuepress-jsdoc/commit/89f999c17cc2067db3abfb126481215233bf43f7))
+
 ## 5.0.0 (2023-11-23)
 
 * feat(vuepress): switch to vuepress 2 ([351af08](https://github.com/ph1p/vuepress-jsdoc/commit/351af08))
