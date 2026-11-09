@@ -24,7 +24,7 @@
     "prepublishOnly": "pnpm run build",
     "prepare": "husky",
     "version": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s && git add CHANGELOG.md",
-    "docs": "./bin/vuepress-jsdoc.js --source=./src --partials=./example/partials/*.hbs --readme=./README.md --format=vitepress --exclude=\"**/__tests__/**,**/interfaces.ts,**/constants.ts\"",
+    "docs": "./bin/vuepress-jsdoc.js --source=./src --partials=./example/partials/*.hbs --readme=./README.md --format=vitepress --exclude=\"**/__tests__/**\"",
     "docs:dev": "pnpm run build && pnpm run docs && vitepress dev documentation",
     "docs:build": "pnpm run build && pnpm run docs && vitepress build documentation"
   },

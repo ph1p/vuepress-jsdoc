@@ -157,6 +157,7 @@ export const sidebarTree = (title = 'Mainpage') => ({
           "link": "/code/"
         },
         "/code/class-constructor",
+        "/code/Icon",
         "/code/methods",
         "/code/objects",
         "/code/test",

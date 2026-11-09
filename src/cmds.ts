@@ -1,7 +1,8 @@
 /*
  * @vuepress
  * ---
- * headline: cmds.ts
+ * title: CLI
+ * headline: Command line interface
  * ---
  */
 import { Command, Option } from 'commander';
@@ -17,8 +18,9 @@ import { CLIArguments } from './interfaces.js';
  * this here, because otherwise the folder structure in the dist folder would get mixed up.
  * @param {string} version a version string
  * @param {string[]} argv process arguments
+ * @returns {Promise<void>}
  */
-export default async (version: string, argv = process.argv) => {
+export const cli = async (version: string, argv = process.argv) => {
   const program = new Command();
 
   program
@@ -66,3 +68,5 @@ export default async (version: string, argv = process.argv) => {
 
   await program.parseAsync(argv);
 };
+
+export default cli;

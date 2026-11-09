@@ -10,7 +10,7 @@ import path from 'node:path';
 import { SIDEBAR_TITLE_PLACEHOLDER } from '../constants.js';
 import { FileTree } from '../interfaces.js';
 
-import { normalizePath } from './list-folder.js';
+import { getPageName, normalizePath } from './list-folder.js';
 
 export interface SidebarGroup {
   text: string;
@@ -114,34 +114,52 @@ export const generateVueSidebar = ({
 };
 
 /**
- * Convert a vuepress sidebar item into a vitepress sidebar item
- * @param {SidebarItem} item
- * @returns {VitepressSidebarItem}
+ * Get the `title` of the frontmatter of a generated page (set with the `@vuepress` block)
+ * @param {string} mdPath path to the generated markdown file
+ * @returns {string|undefined}
  */
-const toVitepressItem = (item: SidebarItem): VitepressSidebarItem => {
-  if (typeof item === 'string') {
-    return { text: path.posix.basename(item), link: item };
-  }
-  if ('link' in item) {
-    return { text: item.text, link: item.link };
-  }
-  return {
-    text: item.text,
-    // nested folders are collapsed, vitepress opens groups with the active page
-    ...(item.collapsible ? { collapsed: true } : {}),
-    items: item.children.map(toVitepressItem)
-  };
+const readPageTitle = (mdPath: string) => {
+  const title = /^---\r?\n[\s\S]*?^title:\s*(.+?)\s*$[\s\S]*?^---/m.exec(fs.readFileSync(mdPath, 'utf-8'))?.[1];
+
+  return title?.replace(/^(['"])(.*)\1$/, '$2');
 };
 
 /**
  * Runs through the given tree structure and creates a vitepress sidebar config.
+ * Vitepress needs the text of every link, so it is read from the generated page.
  * @param {SidebarOptions} data Information to build config
  * @returns {object} returns the vitepress sidebar structure
  */
-export const generateVitepressSidebar = (data: SidebarOptions) =>
-  Object.fromEntries(
-    Object.entries(generateVueSidebar(data)).map(([base, groups]) => [base, groups.map(toVitepressItem)])
-  ) as Record<string, VitepressSidebarItem[]>;
+export const generateVitepressSidebar = (data: SidebarOptions) => {
+  const base = getSidebarBase(data.codeFolder);
+  const root = normalizePath(data.srcFolder);
+
+  // the frontmatter title or the file name. Index files are shown as `index` instead of their prefixed page name.
+  const getText = (link: string) => {
+    const relativePath = link.slice(base.length);
+    const name = path.posix.basename(relativePath);
+    const isIndex = name === getPageName(path.posix.join(root, path.posix.dirname(relativePath)), 'index');
+
+    return readPageTitle(`${path.join(data.docsFolder, relativePath)}.md`) ?? (isIndex ? 'index' : name);
+  };
+
+  const toVitepressItem = (item: SidebarItem): VitepressSidebarItem => {
+    if (typeof item === 'string') {
+      return { text: getText(item), link: item };
+    }
+    if ('link' in item) {
+      return { text: item.text, link: item.link };
+    }
+    return {
+      text: item.text,
+      // nested folders are collapsed, vitepress opens groups with the active page
+      ...(item.collapsible ? { collapsed: true } : {}),
+      items: item.children.map(toVitepressItem)
+    };
+  };
+
+  return { [base]: generateVueSidebar(data)[base].map(toVitepressItem) };
+};
 
 /**
  * Create the content of the `config.js`, which is placed into the generated folder.

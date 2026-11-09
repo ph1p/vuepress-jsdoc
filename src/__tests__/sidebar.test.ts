@@ -2,10 +2,16 @@ import { describe, expect, test, vi } from 'vitest';
 
 import { createSidebarConfig, generateVitepressSidebar, generateVueSidebar } from '../lib/vue-sidebar.js';
 
-const existing = new Set(['docs/file1.md', 'docs/file2.md', 'docs/lib/file3.md', 'docs/lib/deep/file4.md']);
+const pages = new Map([
+  ['docs/file1.md', '---\ntitle: "First file"\n---\n# File 1'],
+  ['docs/file2.md', '# File 2'],
+  ['docs/lib/file3.md', ''],
+  ['docs/lib/src-lib-index.md', ''],
+  ['docs/lib/deep/file4.md', '---\nheadline: Four\n---\n']
+]);
 
 vi.mock('node:fs', () => ({
-  default: { existsSync: (p: string) => existing.has(p) }
+  default: { existsSync: (p: string) => pages.has(p), readFileSync: (p: string) => pages.get(p) }
 }));
 
 const fileTree = [
@@ -15,8 +21,9 @@ const fileTree = [
     name: 'lib',
     children: [
       { fullPath: 'src/lib/file3', name: 'file3', path: '/file3', ext: '.vue' },
-      // not generated (e.g. empty), so it is not linked
       { fullPath: 'src/lib/src-lib-index', name: 'src-lib-index', path: '/src-lib-index', ext: '.js' },
+      // not generated (e.g. empty), so it is not linked
+      { fullPath: 'src/lib/file6', name: 'file6', path: '/file6', ext: '.js' },
       { name: 'deep', children: [{ fullPath: 'src/lib/deep/file4', name: 'file4', path: '/file4', ext: '.js' }] }
     ]
   },
@@ -37,7 +44,11 @@ describe('generateVueSidebar()', () => {
         {
           text: 'lib',
           collapsible: false,
-          children: ['/code/lib/file3', { text: 'deep', collapsible: true, children: ['/code/lib/deep/file4'] }]
+          children: [
+            '/code/lib/file3',
+            '/code/lib/src-lib-index',
+            { text: 'deep', collapsible: true, children: ['/code/lib/deep/file4'] }
+          ]
         }
       ]
     });
@@ -56,7 +67,7 @@ describe('generateVitepressSidebar()', () => {
           text: 'API',
           items: [
             { text: '::vuepress-jsdoc-title::', link: '/code/' },
-            { text: 'file1', link: '/code/file1' },
+            { text: 'First file', link: '/code/file1' },
             { text: 'file2', link: '/code/file2' }
           ]
         },
@@ -64,6 +75,7 @@ describe('generateVitepressSidebar()', () => {
           text: 'lib',
           items: [
             { text: 'file3', link: '/code/lib/file3' },
+            { text: 'index', link: '/code/lib/src-lib-index' },
             { text: 'deep', collapsed: true, items: [{ text: 'file4', link: '/code/lib/deep/file4' }] }
           ]
         }
