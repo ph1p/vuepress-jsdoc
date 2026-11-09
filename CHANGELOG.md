@@ -1,3 +1,9 @@
+## [6.1.0](https://github.com/ph1p/vuepress-jsdoc/compare/v6.0.0...v6.1.0) (2026-11-09)
+
+### Features
+
+* **sidebar:** collapsible option for top level groups ([5416ee3](https://github.com/ph1p/vuepress-jsdoc/commit/5416ee3e8d6a45c782adf214b3d409316c4c0e11)), closes [#63](https://github.com/ph1p/vuepress-jsdoc/issues/63)
+
 ## [6.0.0](https://github.com/ph1p/vuepress-jsdoc/compare/v5.0.0...v6.0.0) (2026-11-09)
 
 ### Features
