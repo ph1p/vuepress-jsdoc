@@ -1,12 +1,11 @@
 ---
-title: sub-test
+title: "sub-test"
 ---
-
-  # grid
+# grid
 
   
   > This is an example of creating a reusable grid component and using it with external data.
-  
+
   
   Author: [Rafael](https://github.com/rafaesc92)
 
@@ -71,7 +70,3 @@ title: sub-test
 
   
   ---
-
-
-  
-  

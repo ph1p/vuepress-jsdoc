@@ -1,5 +1,5 @@
 ---
-title: dmd-options
+title: "dmd-options"
 ---
 
 # dmd-options
@@ -7,4 +7,4 @@ title: dmd-options
 <a name="DmdOptions"></a>
 
 ## DmdOptions
-**Kind**: global class  
+**Kind**: global class

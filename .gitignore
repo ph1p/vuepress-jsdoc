@@ -8,3 +8,4 @@ public
 documentation/code
 .cache
 .temp
+documentation/.vitepress/cache

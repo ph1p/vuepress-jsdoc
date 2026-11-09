@@ -1,5 +1,8 @@
 #!/usr/bin/env node
-'use strict';
-Object.defineProperty(exports, '__esModule', { value: true });
-const { version } = require('../package.json');
-require('../dist/cmds').default(version);
+import { readFileSync } from 'node:fs';
+
+import cli from '../dist/cmds.js';
+
+const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf-8'));
+
+cli(version);

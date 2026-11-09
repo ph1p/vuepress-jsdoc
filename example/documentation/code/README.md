@@ -1,18 +1,15 @@
 ## Example
 
 ```bash
-# Install dependencies
-npm install
-
-# Run the CLI
-vuepress-jsdoc
+# Install dependencies (run in the repository root, the example is a pnpm workspace package)
+pnpm install && pnpm build
 
 # Generate docs
-npm run docs
+pnpm run docs
 
-# Run dev server
-npm run dev
+# Generate docs and run the dev server
+pnpm run dev
 
-# Generate dist folder
-npm run build
+# Generate docs and build the dist folder
+pnpm run build:local
 ```

@@ -1,8 +1,11 @@
+import { viteBundler } from '@vuepress/bundler-vite';
 import { defaultTheme } from '@vuepress/theme-default';
-import { sidebarTree } from '../code/config';
+import { defineUserConfig } from 'vuepress';
 
-export default {
-  contentLoading: true,
+import { sidebarTree } from '../code/config.js';
+
+export default defineUserConfig({
+  bundler: viteBundler(),
   dest: 'public',
   title: 'vuepress-jsdoc',
   description: 'Just playing around with vuepress-jsdoc',
@@ -37,4 +40,4 @@ export default {
       }
     }
   })
-};
+});

@@ -50,4 +50,3 @@ thirdClass
 
 ### new fourthClass()
 fourthClass (no class annotation)
-

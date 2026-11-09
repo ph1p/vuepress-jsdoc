@@ -1,12 +1,11 @@
 ---
-title: sub-vue-md
+title: "sub-vue-md"
 ---
-
-  # Button
+# Button
 
   
   > The only true button.
-  
+
   
   
   
@@ -52,6 +51,3 @@ To render an example as highlighted source code remove the live modifier
 ```html
 <Button>I’m transparent!</Button>
 ```
-
-  
-  

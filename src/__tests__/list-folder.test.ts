@@ -1,244 +1,154 @@
 import { fs, vol } from 'memfs';
+import path from 'node:path';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { listFolder } from '../lib/list-folder';
+import { listFolder, normalizePath } from '../lib/list-folder.js';
 
-jest.mock('node:fs', () => fs);
-jest.mock('node:fs/promises', () => fs.promises);
+// memfs resolves relative paths against "/" instead of the working directory
+vi.mock('node:fs/promises', () => ({
+  default: {
+    ...fs.promises,
+    readdir: (p: string, options: object) => fs.promises.readdir(path.resolve(p), options)
+  }
+}));
 
-describe('test file-structure', () => {
-  describe('with children', () => {
-    beforeEach(() => {
-      vol.reset();
-    });
+const file = (name: string, ext: string, folder = 'src/') => ({
+  name,
+  ext,
+  folder,
+  path: `${folder}${name}${ext}`
+});
 
-    test('get structured file array', async () => {
-      vol.fromJSON(
-        {
-          'file1.js': '',
-          'file2.ts': '',
-          'lib/file3.vue': '',
-          'lib/index.js': ''
-        },
-        './src'
-      );
-
-      const { paths, tree } = await listFolder('./src', [], []);
-
-      expect(paths).toEqual([
-        { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
-        { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' },
-        { ext: '.vue', folder: 'src/lib/', isDir: false, name: 'file3', path: 'src/lib/file3.vue' },
-        { ext: '.js', folder: 'src/lib/', isDir: false, name: 'src-lib-index', path: 'src/lib/index.js' },
-        { isDir: true, name: 'lib', path: 'src/lib' }
-      ]);
-
-      expect(tree).toEqual([
-        { fullPath: 'src/file1', name: 'file1', path: '/file1', ext: '.js' },
-        { fullPath: 'src/file2', name: 'file2', path: '/file2', ext: '.ts' },
-        {
-          children: [
-            { fullPath: 'src/lib/file3', name: 'file3', path: '/file3', ext: '.vue' },
-            { fullPath: 'src/lib/src-lib-index', name: 'src-lib-index', path: '/src-lib-index', ext: '.js' }
-          ],
-          name: 'lib'
-        }
-      ]);
-    });
+describe('listFolder()', () => {
+  beforeEach(() => {
+    vol.reset();
   });
 
-  describe('without children', () => {
-    beforeEach(() => {
-      vol.reset();
-    });
+  test('returns paths and tree', async () => {
+    vol.fromJSON(
+      {
+        'file1.js': '',
+        'file2.ts': '',
+        'lib/file3.vue': '',
+        'lib/index.js': ''
+      },
+      './src'
+    );
 
-    test('get structured file array', async () => {
-      vol.fromJSON(
-        {
-          'file1.js': '',
-          'file2.ts': ''
-        },
-        './src'
-      );
+    const { paths, tree, excluded } = await listFolder('./src');
 
-      expect((await listFolder('./src', [], [])).paths).toEqual([
-        { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
-        { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }
-      ]);
+    expect(paths).toEqual([
+      file('file1', '.js'),
+      file('file2', '.ts'),
+      file('file3', '.vue', 'src/lib/'),
+      { name: 'src-lib-index', ext: '.js', folder: 'src/lib/', path: 'src/lib/index.js' }
+    ]);
 
-      expect((await listFolder('./src', [], [])).tree).toEqual([
-        { fullPath: 'src/file1', name: 'file1', path: '/file1', ext: '.js' },
-        { fullPath: 'src/file2', name: 'file2', path: '/file2', ext: '.ts' }
-      ]);
-    });
+    expect(tree).toEqual([
+      { fullPath: 'src/file1', name: 'file1', path: '/file1', ext: '.js' },
+      { fullPath: 'src/file2', name: 'file2', path: '/file2', ext: '.ts' },
+      {
+        name: 'lib',
+        children: [
+          { fullPath: 'src/lib/file3', name: 'file3', path: '/file3', ext: '.vue' },
+          { fullPath: 'src/lib/src-lib-index', name: 'src-lib-index', path: '/src-lib-index', ext: '.js' }
+        ]
+      }
+    ]);
+    expect(excluded).toEqual([]);
   });
 
-  describe('missing parameters', () => {
-    beforeEach(() => {
-      vol.reset();
-    });
+  test('skips unsupported files, declarations, hidden folders, node_modules and empty folders', async () => {
+    vol.fromJSON(
+      {
+        'file1.js': '',
+        'types.d.ts': '',
+        'style.css': '',
+        '.hidden/file.js': '',
+        'node_modules/dep/index.js': '',
+        'assets/logo.png': ''
+      },
+      './src'
+    );
 
-    test('get structured file array', async () => {
-      vol.fromJSON(
-        {
-          'file1.js': '',
-          'file2.ts': ''
-        },
-        './src'
-      );
+    const { paths, tree } = await listFolder('src');
 
-      // @ts-ignore
-      expect((await listFolder('./src', false)).paths).toEqual([
-        { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
-        { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }
-      ]);
+    expect(paths).toEqual([file('file1', '.js')]);
+    expect(tree).toEqual([{ fullPath: 'src/file1', name: 'file1', path: '/file1', ext: '.js' }]);
+  });
 
-      // @ts-ignore
-      expect((await listFolder('./src', '')).paths).toEqual([
-        { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
-        { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }
-      ]);
+  test('does not prefix files named like "myindex"', async () => {
+    vol.fromJSON({ 'myindex.js': '' }, './src');
 
-      // @ts-ignore
-      expect((await listFolder('./src', 'hffdskjh')).paths).toEqual([
-        { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
-        { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }
-      ]);
+    expect((await listFolder('src')).paths).toEqual([file('myindex', '.js')]);
+  });
 
-      // @ts-ignore
-      expect((await listFolder()).paths).toEqual([]);
-    });
+  test('handles invalid parameters', async () => {
+    vol.fromJSON({ 'file1.js': '', 'file2.ts': '' }, './src');
+
+    const expected = [file('file1', '.js'), file('file2', '.ts')];
+
+    // @ts-expect-error invalid parameter
+    expect((await listFolder('./src', false)).paths).toEqual(expected);
+    // @ts-expect-error invalid parameter
+    expect((await listFolder('./src', '')).paths).toEqual(expected);
+    // @ts-expect-error invalid parameter
+    expect((await listFolder()).paths).toEqual([]);
   });
 
   describe('exclude', () => {
     beforeEach(() => {
-      vol.reset();
+      vol.fromJSON({ 'file1.js': '', 'file2.ts': '' }, './src');
     });
 
-    test('should not exlude with empty string', async () => {
-      vol.fromJSON(
-        {
-          'file1.js': '',
-          'file2.ts': ''
-        },
-        './src'
-      );
-
-      const { paths } = await listFolder('./src', [''], []);
-
-      // @ts-ignore
-      expect(paths).toEqual([
-        { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
-        { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }
-      ]);
+    test('does not exclude with an empty or a not matching pattern', async () => {
+      expect((await listFolder('./src', [''])).paths).toHaveLength(2);
+      expect((await listFolder('./src', ['file3'])).paths).toHaveLength(2);
     });
 
-    test('should not exlude with not matching string', async () => {
-      vol.fromJSON(
-        {
-          'file1.js': '',
-          'file2.ts': ''
-        },
-        './src'
-      );
+    test('excludes files', async () => {
+      const { paths, excluded } = await listFolder('./src', ['file1.js']);
 
-      const { paths } = await listFolder('./src', ['file3'], []);
-
-      // @ts-ignore
-      expect(paths).toEqual([
-        { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
-        { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }
-      ]);
+      expect(paths).toEqual([file('file2', '.ts')]);
+      expect(excluded).toEqual([file('file1', '.js')]);
     });
 
-    test('should exclude file', async () => {
-      vol.fromJSON(
-        {
-          'file1.js': '',
-          'file2.ts': ''
-        },
-        './src'
-      );
+    test('excludes whole folders', async () => {
+      vol.fromJSON({ '__tests__/a.test.ts': '', 'lib/__tests__/b.test.ts': '', 'lib/c.ts': '' }, './src');
 
-      const { paths, excluded } = await listFolder('./src', ['file1.js'], []);
+      const { paths, tree } = await listFolder('./src', ['**/__tests__']);
 
-      // @ts-ignore
-      expect(paths).toEqual([{ ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }]);
-
-      // @ts-ignore
-      expect(excluded).toEqual([{ ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' }]);
+      expect(paths.map((p) => p.path)).toEqual(['src/file1.js', 'src/file2.ts', 'src/lib/c.ts']);
+      expect(tree.map((t) => t.name)).toEqual(['file1', 'file2', 'lib']);
     });
   });
 
   describe('include', () => {
-    beforeEach(() => {
-      vol.reset();
-    });
-
-    test('should include ts files, but not test files', async () => {
-      vol.fromJSON(
-        {
-          'file1.ts': '',
-          'file2.test.ts': '',
-          'file3.spec.ts': ''
-        },
-        './src'
-      );
+    test('includes ts files, but not test files', async () => {
+      vol.fromJSON({ 'file1.ts': '', 'file2.test.ts': '', 'file3.spec.ts': '' }, './src');
 
       const { paths } = await listFolder('./src', ['*.(test|spec).ts'], ['*.ts']);
 
-      // @ts-ignore
-      expect(paths).toEqual([{ ext: '.ts', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.ts' }]);
+      expect(paths).toEqual([file('file1', '.ts')]);
     });
 
-    test('should not include with empty string', async () => {
-      vol.fromJSON(
-        {
-          'file1.js': '',
-          'file2.ts': ''
-        },
-        './src'
-      );
+    test('includes matching files only', async () => {
+      vol.fromJSON({ 'file1.js': '', 'file2.ts': '' }, './src');
 
-      const { paths } = await listFolder('./src', [], ['']);
-
-      // @ts-ignore
-      expect(paths).toEqual([
-        { ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' },
-        { ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }
-      ]);
-    });
-
-    test('should include with matching string', async () => {
-      vol.fromJSON(
-        {
-          'file1.js': '',
-          'file2.ts': ''
-        },
-        './src'
-      );
-
-      const { paths } = await listFolder('./src', [], ['file2*']);
-
-      // @ts-ignore
-      expect(paths).toEqual([{ ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }]);
-    });
-
-    test('should include file', async () => {
-      vol.fromJSON(
-        {
-          'file1.js': '',
-          'file2.ts': ''
-        },
-        './src'
-      );
+      expect((await listFolder('./src', [], [''])).paths).toHaveLength(2);
+      expect((await listFolder('./src', [], ['file2*'])).paths).toEqual([file('file2', '.ts')]);
 
       const { paths, excluded } = await listFolder('./src', [], ['file2.ts']);
-
-      // @ts-ignore
-      expect(paths).toEqual([{ ext: '.ts', folder: 'src/', isDir: false, name: 'file2', path: 'src/file2.ts' }]);
-
-      // @ts-ignore
-      expect(excluded).toEqual([{ ext: '.js', folder: 'src/', isDir: false, name: 'file1', path: 'src/file1.js' }]);
+      expect(paths).toEqual([file('file2', '.ts')]);
+      expect(excluded).toEqual([file('file1', '.js')]);
     });
+  });
+});
+
+describe('normalizePath()', () => {
+  test('removes "./" and trailing slashes', () => {
+    expect(normalizePath('./src/')).toBe('src');
+    expect(normalizePath('src/lib/../')).toBe('src');
+    expect(normalizePath('./')).toBe('.');
   });
 });

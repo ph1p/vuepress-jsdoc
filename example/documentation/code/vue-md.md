@@ -1,12 +1,11 @@
 ---
-title: vue-md
+title: "vue-md"
 ---
-
-  # Button
+# Button
 
   
   > The only true button.
-  
+
   
   
   
@@ -63,7 +62,3 @@ Section 1
 ## Section 2
 
 Section 2
-
-
-  
-  

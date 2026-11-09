@@ -1,5 +1,5 @@
 ---
-title: objects
+title: "objects"
 ---
 
 # objects
@@ -39,4 +39,4 @@ A function with a parameter and returns the name
 ### obj.objMethodTwo()
 Old way to write methods in objects
 
-**Kind**: static method of [<code>obj</code>](#obj)  
+**Kind**: static method of [<code>obj</code>](#obj)

@@ -32,4 +32,4 @@ A normal ES6 Method
 ## standardMethod() →  <code>string</code>
 A normal standard Method
 
-**Kind**: global function  
+**Kind**: global function

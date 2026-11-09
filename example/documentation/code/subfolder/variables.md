@@ -1,5 +1,5 @@
 ---
-title: variables
+title: "variables"
 ---
 
 # variables
@@ -31,4 +31,4 @@ A normal let variable
 ## SUBFOLDER
 A constant
 
-**Kind**: global constant  
+**Kind**: global constant

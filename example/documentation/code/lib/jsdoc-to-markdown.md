@@ -1,5 +1,5 @@
 ---
-title: jsdoc-to-markdown
+title: "jsdoc-to-markdown"
 ---
 
 # jsdoc-to-markdown
@@ -151,4 +151,3 @@ Sync version of [getJsdocData](#module_jsdoc-to-markdown--JsdocToMarkdown+getJsd
 | Param | Type | Description |
 | --- | --- | --- |
 | [options] | <code>object</code> | Identical options to [getJsdocData](#module_jsdoc-to-markdown--JsdocToMarkdown+getJsdocData). |
-

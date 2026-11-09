@@ -2,20 +2,31 @@
   "name": "vuepress-jsdoc",
   "version": "5.0.0",
   "description": "Generate jsdoc markdown files for vuepress",
+  "type": "module",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
-    "test": "jest",
-    "test-coverage": "cross-env NODE_ENV=test jest --coverage",
-    "test-watch": "cross-env NODE_ENV=test jest --watchAll",
-    "lint": "eslint --ext .tsx,.ts,.json,.js src/ --fix",
-    "dev": "npm run build -- -w",
-    "build": "tsc",
-    "prepublishOnly": "npm i && npm run build",
-    "prepare": "husky install",
-    "version": "conventional-changelog -p karma -i CHANGELOG.md -s -r 0 && git add .",
-    "docs": "./bin/vuepress-jsdoc.js --source=./dist --partials=./example/partials/*.hbs --readme ./README.md --include=\"**/*.(ts|js)\" --exclude=\"**/*.d.ts,**/interfaces.*,**/constants.*\"",
-    "docs:dev": "npx concurrently --kill-others \"npm run dev\" \"npm run docs -- -w\" \"vuepress dev documentation\"",
-    "docs:build": "npm run build && npm run docs && vuepress build documentation"
+    "test": "vitest run",
+    "test-coverage": "vitest run --coverage",
+    "test-watch": "vitest",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "dev": "tsc -w",
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc",
+    "prepublishOnly": "pnpm run build",
+    "prepare": "husky",
+    "version": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "docs": "./bin/vuepress-jsdoc.js --source=./src --partials=./example/partials/*.hbs --readme=./README.md --format=vitepress --exclude=\"**/__tests__/**,**/interfaces.ts,**/constants.ts\"",
+    "docs:dev": "pnpm run build && pnpm run docs && vitepress dev documentation",
+    "docs:build": "pnpm run build && pnpm run docs && vitepress build documentation"
   },
   "keywords": [
     "jsdoc",
@@ -24,8 +35,9 @@
     "vue",
     "vuepress"
   ],
+  "packageManager": "pnpm@12.18.0",
   "engines": {
-    "node": ">=14"
+    "node": ">=22.22.0"
   },
   "license": "MIT",
   "author": "Philip Stapelfeldt <me@ph1p.dev>",
@@ -40,118 +52,60 @@
     "printWidth": 120,
     "trailingComma": "none"
   },
-  "jest": {
-    "coverageThreshold": {
-      "global": {
-        "branches": 95,
-        "functions": 60,
-        "lines": 75,
-        "statements": -10
-      }
-    },
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "bail": true,
-    "verbose": true,
-    "collectCoverageFrom": [
-      "**/*.{js,jsx,ts,tsx}",
-      "!**/node_modules/**",
-      "!**/coverage/**",
-      "!**/example/**",
-      "!**/vendor/**"
-    ],
-    "coverageDirectory": "./coverage"
-  },
+  "files": [
+    "bin",
+    "dist",
+    "template"
+  ],
   "bin": {
     "vuepress-jsdoc": "bin/vuepress-jsdoc.js"
   },
   "dependencies": {
-    "chokidar": "^3.5.3",
-    "commander": "^11.1.0",
-    "del": "^6.0.0",
+    "chokidar": "^6.0.0",
+    "commander": "^15.1.0",
+    "del": "^9.0.1",
     "front-matter": "^4.0.2",
-    "jsdoc-to-markdown": "^8.0.0",
+    "jsdoc-to-markdown": "^9.1.3",
     "kleur": "^4.1.5",
-    "micromatch": "^4.0.5",
-    "mkdirp": "^3.0.1",
-    "vue-docgen-cli": "^4.67.0"
+    "micromatch": "^4.0.8",
+    "vue-docgen-cli": "^4.79.0"
+  },
+  "peerDependencies": {
+    "typescript": "*"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "@types/jest": "^29.5.10",
+    "@eslint/js": "^10.0.1",
     "@types/jsdoc-to-markdown": "^7.0.6",
-    "@types/micromatch": "^4.0.6",
-    "@types/mkdirp": "^1.0.2",
-    "@typescript-eslint/eslint-plugin": "^6.12.0",
-    "@typescript-eslint/parser": "^6.12.0",
-    "@vuepress/client": "^2.0.0-rc.0",
-    "babel-jest": "^29.7.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.54.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-jest": "^27.6.0",
-    "eslint-plugin-prefer-arrow": "^1.2.3",
-    "husky": "^8.0.3",
-    "jest": "^29.7.0",
-    "lint-staged": "^15.1.0",
-    "memfs": "^4.6.0",
-    "ts-jest": "^29.1.1",
-    "typescript": "^5.3.2",
-    "vue": "^3.3.8",
-    "vuepress": "^2.0.0-rc.0"
+    "@types/micromatch": "^4.0.10",
+    "@types/node": "^26.6.6",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "@vitest/coverage-v8": "^5.1.0",
+    "conventional-changelog": "^8.1.3",
+    "conventional-changelog-conventionalcommits": "^10.4.1",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "memfs": "^4.80.0",
+    "prettier": "^3.9.10",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.72.1",
+    "vitepress": "^1.6.4",
+    "vitest": "^5.1.0"
   },
   "lint-staged": {
-    "src/**/*.{css,scss,json}": [
-      "prettier --write",
-      "git add"
+    "src/**/*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
     ],
-    "src/**/*.{js,jsx,ts,tsx}": [
-      "eslint",
-      "prettier --write",
-      "git add"
+    "src/**/*.json": [
+      "prettier --write"
     ]
-  },
-  "eslintConfig": {
-    "env": {
-      "commonjs": true,
-      "es6": true,
-      "node": true,
-      "jest": true
-    },
-    "extends": "eslint:recommended",
-    "globals": {
-      "Atomics": "readonly",
-      "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-      "ecmaVersion": 2018
-    },
-    "rules": {
-      "quotes": [
-        "error",
-        "single",
-        {
-          "allowTemplateLiterals": true
-        }
-      ],
-      "no-console": 0,
-      "arrow-parens": [
-        "error",
-        "as-needed"
-      ]
-    }
   }
 }

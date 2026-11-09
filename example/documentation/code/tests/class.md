@@ -1,5 +1,5 @@
 ---
-title: class
+title: "class"
 test: test class
 ---
 
@@ -56,5 +56,4 @@ Creates an instance of Test.
 
 | Param | Type | Default |
 | --- | --- | --- |
-| [name] | <code>string</code> | <code>&quot;&#x27;Peter&#x27;&quot;</code> | 
-
+| [name] | <code>string</code> | <code>&quot;&#x27;Peter&#x27;&quot;</code> |
